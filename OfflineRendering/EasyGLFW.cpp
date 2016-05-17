@@ -10,7 +10,8 @@ void EasyGLFW::init(int width, int height, const char* name) {
 	window = glfwCreateWindow(width, height, name, NULL, NULL);
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, HDR_KEYS);
-	modified.init();
+	glfwSetCursorPosCallback(window, HDR_CURSOR_POS);
+	modified.init(window);
 }
 void EasyGLFW::startLoop(){
 
@@ -24,6 +25,11 @@ void EasyGLFW::startLoop(){
 	glfwTerminate();
 }
 
-void EasyGLFW::HDR_KEYS(GLFWwindow* window, int key, int scancode, int action, int mods){
+void EasyGLFW::HDR_KEYS(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	EasyGLFW::THE_MOST_RECENT_INSTANCE->modified.HDR_KEYS(window, key, scancode, action, mods);
+}
+
+void EasyGLFW::HDR_CURSOR_POS(GLFWwindow * window, double posX, double posY)
+{
+	EasyGLFW::THE_MOST_RECENT_INSTANCE->modified.HDR_CURSOR_POS(window, posX, posY);
 }

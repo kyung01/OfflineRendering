@@ -1,6 +1,6 @@
 #include "Main.h"
-#include "glm\glm.hpp"
-#include <map>
+
+#include "EasyGLFW.h"
 bool main() {
 	
 	EasyGLFW myGLFW;

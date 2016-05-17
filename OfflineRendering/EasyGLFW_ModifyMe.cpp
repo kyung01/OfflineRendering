@@ -1,14 +1,23 @@
+
 #include "EasyGLFW_Modified.h"
 #include <iostream>
 #include <map>
 #include <glm\vec3.hpp>
 #include "PlayerMovement.h"
-EasyGLFW_Modified::EasyGLFW_Modified() {
+EasyGLFW_Modified::EasyGLFW_Modified() :
+	windowSize(2),
+	posCursorPre(2) {
+	
 	isContinue = true;
 }
 
-void EasyGLFW_Modified::init()
+
+void EasyGLFW_Modified::init(GLFWwindow* window)
 {
+	glfwGetWindowSize(window,&windowSize[0], &windowSize[1]);
+	posCursorPre.assign({ windowSize [0]*.5f, windowSize [1]*.5f});
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPos(window, windowSize[0] * .5f, windowSize[1] * .5f);
 	//plrMove2 = &PlayerMovement();
 	//PlayerMovement().move(PlayerMovement::DIR_MOVEMENT::BACKWARD,.5f);
 }
@@ -39,27 +48,57 @@ bool EasyGLFW_Modified::loop(GLFWwindow* window)
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glTranslatef(plrMove.x(), plrMove.y(),plrMove.z());
+	glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0f, 102.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	vec3 pos = plrMove.getPosition();
+	vec3 center = pos + plrMove.getDirForward();
+	vec3 dirUpward = plrMove.getDirUpward();
+	gluLookAt(
+		-pos.x, pos.y, pos.z, 
+		-center.x, center.y, center.z,
+	//	0,1,0);
+		dirUpward.x, dirUpward.y, dirUpward.z);
+	//glTranslatef(-plrMove.x(), plrMove.y(),plrMove.z());
 	//draw stuff here
-	draw();
+	for (int i = 0; i < 10; i++) {
+		glRotatef(40, 0, 1, 0);
+		glPushMatrix();
+		glTranslatef(0, 0, 3);
+		draw();
+		glPopMatrix();
+
+	}
 	glfwSwapBuffers(window);
 	return isContinue;
 }
 
+std::map<int, int> mapKeyDir({
+	{ GLFW_KEY_W, PlayerMovement::FORWARD },
+	{ GLFW_KEY_S, PlayerMovement::BACKWARD },
+	{ GLFW_KEY_A, PlayerMovement::LEFT},
+	{ GLFW_KEY_D, PlayerMovement::RIGHT }});
 //std::map<int, glfw> keyMovemnet = {};
 void EasyGLFW_Modified::HDR_KEYS(GLFWwindow * window, int key, int scancode, int action, int mods)
 {
-	if (action != GLFW_PRESS) return;
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		std::cout << "EasyGLFW_Modified Pressed Escape Key!\n";
 		isContinue = false;
 	}
-	if (key == GLFW_KEY_S) {
-		plrMove.move(PlayerMovement::LEFT, .1f);
-		
-
+	for (std::map<int, int>::iterator it = mapKeyDir.begin(); it != mapKeyDir.end(); it++) {
+		if (key == it->first && (action == GLFW_REPEAT || action == GLFW_PRESS)) {
+			plrMove.move((PlayerMovement::DIR_MOVEMENT) it->second, .1f);
+		}
 	}
+}
 
+void EasyGLFW_Modified::HDR_CURSOR_POS(GLFWwindow * window, double posX, double posY)
+{
+	float power = .01f;
+	double posXChange = posX - posCursorPre[0];
+	double posYChange = posY - posCursorPre[1];
+	//cout << "POSITION " << posXChange << " " << posYChange << endl;
+	posCursorPre[0] = posX;
+	posCursorPre[1] = posY;
+	plrMove.rotateAxis(-posXChange*power, -posYChange*power);
 }

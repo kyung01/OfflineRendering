@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="EasyGLFW.cpp" />
     <ClCompile Include="EasyGLFW_ModifyMe.cpp" />
+    <ClCompile Include="GLFW_KeyChecker.cpp" />
     <ClCompile Include="HPR.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
@@ -133,6 +134,8 @@
   <ItemGroup>
     <ClInclude Include="EasyGLFW.h" />
     <ClInclude Include="EasyGLFW_Modified.h" />
+    <ClInclude Include="GLEW_GLFW.h" />
+    <ClInclude Include="GLFW_KeyChecker.h" />
     <ClInclude Include="HPR.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="PlayerMovement.h" />
