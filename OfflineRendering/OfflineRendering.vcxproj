@@ -74,7 +74,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\devbl\Desktop\OpenGL Libraries\glm;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -99,7 +99,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\devbl\Desktop\OpenGL Libraries\glm;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -125,11 +125,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EasyGLFW.cpp" />
+    <ClCompile Include="EasyGLFW_ModifyMe.cpp" />
+    <ClCompile Include="HPR.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PlayerMovement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EasyGLFW.h" />
+    <ClInclude Include="EasyGLFW_Modified.h" />
+    <ClInclude Include="HPR.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="PlayerMovement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
