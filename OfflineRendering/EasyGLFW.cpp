@@ -3,12 +3,19 @@
 EasyGLFW *EasyGLFW::THE_MOST_RECENT_INSTANCE = NULL;
 
 
+void EasyGLFW::createContext(const char* name, int width, int height)
+{
+	glfwInit();
+	window = glfwCreateWindow(width, height, name, NULL, NULL);
+}
+
 void EasyGLFW::init(int width, int height, const char* name) {
 	EasyGLFW::THE_MOST_RECENT_INSTANCE = this;
 	//modified = EasyGLFW_Modified();
 	glfwInit();
 	window = glfwCreateWindow(width, height, name, NULL, NULL);
 	glfwMakeContextCurrent(window);
+	
 	glfwSetKeyCallback(window, HDR_KEYS);
 	glfwSetCursorPosCallback(window, HDR_CURSOR_POS);
 	modified.init(window);

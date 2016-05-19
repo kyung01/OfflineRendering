@@ -10,8 +10,11 @@ class EasyGLFW {
 	static void HDR_CURSOR_POS(GLFWwindow* window, double posX, double posY);// modify the function as you please 
 	
 	EasyGLFW_Modified modified;
-	GLFWwindow* window;
 public:
-	void init(int width, int height, const char* name);
-	void startLoop();
+	GLFWwindow* window;
+	void createContext(const char* name, int width, int height);
+	void endContext();
+
+	void init(int width, int height, const char* name);//depreciated
+	void startLoop(); //depreciated
 };

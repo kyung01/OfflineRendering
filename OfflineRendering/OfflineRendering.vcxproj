@@ -74,12 +74,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\devbl\Desktop\OpenGL Libraries\glm;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\devbl\Desktop\C++ Libs\opencv\build\include;C:\Users\devbl\Desktop\OpenGL Libraries\glm;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\lib\Release\Win32;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;glu32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\devbl\Desktop\C++ Libs\opencv\build\x86\vc14 built\lib\Release;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\lib\Release\Win32;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;glu32.lib;opengl32.lib;opencv_calib3d310.lib;opencv_core310.lib;opencv_features2d310.lib;opencv_flann310.lib;opencv_highgui310.lib;opencv_imgcodecs310.lib;opencv_imgproc310.lib;opencv_ml310.lib;opencv_objdetect310.lib;opencv_photo310.lib;opencv_stitching310.lib;opencv_superres310.lib;opencv_ts310.lib;opencv_video310.lib;opencv_videoio310.lib;opencv_videostab310.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -87,9 +87,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\devbl\Desktop\C++ Libs\opencv\build\include;C:\Users\devbl\Desktop\OpenGL Libraries\glm;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\devbl\Desktop\C++ Libs\opencv\build\x64\vc14\lib;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\lib\Release\Win32;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;glu32.lib;opengl32.lib;opencv_world310.lib;opencv_world310d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -99,14 +102,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\devbl\Desktop\OpenGL Libraries\glm;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\devbl\Desktop\C++ Libs\opencv\build\include;C:\Users\devbl\Desktop\OpenGL Libraries\glm;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\lib\Release\Win32;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;glu32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\devbl\Desktop\C++ Libs\opencv\build\x86\vc14 built\lib\Release;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\lib\Release\Win32;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;glu32.lib;opengl32.lib;opencv_calib3d310.lib;opencv_core310.lib;opencv_features2d310.lib;opencv_flann310.lib;opencv_highgui310.lib;opencv_imgcodecs310.lib;opencv_imgproc310.lib;opencv_ml310.lib;opencv_objdetect310.lib;opencv_photo310.lib;opencv_stitching310.lib;opencv_superres310.lib;opencv_ts310.lib;opencv_video310.lib;opencv_videoio310.lib;opencv_videostab310.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -116,11 +119,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\devbl\Desktop\C++ Libs\opencv\build\include;C:\Users\devbl\Desktop\OpenGL Libraries\glm;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Users\devbl\Desktop\C++ Libs\opencv\build\x64\vc14\lib;C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\lib\Release\Win32;C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;glu32.lib;opengl32.lib;opencv_world310.lib;opencv_world310d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -129,6 +135,8 @@
     <ClCompile Include="GLFW_KeyChecker.cpp" />
     <ClCompile Include="HPR.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="OpenCV_VideoRecorder.cpp" />
+    <ClCompile Include="OpenGL_ProjectManager.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,7 +146,13 @@
     <ClInclude Include="GLFW_KeyChecker.h" />
     <ClInclude Include="HPR.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="OpenCV_VideoRecorder.h" />
+    <ClInclude Include="OpenGL_ProjectManager.h" />
     <ClInclude Include="PlayerMovement.h" />
+    <ClInclude Include="World.h" />
+    <ClInclude Include="SharedConstValues.h" />
+    <ClInclude Include="WorldObject.h" />
+    <ClInclude Include="WorldRenderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

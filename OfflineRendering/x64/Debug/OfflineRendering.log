@@ -1,0 +1,79 @@
+﻿Build started 2016-05-19 오전 12:07:24.
+     1>Project "C:\Users\devbl\OneDrive\문서\GitHub\OfflineRendering\OfflineRendering\OfflineRendering.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Users\devbl\Desktop\C++ Libs\opencv\build\include" /I"C:\Users\devbl\Desktop\OpenGL Libraries\glm" /I"C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include" /I"C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include" /ZI /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt EasyGLFW.cpp EasyGLFW_ModifyMe.cpp GLFW_KeyChecker.cpp HPR.cpp Main.cpp PlayerMovement.cpp
+         PlayerMovement.cpp
+     1>c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(58): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+     1>c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(59): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+     1>c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(61): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\utility(145): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+         c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(28): note: see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<PlayerMovement::DIR_MOVEMENT,int,void>(_Other1 &&,_Other2 &&) noexcept' being compiled
+                 with
+                 [
+                     _Kty=int,
+                     _Ty=float,
+                     _Other1=PlayerMovement::DIR_MOVEMENT,
+                     _Other2=int
+                 ]
+         c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(28): note: see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<PlayerMovement::DIR_MOVEMENT,int,void>(_Other1 &&,_Other2 &&) noexcept' being compiled
+                 with
+                 [
+                     _Kty=int,
+                     _Ty=float,
+                     _Other1=PlayerMovement::DIR_MOVEMENT,
+                     _Other2=int
+                 ]
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\utility(145): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+         c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(28): note: see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<PlayerMovement::DIR_MOVEMENT,double,void>(_Other1 &&,_Other2 &&) noexcept' being compiled
+                 with
+                 [
+                     _Kty=int,
+                     _Ty=float,
+                     _Other1=PlayerMovement::DIR_MOVEMENT,
+                     _Other2=double
+                 ]
+         c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(28): note: see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<PlayerMovement::DIR_MOVEMENT,double,void>(_Other1 &&,_Other2 &&) noexcept' being compiled
+                 with
+                 [
+                     _Kty=int,
+                     _Ty=float,
+                     _Other1=PlayerMovement::DIR_MOVEMENT,
+                     _Other2=double
+                 ]
+         Main.cpp
+     1>c:\users\devbl\desktop\c++ libs\opencv\build\include\opencv2\core\mat.hpp(1965): warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
+     1>c:\users\devbl\desktop\c++ libs\opencv\build\include\opencv2\core\persistence.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
+     1>c:\users\devbl\desktop\c++ libs\opencv\build\include\opencv2\core\utility.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
+         HPR.cpp
+         GLFW_KeyChecker.cpp
+         EasyGLFW_ModifyMe.cpp
+         EasyGLFW.cpp
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\devbl\OneDrive\문서\GitHub\OfflineRendering\x64\Debug\OfflineRendering.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\devbl\Desktop\C++ Libs\opencv\build\x64\vc14\lib" /LIBPATH:"C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\lib\Release\Win32" /LIBPATH:"C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\lib-vc2015" glew32.lib glfw3.lib glu32.lib opengl32.lib opencv_world310.lib opencv_world310d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\devbl\OneDrive\문서\GitHub\OfflineRendering\x64\Debug\OfflineRendering.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\devbl\OneDrive\문서\GitHub\OfflineRendering\x64\Debug\OfflineRendering.lib" /MACHINE:X64 x64\Debug\EasyGLFW.obj
+         x64\Debug\EasyGLFW_ModifyMe.obj
+         x64\Debug\GLFW_KeyChecker.obj
+         x64\Debug\HPR.obj
+         x64\Debug\Main.obj
+         x64\Debug\PlayerMovement.obj
+     1>EasyGLFW.obj : error LNK2019: unresolved external symbol glfwInit referenced in function "public: void __cdecl EasyGLFW::init(int,int,char const *)" (?init@EasyGLFW@@QEAAXHHPEBD@Z)
+     1>EasyGLFW.obj : error LNK2019: unresolved external symbol glfwTerminate referenced in function "public: void __cdecl EasyGLFW::startLoop(void)" (?startLoop@EasyGLFW@@QEAAXXZ)
+     1>EasyGLFW.obj : error LNK2019: unresolved external symbol glfwCreateWindow referenced in function "public: void __cdecl EasyGLFW::init(int,int,char const *)" (?init@EasyGLFW@@QEAAXHHPEBD@Z)
+     1>EasyGLFW.obj : error LNK2019: unresolved external symbol glfwDestroyWindow referenced in function "public: void __cdecl EasyGLFW::startLoop(void)" (?startLoop@EasyGLFW@@QEAAXXZ)
+     1>EasyGLFW.obj : error LNK2019: unresolved external symbol glfwPollEvents referenced in function "public: void __cdecl EasyGLFW::startLoop(void)" (?startLoop@EasyGLFW@@QEAAXXZ)
+     1>EasyGLFW.obj : error LNK2019: unresolved external symbol glfwSetKeyCallback referenced in function "public: void __cdecl EasyGLFW::init(int,int,char const *)" (?init@EasyGLFW@@QEAAXHHPEBD@Z)
+     1>EasyGLFW.obj : error LNK2019: unresolved external symbol glfwSetCursorPosCallback referenced in function "public: void __cdecl EasyGLFW::init(int,int,char const *)" (?init@EasyGLFW@@QEAAXHHPEBD@Z)
+     1>EasyGLFW.obj : error LNK2019: unresolved external symbol glfwMakeContextCurrent referenced in function "public: void __cdecl EasyGLFW::init(int,int,char const *)" (?init@EasyGLFW@@QEAAXHHPEBD@Z)
+     1>EasyGLFW_ModifyMe.obj : error LNK2019: unresolved external symbol glfwGetWindowSize referenced in function "public: void __cdecl EasyGLFW_Modified::init(struct GLFWwindow *)" (?init@EasyGLFW_Modified@@QEAAXPEAUGLFWwindow@@@Z)
+     1>EasyGLFW_ModifyMe.obj : error LNK2019: unresolved external symbol glfwGetFramebufferSize referenced in function "public: bool __cdecl EasyGLFW_Modified::loop(struct GLFWwindow *)" (?loop@EasyGLFW_Modified@@QEAA_NPEAUGLFWwindow@@@Z)
+     1>EasyGLFW_ModifyMe.obj : error LNK2019: unresolved external symbol glfwSetInputMode referenced in function "public: void __cdecl EasyGLFW_Modified::init(struct GLFWwindow *)" (?init@EasyGLFW_Modified@@QEAAXPEAUGLFWwindow@@@Z)
+     1>EasyGLFW_ModifyMe.obj : error LNK2019: unresolved external symbol glfwSetCursorPos referenced in function "public: void __cdecl EasyGLFW_Modified::init(struct GLFWwindow *)" (?init@EasyGLFW_Modified@@QEAAXPEAUGLFWwindow@@@Z)
+     1>EasyGLFW_ModifyMe.obj : error LNK2019: unresolved external symbol glfwSwapBuffers referenced in function "public: bool __cdecl EasyGLFW_Modified::loop(struct GLFWwindow *)" (?loop@EasyGLFW_Modified@@QEAA_NPEAUGLFWwindow@@@Z)
+     1>C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\lib\Release\Win32\glew32.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
+     1>C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\lib-vc2015\glfw3.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
+     1>C:\Users\devbl\OneDrive\문서\GitHub\OfflineRendering\x64\Debug\OfflineRendering.exe : fatal error LNK1120: 13 unresolved externals
+     1>Done Building Project "C:\Users\devbl\OneDrive\문서\GitHub\OfflineRendering\OfflineRendering\OfflineRendering.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:04.03

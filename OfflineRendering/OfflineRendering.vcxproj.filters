@@ -16,27 +16,42 @@
     <Filter Include="Header Files\GLFW">
       <UniqueIdentifier>{08820eaa-74ad-41d5-95a7-02563e674694}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\PlayerInfo">
+    <Filter Include="Source Files\GLFW">
+      <UniqueIdentifier>{26575e9f-8330-4ccc-a3f1-1d2bc75c8efe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Player">
+      <UniqueIdentifier>{a1ada4b9-12a6-4375-a4f4-8d1e83bf806f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Player">
       <UniqueIdentifier>{7b6f4e25-cdee-443c-8087-ad060fd8bda4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World">
+      <UniqueIdentifier>{ad69da2b-d5d2-4ed0-89b3-b4c9ad3dad57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EasyGLFW.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EasyGLFW_ModifyMe.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerMovement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="HPR.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EasyGLFW.cpp">
+      <Filter>Source Files\GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyGLFW_ModifyMe.cpp">
+      <Filter>Source Files\GLFW</Filter>
+    </ClCompile>
     <ClCompile Include="GLFW_KeyChecker.cpp">
+      <Filter>Source Files\GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMovement.cpp">
+      <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenCV_VideoRecorder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGL_ProjectManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -60,7 +75,25 @@
       <Filter>Header Files\GLFW</Filter>
     </ClInclude>
     <ClInclude Include="PlayerMovement.h">
-      <Filter>Header Files\PlayerInfo</Filter>
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenCV_VideoRecorder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL_ProjectManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedConstValues.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldObject.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldRenderer.h">
+      <Filter>Header Files\World</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

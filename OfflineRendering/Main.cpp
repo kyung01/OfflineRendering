@@ -1,13 +1,48 @@
+#include "OpenCV_VideoRecorder.h"
+#include "OpenGL_ProjectManager.h"
+int main(){
+	OpenCV_VideoRecorder videoRecorder;
+	OpenGL_ProjectManager glProject;
+	videoRecorder.init();
+	glProject.init();
+	while (true) {
+		bool isContinue = true;
+		switch (glProject.stateRender)
+		{
+		case OpenGL_ProjectManager::RENDER_UNDEFINED:
+		case OpenGL_ProjectManager::RENDER_END:
+			isContinue = false;
+			break;
+		case OpenGL_ProjectManager::RENDER_OFFLINE:
+			videoRecorder.beginRendering();
+			glProject.renderOfflineBegin();
+			glProject.renderOfflineEnd();
+			videoRecorder.endRendering();
+			break;
+		case OpenGL_ProjectManager::RENDER_REALTIME:
+			glProject.renderRealTimeBegin();
+			glProject.renderRealTimeEnd();
+			break;
+		}
+		if (!isContinue)break;
+	}
+	system("pause");
+	return 1;
+}
+/*
 #include "Main.h"
 
 #include "EasyGLFW.h"
-bool main() {
-	
-	EasyGLFW myGLFW;
-	myGLFW.init(500,500,"hi");
-	myGLFW.startLoop();
 
-	std::cout << "SystemEnding...\n";
-	return true;
-	//system("pause");
+
+bool main() {
+
+EasyGLFW myGLFW;
+myGLFW.init(500,500,"hi");
+myGLFW.startLoop();
+
+std::cout << "SystemEnding...\n";
+return true;
+//system("pause");
 }
+*/
