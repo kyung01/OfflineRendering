@@ -1,5 +1,5 @@
 #pragma once
-#include "GLEW_GLFW.h"
+#include "GLFW_GLEW.h"
 #include "EasyGLFW_Modified.h"
 #include <string>
 using namespace std;

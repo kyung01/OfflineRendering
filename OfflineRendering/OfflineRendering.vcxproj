@@ -134,7 +134,7 @@
   <ItemGroup>
     <ClInclude Include="EasyGLFW.h" />
     <ClInclude Include="EasyGLFW_Modified.h" />
-    <ClInclude Include="GLEW_GLFW.h" />
+    <ClInclude Include="GLFW_GLEW.h" />
     <ClInclude Include="GLFW_KeyChecker.h" />
     <ClInclude Include="HPR.h" />
     <ClInclude Include="Main.h" />

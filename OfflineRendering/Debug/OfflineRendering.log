@@ -1,47 +1,7 @@
-﻿Build started 2016-05-17 오후 5:38:37.
+﻿Build started 2016-05-18 오후 11:30:54.
      1>Project "C:\Users\devbl\OneDrive\문서\GitHub\OfflineRendering\OfflineRendering\OfflineRendering.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\Users\devbl\Desktop\OpenGL Libraries\glm" /I"C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include" /I"C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt EasyGLFW.cpp EasyGLFW_ModifyMe.cpp Main.cpp PlayerMovement.cpp
-         PlayerMovement.cpp
-     1>c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(58): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-     1>c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(59): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-     1>c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(61): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\utility(145): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-         c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(28): note: see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<PlayerMovement::DIR_MOVEMENT,int,void>(_Other1 &&,_Other2 &&) noexcept' being compiled
-                 with
-                 [
-                     _Kty=int,
-                     _Ty=float,
-                     _Other1=PlayerMovement::DIR_MOVEMENT,
-                     _Other2=int
-                 ]
-         c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(28): note: see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<PlayerMovement::DIR_MOVEMENT,int,void>(_Other1 &&,_Other2 &&) noexcept' being compiled
-                 with
-                 [
-                     _Kty=int,
-                     _Ty=float,
-                     _Other1=PlayerMovement::DIR_MOVEMENT,
-                     _Other2=int
-                 ]
-     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\utility(145): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-         c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(28): note: see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<PlayerMovement::DIR_MOVEMENT,double,void>(_Other1 &&,_Other2 &&) noexcept' being compiled
-                 with
-                 [
-                     _Kty=int,
-                     _Ty=float,
-                     _Other1=PlayerMovement::DIR_MOVEMENT,
-                     _Other2=double
-                 ]
-         c:\users\devbl\onedrive\문서\github\offlinerendering\offlinerendering\playermovement.cpp(28): note: see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<PlayerMovement::DIR_MOVEMENT,double,void>(_Other1 &&,_Other2 &&) noexcept' being compiled
-                 with
-                 [
-                     _Kty=int,
-                     _Ty=float,
-                     _Other1=PlayerMovement::DIR_MOVEMENT,
-                     _Other2=double
-                 ]
-         Generating Code...
-         Compiling...
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\Users\devbl\Desktop\OpenGL Libraries\glm" /I"C:\Users\devbl\Desktop\OpenGL Libraries\glfw-3.1.2.bin.WIN32\include" /I"C:\Users\devbl\Desktop\OpenGL Libraries\glew-1.13.0\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt EasyGLFW.cpp EasyGLFW_ModifyMe.cpp Main.cpp
          Main.cpp
          EasyGLFW_ModifyMe.cpp
          EasyGLFW.cpp
@@ -53,10 +13,9 @@
          Debug\HPR.obj
          Debug\Main.obj
          Debug\PlayerMovement.obj
-     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
          OfflineRendering.vcxproj -> C:\Users\devbl\OneDrive\문서\GitHub\OfflineRendering\Debug\OfflineRendering.exe
      1>Done Building Project "C:\Users\devbl\OneDrive\문서\GitHub\OfflineRendering\OfflineRendering\OfflineRendering.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:03.10
+Time Elapsed 00:00:02.76

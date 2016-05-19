@@ -36,6 +36,7 @@ void draw() {
 
 bool EasyGLFW_Modified::loop(GLFWwindow* window)
 {
+
 	//
 	int *frameSize = new int[2];
 	glfwGetFramebufferSize(window, &frameSize[0], &frameSize[1]);
@@ -102,3 +103,5 @@ void EasyGLFW_Modified::HDR_CURSOR_POS(GLFWwindow * window, double posX, double 
 	posCursorPre[1] = posY;
 	plrMove.rotateAxis(-posXChange*power, -posYChange*power);
 }
+
+
