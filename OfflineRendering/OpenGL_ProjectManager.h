@@ -1,8 +1,10 @@
 #pragma once
 #include "EasyGLFW.h"
+#include "WorldRenderer.h"
 class OpenGL_ProjectManager {
 	EasyGLFW easyGLFW;
-
+	WorldRenderer worldRender; 
+	void initWorld();
 public:
 	enum RenderState {RENDER_UNDEFINED, RENDER_REALTIME,RENDER_OFFLINE,RENDER_END};
 	RenderState stateRender;

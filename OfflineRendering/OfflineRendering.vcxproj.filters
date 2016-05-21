@@ -54,6 +54,9 @@
     <ClCompile Include="OpenGL_ProjectManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WorldRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -83,9 +86,6 @@
     <ClInclude Include="OpenGL_ProjectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SharedConstValues.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="WorldObject.h">
       <Filter>Header Files\World</Filter>
     </ClInclude>
@@ -94,6 +94,12 @@
     </ClInclude>
     <ClInclude Include="WorldRenderer.h">
       <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="GLFW_InputRaiser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalVariables.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

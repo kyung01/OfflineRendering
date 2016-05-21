@@ -1,7 +1,9 @@
 #pragma once
+#include "GLFW_GLEW.h"
 class WorldRenderer {
 	//render the world
-	void draw();// draw but also saved all the data to somewhere
+public:
+	void drawAndRecord();// draw but also saved all the data to somewhere
 	void drawRecorded();
 
 };
