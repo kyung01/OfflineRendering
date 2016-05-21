@@ -13,6 +13,7 @@ public:
 	void renderRealTimeEnd();
 	void renderOfflineBegin();
 	void renderOfflineEnd();
+	void end();
 
 };
 /*

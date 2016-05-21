@@ -1,11 +1,14 @@
 #include "OpenCV_VideoRecorder.h"
 #include "OpenGL_ProjectManager.h"
+#include "Main.h"
 int main(){
 	OpenCV_VideoRecorder videoRecorder;
 	OpenGL_ProjectManager glProject;
 	videoRecorder.init();
 	glProject.init();
+	int cycle = 0, cycleMax= 100;
 	while (true) {
+		cycle++;
 		bool isContinue = true;
 		switch (glProject.stateRender)
 		{
@@ -24,8 +27,10 @@ int main(){
 			glProject.renderRealTimeEnd();
 			break;
 		}
-		if (!isContinue)break;
+		if (!isContinue || cycle >= cycleMax)break;
 	}
+	glProject.end();
+	videoRecorder.end();
 	system("pause");
 	return 1;
 }
