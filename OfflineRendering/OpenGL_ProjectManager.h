@@ -4,7 +4,9 @@
 class OpenGL_ProjectManager {
 	EasyGLFW easyGLFW;
 	WorldRenderer worldRender; 
+	GLuint texture_depth;
 	void initWorld();
+	void render_texture(GLuint texture, int index);
 public:
 	enum RenderState {RENDER_UNDEFINED, RENDER_REALTIME,RENDER_OFFLINE,RENDER_END};
 	RenderState stateRender;

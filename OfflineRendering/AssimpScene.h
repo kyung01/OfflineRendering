@@ -7,6 +7,7 @@
 #include <algorithm>
 class AssimpScene {
 	const aiScene *scene;
+
 	void recursive_getBoundingBox(
 		const aiScene *scene, const aiNode* nd,
 		aiVector3D & sceneMin, aiVector3D& sceneMax, aiMatrix4x4* sceneMatrix);
@@ -17,7 +18,10 @@ class AssimpScene {
 	void hpr_color4_to_float4(aiColor4D *color4, float *float4);
 	std::pair<char*, int*> hpr_to_pair_char_arr_int(char * c, int a, int b);
 public:
+	int gl_scene_id;
 	aiVector3D sceneMin, sceneMax, sceneCenter;
 	AssimpScene(const char* path);
+	int init_glList();
+	
 	void Render();
 };

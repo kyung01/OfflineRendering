@@ -26,6 +26,8 @@ void AssimpScene::recursive_getBoundingBox(
 
 		}
 	}
+	std::cout << "AssimpScene SceneMin " << sceneMin.x << " , " << sceneMin.y << " , " << sceneMin.z << std::endl;
+	std::cout << "AssimpScene SceneMax " << sceneMax.x << " , " << sceneMax.y << " , " << sceneMax.z << std::endl;
 	for (int n = 0; n < nd->mNumChildren; n++) {
 		recursive_getBoundingBox(scene,nd->mChildren[n], sceneMin, sceneMax,sceneMatrix);
 	}
@@ -221,9 +223,25 @@ AssimpScene::AssimpScene(const char* path)
 	sceneCenter.x = (sceneMin.x + sceneMax.x) / 2.0f;
 	sceneCenter.y = (sceneMin.y + sceneMax.y) / 2.0f;
 	sceneCenter.z = (sceneMin.z + sceneMax.z) / 2.0f;
+	
+}
+
+int AssimpScene::init_glList()
+{
+	this->gl_scene_id = glGenLists(1);
+	glNewList(gl_scene_id, GL_COMPILE);
+	Render();
+	glEndList();
+	return gl_scene_id;
 }
 
 void AssimpScene::Render()
 {
 	recursive_render(this->scene, this->scene->mRootNode);
+	return;
+	bool is_lighting = glIsEnabled(GL_LIGHTING);
+	if(is_lighting)
+		glEnable(GL_LIGHTING);
+	else
+		glDisable(GL_LIGHTING);
 }

@@ -1,4 +1,3 @@
-
 #include "EasyGLFW_Modified.h"
 #include <iostream>
 #include <map>
@@ -6,7 +5,8 @@
 #include "PlayerMovement.h"
 EasyGLFW_Modified::EasyGLFW_Modified() :
 	windowSize(2),
-	posCursorPre(2) {
+	posCursorPre(2),
+	scene_bunny("Model/bunny.ply"){
 	
 	isContinue = true;
 }
@@ -20,6 +20,17 @@ void EasyGLFW_Modified::init(GLFWwindow* window)
 	glfwSetCursorPos(window, windowSize[0] * .5f, windowSize[1] * .5f);
 	//plrMove2 = &PlayerMovement();
 	//PlayerMovement().move(PlayerMovement::DIR_MOVEMENT::BACKWARD,.5f);
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_NORMALIZE);
+	glEnable(GL_LIGHT0);    /* Uses default lighting parameters */
+	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+	gl_list_scene_bunny = glGenLists(1);
+	glNewList(gl_list_scene_bunny, GL_COMPILE);
+	scene_bunny.Render();
+	glEndList();
+
+
 }
 
 void draw() {
@@ -36,16 +47,16 @@ void draw() {
 
 bool EasyGLFW_Modified::loop(GLFWwindow* window)
 {
-
-	//
+	cout << "EE";
 	int *frameSize = new int[2];
 	glfwGetFramebufferSize(window, &frameSize[0], &frameSize[1]);
 
 	//gotta draw stuff
 	glViewport(0, 0, frameSize[0], frameSize[1]);
 	glm::vec3 e = glm::vec3(1, 2, 3);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glClear(GL_DEPTH_BUFFER_BIT);
+
+	
+	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -70,6 +81,7 @@ bool EasyGLFW_Modified::loop(GLFWwindow* window)
 		glPopMatrix();
 
 	}
+	glCallList(gl_list_scene_bunny);
 	glfwSwapBuffers(window);
 	return isContinue;
 }
