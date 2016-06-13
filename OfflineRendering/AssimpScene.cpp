@@ -26,8 +26,8 @@ void AssimpScene::recursive_getBoundingBox(
 
 		}
 	}
-	std::cout << "AssimpScene SceneMin " << sceneMin.x << " , " << sceneMin.y << " , " << sceneMin.z << std::endl;
-	std::cout << "AssimpScene SceneMax " << sceneMax.x << " , " << sceneMax.y << " , " << sceneMax.z << std::endl;
+	//std::cout << "AssimpScene SceneMin " << sceneMin.x << " , " << sceneMin.y << " , " << sceneMin.z << std::endl;
+	//std::cout << "AssimpScene SceneMax " << sceneMax.x << " , " << sceneMax.y << " , " << sceneMax.z << std::endl;
 	for (int n = 0; n < nd->mNumChildren; n++) {
 		recursive_getBoundingBox(scene,nd->mChildren[n], sceneMin, sceneMax,sceneMatrix);
 	}
@@ -40,23 +40,23 @@ void AssimpScene::recursive_render(const aiScene * sc, const aiNode * nd)
 	aiTransposeMatrix4(&m);
 	glPushMatrix();
 	glMultMatrixf((float*)&m);
-	std::cout <<"mNumMeshes " << nd->mNumMeshes <<std::endl;
+	//std::cout <<"mNumMeshes " << nd->mNumMeshes <<std::endl;
 	for (int n = 0; n < nd->mNumMeshes; ++n) {
 		const aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
-		std::cout << "mNumFaces " << mesh->mNumFaces << std::endl;
+		//std::cout << "mNumFaces " << mesh->mNumFaces << std::endl;
 		applyMaterial(sc->mMaterials[mesh->mMaterialIndex]);
 
 		if (mesh->mNormals == NULL) {
-			std::cout << "DISABLE LIGHTENING " << std::endl;
+			//std::cout << "DISABLE LIGHTENING " << std::endl;
 			glDisable(GL_LIGHTING);
 		}
 		else {
-			std::cout << "ENABLE LIGHTENING "  << std::endl;
+			//std::cout << "ENABLE LIGHTENING "  << std::endl;
 			glEnable(GL_LIGHTING);
 		}
 		//apply_material(sc->mMaterials[mesh->mMaterialIndex]);
 
-		std::cout << "mesh->mNumFaces begin" << std::endl;
+		//std::cout << "mesh->mNumFaces begin" << std::endl;
 		
 
 		for (int t = 0; t < mesh->mNumFaces; ++t) {
@@ -136,15 +136,15 @@ void AssimpScene::applyMaterial(const aiMaterial * mtl)
 		GL_MATERIAL gl_mat = it->second;
 		float* colorDefault = mat_default_color[gl_mat.second];
 		hpr_set_float4(color, .1, .1, .1, 1);
-		std::cout << "applyMaterial " << mat_key.first << " ";
+		//std::cout << "applyMaterial " << mat_key.first << " ";
 		if (AI_SUCCESS == aiGetMaterialColor(mtl, mat_key.first, mat_key.second[0], mat_key.second[1], &colorAI)) {
 			hpr_color4_to_float4(&colorAI, color);
 			glMaterialfv(gl_mat.first, gl_mat.second, color);
-			std::cout << " true " << std::endl;
+			//std::cout << " true " << std::endl;
 		}
 		else {
 			glMaterialfv(gl_mat.first, gl_mat.second, colorDefault);
-			std::cout << " false " << std::endl;
+			//std::cout << " false " << std::endl;
 		}
 		//std::cout << color[0] << " " << color[1] << " " << color[2] << std::endl;
 		
@@ -237,9 +237,8 @@ int AssimpScene::init_glList()
 
 void AssimpScene::Render()
 {
-	recursive_render(this->scene, this->scene->mRootNode);
-	return;
 	bool is_lighting = glIsEnabled(GL_LIGHTING);
+	recursive_render(this->scene, this->scene->mRootNode);
 	if(is_lighting)
 		glEnable(GL_LIGHTING);
 	else

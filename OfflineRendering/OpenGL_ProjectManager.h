@@ -3,10 +3,15 @@
 #include "WorldRenderer.h"
 class OpenGL_ProjectManager {
 	EasyGLFW easyGLFW;
-	WorldRenderer worldRender; 
-	GLuint texture_depth;
-	void initWorld();
+	WorldRenderer worldRender;
+	GLuint fbo_depth;
+	GLuint texture_color, texture_depth;
+	GLuint shader_vertex, shader_frag;
+	void init_fbo();
+	void init_shader();
 	void render_texture(GLuint texture, int index);
+	void hpr_basisc_glTexParameteri();
+	const char* hpr_txt_to_char(const char* path);
 public:
 	enum RenderState {RENDER_UNDEFINED, RENDER_REALTIME,RENDER_OFFLINE,RENDER_END};
 	RenderState stateRender;

@@ -10,6 +10,7 @@ class WorldRenderer {
 public:
 	void init();
 	void draw();// draw the world collection of required draw calls
+	void draw_scene_bunnies();
 
 
 };

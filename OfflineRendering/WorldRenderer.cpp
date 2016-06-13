@@ -78,6 +78,24 @@ void WorldRenderer::draw()
 	glPopMatrix();
 	drwa_environment();
 }
+void WorldRenderer::draw_scene_bunnies() {
+	float r = (1.0f / scene_bunny.get()->sceneMax.y) / 2;
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2; j++) {
+			glPushMatrix();
+			glTranslated(-scene_bunny.get()->sceneCenter.x, -scene_bunny.get()->sceneCenter.y, -scene_bunny.get()->sceneCenter.z);
+			glTranslated(i, 0, j);
+			glScalef(r, r, r);
+			//glRotatef(scene_bunny_angle, 0, 1, 0);
+			//std::cout << scene_bunny.get()->sceneCenter.x<< " "<< scene_bunny.get()->sceneCenter.y << " " << scene_bunny.get()->sceneCenter.z << std::endl;
+			//std::cout << r << std::endl;
+			glCallList(scene_bunny.get()->gl_scene_id);
+			glPopMatrix();
+			//drwa_environment();
+		}
+	}
+
+}
 
 /*
 for (int i = 0; i < -10; i++) {

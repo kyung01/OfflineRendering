@@ -8,6 +8,7 @@ void EasyGLFW::createContext(const char* name, int width, int height)
 	glfwInit();
 	window = glfwCreateWindow(width, height, name, NULL, NULL);
 	glfwMakeContextCurrent(window);
+	glewInit(); // calling this before above code will result in error
 }
 
 void EasyGLFW::init(int width, int height, const char* name) {

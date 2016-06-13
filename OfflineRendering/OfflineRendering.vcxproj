@@ -153,6 +153,7 @@
     <ClInclude Include="OpenCV_VideoRecorder.h" />
     <ClInclude Include="OpenGL_ProjectManager.h" />
     <ClInclude Include="PlayerMovement.h" />
+    <ClInclude Include="ShaderPath.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="WorldObject.h" />
