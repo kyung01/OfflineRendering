@@ -28,7 +28,7 @@ void WorldRenderer::drwa_environment()
 	glNormal3f(0, 1, 0);
 	glEnd();
 	glPopMatrix();
-
+	/*
 	glPushMatrix();
 	glTranslated(0, .5	, -.5);
 	glRotatef(90, 1, 0, 0);
@@ -47,6 +47,7 @@ void WorldRenderer::drwa_environment()
 	glNormal3f(0, 1, 0);
 	glEnd();
 	glPopMatrix();
+	*/
 
 
 }
@@ -91,10 +92,24 @@ void WorldRenderer::draw_scene_bunnies() {
 			//std::cout << r << std::endl;
 			glCallList(scene_bunny.get()->gl_scene_id);
 			glPopMatrix();
+			drwa_environment();
 			//drwa_environment();
 		}
 	}
 
+}
+
+void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id_pos, GLuint id_pos_texture)
+{
+	glBegin(GL_TRIANGLES);
+	glVertexAttrib3f(id_pos, 0.5f, 0.0f, -0.5f);
+	glVertexAttrib3f(id_pos, -0.5f, 0.0f, -0.5f);
+	glVertexAttrib3f(id_pos, -.5f, 0.f, 0.5f);
+
+	glVertexAttrib3f(id_pos, -0.5f, 0.0f, 0.5f);
+	glVertexAttrib3f(id_pos, 0.5f, 0.0f, 0.5f);
+	glVertexAttrib3f(id_pos, 0.5f, 0.0f, -0.5f);
+	glEnd();
 }
 
 /*

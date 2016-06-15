@@ -66,9 +66,10 @@ bool Program_Default::init(const char * path_vert, const char * path_frag)
 	std::cout << "CHECKING id_program" << std::endl;
 	if (!linked) return false;
 
-	id_mat_proj = glGetUniformLocation(id_program, NAME_MATRIX_PROJ);
-	id_mat_viewModel = glGetUniformLocation(id_program, NAME_MATRIX_VIEWMODEL);
-
+	id_mat_proj =		glGetUniformLocation(id_program, NAME_MATRIX_PROJ);
+	id_mat_viewModel =	glGetUniformLocation(id_program, NAME_MATRIX_VIEWMODEL);
+	id_pos =			glGetAttribLocation(id_program, NAME_POSITION);
+	id_pos_texture =	glGetAttribLocation(id_program, NAME_POSITION_TEXTURE);
 
 	return true;
 }

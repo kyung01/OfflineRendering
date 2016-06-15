@@ -4,6 +4,8 @@
 #include "OpenGL_ProjectManager.h"
 #include "GlobalVariables.h"
 #include "ShaderPath.h"
+#include "glm\gtc\matrix_transform.hpp"
+#include "glm\gtc\type_ptr.hpp"
 
 void OpenGL_ProjectManager::init_fbo()
 {
@@ -199,8 +201,45 @@ void OpenGL_ProjectManager::error(const char * error_message)
 	system("pause");
 	exit(-1);
 }
+
+void OpenGL_ProjectManager::glm_mat_array(float * arr, glm::mat4 * mat)
+{
+	const float *pSource = (const float*)glm::value_ptr(*mat);
+	for (int i = 0; i < 16; i++) {
+		arr[i] = pSource[i];
+	}
+}
+
 float movement = 0;
 void OpenGL_ProjectManager::renderRealTimeBegin()
+{
+	float arr_mat[16];
+	movement += .01f;
+	glUseProgram(program00.id_program);
+	
+	glClearColor(0.0f, .1f, .1f, 1.0f);
+	glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glm::mat4 mat_proj = glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
+	glm_mat_array(arr_mat, &mat_proj);
+	glUniformMatrix4fv(program00.id_mat_proj, 1, GL_FALSE, arr_mat);
+	glm::mat4 mat_view = glm::lookAt(glm::vec3(0, movement,  .6f), glm::vec3(0,0,0), glm::vec3(0, 1, 0));
+	glm_mat_array(arr_mat, &mat_view);
+	glUniformMatrix4fv(program00.id_mat_viewModel, 1, GL_FALSE, arr_mat);
+	//0, .4f, .7f + movement, 0, 0, 0, 0, 1, 0
+	worldRender.draw(&mat_view, program00.id_mat_viewModel, program00.id_pos, program00.id_pos_texture);
+	cout << program00.id_mat_proj << " " << program00.id_mat_viewModel << endl;
+	//set the projection matrix
+	//pass the projection matrix
+	//get the view matrix
+	//pass the view matrix
+
+	glUseProgram(0);
+	glfwSwapBuffers(this->easyGLFW.window);
+}
+
+void OpenGL_ProjectManager::renderRealTimeBegin_old()
 {
 	movement += .01f;
 	glClearColor(0.0f, 0.0f, .1f, 1.0f);
