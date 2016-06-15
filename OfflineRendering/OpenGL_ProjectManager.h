@@ -23,6 +23,7 @@ class OpenGL_ProjectManager {
 	void hpr_basisc_glTexParameteri();
 	int hpr_txt_to_char(char* buffer, int buffer_size, const char* path);
 	bool hpr_is_shader_compiled(GLint shaderID);
+	void error(const char* error_message);
 public:
 	enum RenderState {RENDER_UNDEFINED, RENDER_REALTIME,RENDER_OFFLINE,RENDER_END};
 	RenderState stateRender;

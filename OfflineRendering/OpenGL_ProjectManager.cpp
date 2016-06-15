@@ -61,8 +61,8 @@ void OpenGL_ProjectManager::init_program(GLuint & program_id, GLuint shader_vert
 	program_id = glCreateProgram();
 	glAttachShader(program_id, shader_vertex);
 	glAttachShader(program_id, shader_frag);
-
 	glLinkProgram(program_id);
+
 	GLint linked;
 	glGetProgramiv(program_id, GL_LINK_STATUS, &linked);
 		cout << "OpenGL_ProjectManager::init_program::";
@@ -71,12 +71,14 @@ void OpenGL_ProjectManager::init_program(GLuint & program_id, GLuint shader_vert
 }
 bool OpenGL_ProjectManager::init_shader(GLuint * shader_id, GLenum shaderType,  char * data, int data_size)
 {
+	/*
 	cout << "READING..." << endl;
 	for (int i = 0; i < data_size; i++) {
 		cout << data[i];
 	}
 	cout << endl;
 	cout << "OpenGL_ProjectManager::init_shader::data_size" << data_size << endl;
+	*/
 	*shader_id = glCreateShader(shaderType);
 	glShaderSource(*shader_id, 1, &data, &data_size);
 	glCompileShader(*shader_id);
@@ -90,11 +92,12 @@ void OpenGL_ProjectManager::init()
 	this->easyGLFW.createContext(GlobalVariables::CONTEXT_NAME, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
 	this->stateRender = RENDER_OFFLINE;// first we will initiate to render in real time
 
+	if (!program00.init(PATH_SHADER_VERTEX_DEFAULT, PATH_SHADER_FRAG_DEFAULT))
+		error("program00 failed to init.");
 	worldRender.init();
 	init_fbo();
 	init_shader();
 	init_program(program_00, shader_vertex, shader_frag);
-	program00.init(PATH_SHADER_VERTEX_DEFAULT, PATH_SHADER_FRAG_DEFAULT);
 
 	
 	//glDrawBuffer(GL_NONE);
@@ -189,6 +192,12 @@ bool OpenGL_ProjectManager::hpr_is_shader_compiled(GLint shaderID)
 	if (!isCompiled)
 		return false;
 	return true;
+}
+void OpenGL_ProjectManager::error(const char * error_message)
+{
+	cout << "OpenGL_ProjectManager::error::" << error_message << endl;
+	system("pause");
+	exit(-1);
 }
 float movement = 0;
 void OpenGL_ProjectManager::renderRealTimeBegin()
