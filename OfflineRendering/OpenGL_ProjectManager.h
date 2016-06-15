@@ -1,11 +1,18 @@
 #pragma once
 #include "EasyGLFW.h"
 #include "WorldRenderer.h"
+#include "Porgram_Default.h"
 class OpenGL_ProjectManager {
+	const char* PATH_SHADER_VERTEX_DEFAULT = "Shader/shader_vert_default.txt";
+	const char* PATH_SHADER_FRAG_DEFAULT = "Shader/shader_frag_default.txt";
 	EasyGLFW easyGLFW;
 	WorldRenderer worldRender;
 	GLuint fbo_depth;
 	GLuint texture_color, texture_depth;
+	
+	Program_Default program00; // will be used to... do stuff
+	
+
 	GLuint program_00;
 	GLuint shader_vertex, shader_frag;
 	void init_fbo();

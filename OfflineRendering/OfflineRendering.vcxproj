@@ -134,11 +134,14 @@
     <ClCompile Include="EasyGLFW.cpp" />
     <ClCompile Include="EasyGLFW_ModifyMe.cpp" />
     <ClCompile Include="GLFW_KeyChecker.cpp" />
+    <ClCompile Include="GLM_Matrix_Stack.cpp" />
     <ClCompile Include="HPR.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="OpenCV_VideoRecorder.cpp" />
     <ClCompile Include="OpenGL_ProjectManager.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
+    <ClCompile Include="Porgram_Default.cpp" />
+    <ClCompile Include="Shader_Default.cpp" />
     <ClCompile Include="WorldRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -150,10 +153,13 @@
     <ClInclude Include="HPR.h" />
     <ClInclude Include="GLFW_InputRaiser.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="GLM_Matrix_Stack.h" />
     <ClInclude Include="OpenCV_VideoRecorder.h" />
     <ClInclude Include="OpenGL_ProjectManager.h" />
     <ClInclude Include="PlayerMovement.h" />
+    <ClInclude Include="Porgram_Default.h" />
     <ClInclude Include="ShaderPath.h" />
+    <ClInclude Include="Shader_Default.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="WorldObject.h" />

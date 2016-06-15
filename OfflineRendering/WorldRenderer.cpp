@@ -80,8 +80,8 @@ void WorldRenderer::draw()
 }
 void WorldRenderer::draw_scene_bunnies() {
 	float r = (1.0f / scene_bunny.get()->sceneMax.y) / 2;
-	for (int i = 0; i < 2; i++) {
-		for (int j = 0; j < 2; j++) {
+	for (int i = 0; i < 1; i++) {
+		for (int j = 0; j < 3; j++) {
 			glPushMatrix();
 			glTranslated(-scene_bunny.get()->sceneCenter.x, -scene_bunny.get()->sceneCenter.y, -scene_bunny.get()->sceneCenter.z);
 			glTranslated(i, 0, j);

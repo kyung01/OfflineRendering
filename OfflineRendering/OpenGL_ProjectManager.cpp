@@ -33,7 +33,8 @@ void OpenGL_ProjectManager::init_shader()
 {
 	cout << "OpenGL_ProjectManager::init_shader" << endl;
 	char error[1000];
-	char * buffer = new char[1000];
+	//char * buffer = new char[1000];
+	char buffer[1000];
 	int errorSize, buffer_size;
 	buffer_size = hpr_txt_to_char(buffer, 1000, SHADER::VERTEX_DEFAULT);
 	if (init_shader(&shader_vertex, GL_VERTEX_SHADER,buffer,buffer_size))
@@ -93,6 +94,7 @@ void OpenGL_ProjectManager::init()
 	init_fbo();
 	init_shader();
 	init_program(program_00, shader_vertex, shader_frag);
+	program00.init(PATH_SHADER_VERTEX_DEFAULT, PATH_SHADER_FRAG_DEFAULT);
 
 	
 	//glDrawBuffer(GL_NONE);
@@ -222,8 +224,9 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 
 
 	render_texture(texture_color, 0);
-	glUseProgram(program_00);
 	render_texture(texture_depth, 1);
+	glUseProgram(program_00);
+	render_texture(texture_depth, 2);
 	glUseProgram(0);
 
 	glfwSwapBuffers(this->easyGLFW.window);
