@@ -137,11 +137,13 @@
     <ClCompile Include="GLM_Matrix_Stack.cpp" />
     <ClCompile Include="Easy_OpenGL.cpp" />
     <ClCompile Include="HPR.cpp" />
+    <ClCompile Include="KFrameBufferObject.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="OpenCV_VideoRecorder.cpp" />
     <ClCompile Include="OpenGL_ProjectManager.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="Program_Default.cpp" />
+    <ClCompile Include="Program_Texture.cpp" />
     <ClCompile Include="Shader_Default.cpp" />
     <ClCompile Include="WorldRenderer.cpp" />
   </ItemGroup>
@@ -154,12 +156,14 @@
     <ClInclude Include="Easy_OpenGL.h" />
     <ClInclude Include="HPR.h" />
     <ClInclude Include="GLFW_InputRaiser.h" />
+    <ClInclude Include="KFrameBufferObject.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="GLM_Matrix_Stack.h" />
     <ClInclude Include="OpenCV_VideoRecorder.h" />
     <ClInclude Include="OpenGL_ProjectManager.h" />
     <ClInclude Include="PlayerMovement.h" />
-    <ClInclude Include="Porgram_Default.h" />
+    <ClInclude Include="Program_Default.h" />
+    <ClInclude Include="Program_Texture.h" />
     <ClInclude Include="ShaderPath.h" />
     <ClInclude Include="Shader_Default.h" />
     <ClInclude Include="World.h" />

@@ -1,4 +1,4 @@
-#include "Porgram_Default.h"
+#include "Program_Default.h"
 #include <fstream>
 int Program_Default::open_file(char * arr, int arr_size, const char * path)
 {
@@ -69,7 +69,7 @@ bool Program_Default::init(const char * path_vert, const char * path_frag)
 	id_mat_proj =		glGetUniformLocation(id_program, NAME_MATRIX_PROJ);
 	id_mat_viewModel =	glGetUniformLocation(id_program, NAME_MATRIX_VIEWMODEL);
 	id_pos =			glGetAttribLocation(id_program, NAME_POSITION);
-	id_pos_texture =	glGetAttribLocation(id_program, NAME_POSITION_TEXTURE);
+	
 
 	return true;
 }

@@ -7,88 +7,9 @@
 #include "glm\gtc\matrix_transform.hpp"
 #include "glm\gtc\type_ptr.hpp"
 
-void OpenGL_ProjectManager::init_fbo()
-{
-	glGenTextures(1, &texture_depth);
-	glBindTexture(GL_TEXTURE_2D, texture_depth);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
-	hpr_basisc_glTexParameteri();
-	glGenTextures(1, &texture_color);
-	glBindTexture(GL_TEXTURE_2D, texture_color);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1024, 1024, 0, GL_RGBA, GL_FLOAT, 0);
-	hpr_basisc_glTexParameteri();
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+float movement = 0;
 
-	glGenFramebuffers(1, &fbo_depth);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo_depth);
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture_depth, 0);
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture_color, 0);
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (status != GL_FRAMEBUFFER_COMPLETE)
-		cout << "FBO NO OK!!" << endl << endl;
-	else cout << "FBO IS OK!!" << endl;
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-void OpenGL_ProjectManager::init_shader()
-{
-	cout << "OpenGL_ProjectManager::init_shader" << endl;
-	char error[1000];
-	//char * buffer = new char[1000];
-	char buffer[1000];
-	int errorSize, buffer_size;
-	buffer_size = hpr_txt_to_char(buffer, 1000, SHADER::VERTEX_DEFAULT);
-	if (init_shader(&shader_vertex, GL_VERTEX_SHADER,buffer,buffer_size))
-		cout << "OpenGL_ProjectManager::init_shader::VERTEX_SHADER::YES" << endl;
-	else {
-		cout << "OpenGL_ProjectManager::init_shader::VERTEX_SHADER::NO" << endl;
-		glGetShaderInfoLog(shader_vertex, 1000, &errorSize, error);
-		cout << error<<endl;
-		}
-	buffer_size = hpr_txt_to_char(buffer, 1000, SHADER::FRAG_DEFAULT);
-	if (init_shader(&shader_frag, GL_FRAGMENT_SHADER, buffer,buffer_size) )
-		cout << "OpenGL_ProjectManager::init_shader::FRAG_SHADER::YES" << endl;
-	else {
-		cout << "OpenGL_ProjectManager::init_shader::FRAG_SHADER::NO" << endl;
-		glGetShaderInfoLog(shader_frag, 1000, &errorSize, error);
-		cout << error << endl;
-	}
-
-
-	
-}
-void OpenGL_ProjectManager::init_program(GLuint & program_id, GLuint shader_vertex, GLuint shader_frag)
-{
-	program_id = glCreateProgram();
-	glAttachShader(program_id, shader_vertex);
-	glAttachShader(program_id, shader_frag);
-	glLinkProgram(program_id);
-
-	GLint linked;
-	glGetProgramiv(program_id, GL_LINK_STATUS, &linked);
-		cout << "OpenGL_ProjectManager::init_program::";
-	if (linked) cout << "YES" << endl;
-	else cout << "NO" << endl;
-}
-bool OpenGL_ProjectManager::init_shader(GLuint * shader_id, GLenum shaderType,  char * data, int data_size)
-{
-	/*
-	cout << "READING..." << endl;
-	for (int i = 0; i < data_size; i++) {
-		cout << data[i];
-	}
-	cout << endl;
-	cout << "OpenGL_ProjectManager::init_shader::data_size" << data_size << endl;
-	*/
-	*shader_id = glCreateShader(shaderType);
-	glShaderSource(*shader_id, 1, &data, &data_size);
-	glCompileShader(*shader_id);
-	GLint isCompiled;
-	glGetShaderiv(*shader_id, GL_COMPILE_STATUS, &isCompiled);
-	if (isCompiled) return true;
-	return false;
-}
 void OpenGL_ProjectManager::init()
 {
 	this->easyGLFW.createContext(GlobalVariables::CONTEXT_NAME, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
@@ -97,11 +18,10 @@ void OpenGL_ProjectManager::init()
 	if (!program00.init(PATH_SHADER_VERTEX_DEFAULT, PATH_SHADER_FRAG_DEFAULT))
 		error("program00 failed to init.");
 	worldRender.init();
-	init_fbo();
-	init_shader();
-	init_program(program_00, shader_vertex, shader_frag);
-
-	
+	if (!fbo_light.init()) error("fbo_light failed to init.");
+	//init_fbo();
+	//init_shader();
+	//init_program(program_00, shader_vertex, shader_frag);
 	//glDrawBuffer(GL_NONE);
 	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texture_depth, 0);
 	//glReadBuffer(GL_NONE);
@@ -158,43 +78,8 @@ void OpenGL_ProjectManager::hpr_basisc_glTexParameteri()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
-int OpenGL_ProjectManager::hpr_txt_to_char(char* buffer, int buffer_size, const char * path)
-{
-	int n = 0;
-	ifstream fin(path, ios::in);
-	while (!fin.eof() &&n < buffer_size && fin.good() ) {
-		//fin.get(data_gl[n++]);
-		fin.get(buffer[n++]);
-		//cout << data[n - 1];
-	}
-	//data[n] = NULL;
-	//cout << "[ENDL]"<<endl;
-	return n;
-	/*
-	std::string content((std::istreambuf_iterator<char>(fin)), std::istreambuf_iterator<char>());
-	string content2 = content;
-	//std::string content((std::istreambuf_iterator<char>(fin)), std::istreambuf_iterator<char>());
-	const char *c(content2.c_str());
-	
-	int n = strlen(c);
-	//char c_copy[n];
-	for (int i = 0; i < n; i++) {
-		cout << "[" << c[i] << "]";
-		//c_copy[i] = c[i];
-	}
-	cout << endl;
-	//fin.close();
-	//std::cout << "THUS " << c << endl;
-	*/
-}
-bool OpenGL_ProjectManager::hpr_is_shader_compiled(GLint shaderID)
-{
-	GLint isCompiled;
-	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &isCompiled);
-	if (!isCompiled)
-		return false;
-	return true;
-}
+
+
 void OpenGL_ProjectManager::error(const char * error_message)
 {
 	cout << "OpenGL_ProjectManager::error::" << error_message << endl;
@@ -210,7 +95,6 @@ void OpenGL_ProjectManager::glm_mat_array(float * arr, glm::mat4 * mat)
 	}
 }
 
-float movement = 0;
 void OpenGL_ProjectManager::renderRealTimeBegin()
 {
 	float arr_mat[16];
@@ -222,64 +106,23 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glm::mat4 mat_proj = glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
-	glm_mat_array(arr_mat, &mat_proj);
-	glUniformMatrix4fv(program00.id_mat_proj, 1, GL_FALSE, arr_mat);
-	glm::mat4 mat_view = glm::lookAt(glm::vec3(0, movement,  .6f), glm::vec3(0,0,0), glm::vec3(0, 1, 0));
-	glm_mat_array(arr_mat, &mat_view);
-	glUniformMatrix4fv(program00.id_mat_viewModel, 1, GL_FALSE, arr_mat);
+	glUniformMatrix4fv(program00.id_mat_proj, 1, GL_FALSE, (float*)glm::value_ptr(mat_proj));
+	glm::mat4 mat_view = glm::lookAt(glm::vec3(0, movement, .6f), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glUniformMatrix4fv(program00.id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat_view));
+	worldRender.draw(&mat_view, program00.id_mat_viewModel, program00.id_pos, -1);
+	
+	glUseProgram(0);
+	glfwSwapBuffers(this->easyGLFW.window);
+	//glm_mat_array(arr_mat, &mat_proj);
+	//glm_mat_array(arr_mat, &mat_view);
+	//cout << program00.id_mat_proj << " " << program00.id_mat_viewModel << endl;
 	//0, .4f, .7f + movement, 0, 0, 0, 0, 1, 0
-	worldRender.draw(&mat_view, program00.id_mat_viewModel, program00.id_pos, program00.id_pos_texture);
-	cout << program00.id_mat_proj << " " << program00.id_mat_viewModel << endl;
 	//set the projection matrix
 	//pass the projection matrix
 	//get the view matrix
 	//pass the view matrix
-
-	glUseProgram(0);
-	glfwSwapBuffers(this->easyGLFW.window);
 }
 
-void OpenGL_ProjectManager::renderRealTimeBegin_old()
-{
-	movement += .01f;
-	glClearColor(0.0f, 0.0f, .1f, 1.0f);
-	glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(60, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
-	//glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0f, 102.0);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(0,.4f, .7f + movement,	0,0,0,	0,1,0);
-	worldRender.draw_scene_bunnies();
-
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo_depth);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glViewport(0, 0,1024, 1024);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(60, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
-	//glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0f, 102.0);
-	//gluOrtho2D(0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT, 0);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(0, .4f, .7f + movement, 0, 0, 0, 0, 1, 0);
-	worldRender.draw_scene_bunnies();
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
-
-
-	render_texture(texture_color, 0);
-	render_texture(texture_depth, 1);
-	glUseProgram(program_00);
-	render_texture(texture_depth, 2);
-	glUseProgram(0);
-
-	glfwSwapBuffers(this->easyGLFW.window);
-
-}
 
 
 
@@ -302,3 +145,168 @@ void OpenGL_ProjectManager::end()
 		glfwDestroyWindow(easyGLFW.window);
 	}
 }
+/*
+bool OpenGL_ProjectManager::hpr_is_shader_compiled(GLint shaderID)
+{
+GLint isCompiled;
+glGetShaderiv(shaderID, GL_COMPILE_STATUS, &isCompiled);
+if (!isCompiled)
+return false;
+return true;
+}
+
+int OpenGL_ProjectManager::hpr_txt_to_char(char* buffer, int buffer_size, const char * path)
+{
+int n = 0;
+ifstream fin(path, ios::in);
+while (!fin.eof() &&n < buffer_size && fin.good() ) {
+//fin.get(data_gl[n++]);
+fin.get(buffer[n++]);
+//cout << data[n - 1];
+}
+//data[n] = NULL;
+//cout << "[ENDL]"<<endl;
+return n;
+/*
+std::string content((std::istreambuf_iterator<char>(fin)), std::istreambuf_iterator<char>());
+string content2 = content;
+//std::string content((std::istreambuf_iterator<char>(fin)), std::istreambuf_iterator<char>());
+const char *c(content2.c_str());
+
+int n = strlen(c);
+//char c_copy[n];
+for (int i = 0; i < n; i++) {
+cout << "[" << c[i] << "]";
+//c_copy[i] = c[i];
+}
+cout << endl;
+//fin.close();
+//std::cout << "THUS " << c << endl;
+
+}
+
+bool OpenGL_ProjectManager::init_shader(GLuint * shader_id, GLenum shaderType,  char * data, int data_size)
+{
+
+cout << "READING..." << endl;
+for (int i = 0; i < data_size; i++) {
+cout << data[i];
+}
+cout << endl;
+cout << "OpenGL_ProjectManager::init_shader::data_size" << data_size << endl;
+
+*shader_id = glCreateShader(shaderType);
+glShaderSource(*shader_id, 1, &data, &data_size);
+glCompileShader(*shader_id);
+GLint isCompiled;
+glGetShaderiv(*shader_id, GL_COMPILE_STATUS, &isCompiled);
+if (isCompiled) return true;
+return false;
+}
+
+void OpenGL_ProjectManager::init_fbo()
+{
+glGenTextures(1, &texture_depth);
+glBindTexture(GL_TEXTURE_2D, texture_depth);
+glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+hpr_basisc_glTexParameteri();
+glGenTextures(1, &texture_color);
+glBindTexture(GL_TEXTURE_2D, texture_color);
+glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1024, 1024, 0, GL_RGBA, GL_FLOAT, 0);
+hpr_basisc_glTexParameteri();
+
+glBindTexture(GL_TEXTURE_2D, 0);
+
+glGenFramebuffers(1, &fbo_depth);
+glBindFramebuffer(GL_FRAMEBUFFER, fbo_depth);
+glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture_depth, 0);
+glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture_color, 0);
+GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+if (status != GL_FRAMEBUFFER_COMPLETE)
+cout << "FBO NO OK!!" << endl << endl;
+else cout << "FBO IS OK!!" << endl;
+
+glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+void OpenGL_ProjectManager::init_shader()
+{
+cout << "OpenGL_ProjectManager::init_shader" << endl;
+char error[1000];
+//char * buffer = new char[1000];
+char buffer[1000];
+int errorSize, buffer_size;
+buffer_size = hpr_txt_to_char(buffer, 1000, SHADER::VERTEX_DEFAULT);
+if (init_shader(&shader_vertex, GL_VERTEX_SHADER,buffer,buffer_size))
+cout << "OpenGL_ProjectManager::init_shader::VERTEX_SHADER::YES" << endl;
+else {
+cout << "OpenGL_ProjectManager::init_shader::VERTEX_SHADER::NO" << endl;
+glGetShaderInfoLog(shader_vertex, 1000, &errorSize, error);
+cout << error<<endl;
+}
+buffer_size = hpr_txt_to_char(buffer, 1000, SHADER::FRAG_DEFAULT);
+if (init_shader(&shader_frag, GL_FRAGMENT_SHADER, buffer,buffer_size) )
+cout << "OpenGL_ProjectManager::init_shader::FRAG_SHADER::YES" << endl;
+else {
+cout << "OpenGL_ProjectManager::init_shader::FRAG_SHADER::NO" << endl;
+glGetShaderInfoLog(shader_frag, 1000, &errorSize, error);
+cout << error << endl;
+}
+
+
+
+}
+void OpenGL_ProjectManager::init_program(GLuint & program_id, GLuint shader_vertex, GLuint shader_frag)
+{
+program_id = glCreateProgram();
+glAttachShader(program_id, shader_vertex);
+glAttachShader(program_id, shader_frag);
+glLinkProgram(program_id);
+
+GLint linked;
+glGetProgramiv(program_id, GL_LINK_STATUS, &linked);
+cout << "OpenGL_ProjectManager::init_program::";
+if (linked) cout << "YES" << endl;
+else cout << "NO" << endl;
+}
+void OpenGL_ProjectManager::renderRealTimeBegin_old()
+{
+movement += .01f;
+glClearColor(0.0f, 0.0f, .1f, 1.0f);
+glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+glMatrixMode(GL_PROJECTION);
+glLoadIdentity();
+gluPerspective(60, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
+//glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0f, 102.0);
+glMatrixMode(GL_MODELVIEW);
+glLoadIdentity();
+gluLookAt(0,.4f, .7f + movement,	0,0,0,	0,1,0);
+worldRender.draw_scene_bunnies();
+
+glBindFramebuffer(GL_FRAMEBUFFER, fbo_depth);
+glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+glViewport(0, 0,1024, 1024);
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+glMatrixMode(GL_PROJECTION);
+glLoadIdentity();
+gluPerspective(60, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
+//glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0f, 102.0);
+//gluOrtho2D(0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT, 0);
+glMatrixMode(GL_MODELVIEW);
+glLoadIdentity();
+gluLookAt(0, .4f, .7f + movement, 0, 0, 0, 0, 1, 0);
+worldRender.draw_scene_bunnies();
+glBindFramebuffer(GL_FRAMEBUFFER, 0);
+glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
+
+
+render_texture(texture_color, 0);
+render_texture(texture_depth, 1);
+glUseProgram(program_00);
+render_texture(texture_depth, 2);
+glUseProgram(0);
+
+glfwSwapBuffers(this->easyGLFW.window);
+
+}
+*/
