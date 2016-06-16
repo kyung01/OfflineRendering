@@ -28,17 +28,25 @@ Program_Default::Program_Default()
 }
 bool Program_Default::init_shader(GLuint * shader_id, GLenum shaderType, char * data, int data_size)
 {
+	GLchar gl_arr[1000];
+	GLchar *pointer_gl_arr = gl_arr;
+	GLint gl_data_size = data_size;
+	for (int i = 0; i < data_size; i++) {
+		gl_arr[i] = data[i];
+	}
+	gl_arr[data_size-1] = '\0';
+
 	bool setting_prinnt_data = false;
 	if (setting_prinnt_data) {
 		std::cout << "____________________________________________________________init_Shader " << data_size << std::endl;
 		for (int i = 0; i < data_size; i++) {
-			std::cout << data[i];
+			std::cout << gl_arr[i];
 		}
 		std::cout << std::endl;
-	}
+	} 
 		
 	*shader_id = glCreateShader(shaderType);
-	glShaderSource(*shader_id, 1, &data, &data_size);
+	glShaderSource(*shader_id, 1, &pointer_gl_arr, &gl_data_size);
 	glCompileShader(*shader_id);
 	return Easy_OpenGL::check_shader_compilation(*shader_id);
 }

@@ -1,0 +1,7 @@
+#version 150
+uniform mat4 mat_proj , mat_viewModel;
+in vec4 pos;
+
+void main(){
+	gl_Position = mat_proj * mat_viewModel * pos;
+}

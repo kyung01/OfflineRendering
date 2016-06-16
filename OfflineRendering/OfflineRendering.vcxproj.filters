@@ -81,6 +81,9 @@
     <ClCompile Include="Program_Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Program_Shadow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -147,6 +150,9 @@
       <Filter>Header Files\Program</Filter>
     </ClInclude>
     <ClInclude Include="Program_Default.h">
+      <Filter>Header Files\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="Program_Shadow.h">
       <Filter>Header Files\Program</Filter>
     </ClInclude>
   </ItemGroup>

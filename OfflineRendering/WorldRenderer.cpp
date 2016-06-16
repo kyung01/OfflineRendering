@@ -101,14 +101,36 @@ void WorldRenderer::draw_scene_bunnies() {
 
 void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id_pos, GLuint id_pos_texture)
 {
+	float length = 1.5f;
 	glBegin(GL_TRIANGLES);
-	glVertexAttrib3f(id_pos, 0.5f, 0.0f, -0.5f);
-	glVertexAttrib3f(id_pos, -0.5f, 0.0f, -0.5f);
-	glVertexAttrib3f(id_pos, -.5f, 0.f, 0.5f);
+	glVertexAttrib3f(id_pos, length, 0.0f, -length);
+	glVertexAttrib3f(id_pos, -length, 0.0f, -length);
+	glVertexAttrib3f(id_pos, -length, 0.f, length);
 
-	glVertexAttrib3f(id_pos, -0.5f, 0.0f, 0.5f);
-	glVertexAttrib3f(id_pos, 0.5f, 0.0f, 0.5f);
-	glVertexAttrib3f(id_pos, 0.5f, 0.0f, -0.5f);
+	glVertexAttrib3f(id_pos, -length, 0.0f, length);
+	glVertexAttrib3f(id_pos, length, 0.0f, length);
+	glVertexAttrib3f(id_pos, length, 0.0f, -length);
+
+
+	glVertexAttrib3f(id_pos, -length, 0.0f, length);
+	glVertexAttrib3f(id_pos, -length, 0.0f, -length);
+	glVertexAttrib3f(id_pos, -length, length, -length);
+
+	//glVertexAttrib3f(id_pos, -length, length, -length);
+	//glVertexAttrib3f(id_pos, -length, length, length);
+	//glVertexAttrib3f(id_pos, -length, 0, length);
+
+	for (int i = 0; i < 2; i++) {
+		float y = i*.6f;
+		float height = .5f;
+		glVertexAttrib3f(id_pos, -0.5f, y+0.0f, 0.f);
+		glVertexAttrib3f(id_pos, 0.5f, y + 0.0f, 0.0f);
+		glVertexAttrib3f(id_pos, -0.5f, y + height, 0.0f);
+
+		glVertexAttrib3f(id_pos, 0.5f, y + 0.0f, 0.0f);
+		glVertexAttrib3f(id_pos, 0.5f, y + height, 0.0f);
+		glVertexAttrib3f(id_pos, -0.5f, y + height, 0.0f);
+	}
 	glEnd();
 }
 

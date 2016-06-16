@@ -34,8 +34,11 @@ bool KFrameBufferObject::init()
 	return returnValue;
 }
 
-void KFrameBufferObject::set_framebuffer(int width, int height)
+void KFrameBufferObject::set_colorbuffer(int width, int height)
 {
+	this->color_width = width;
+	this->color_height = height;
+
 	glGenTextures(1, &id_texture_color);
 	glBindTexture(GL_TEXTURE_2D, id_texture_color);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -54,6 +57,9 @@ void KFrameBufferObject::set_framebuffer(int width, int height)
 
 void KFrameBufferObject::set_depthbuffer(int width, int height)
 {
+	this->depth_width = width;
+	this->depth_height = height;
+
 	glGenTextures(1, &id_texture_depth);
 	glBindTexture(GL_TEXTURE_2D, id_texture_depth);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

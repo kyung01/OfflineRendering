@@ -15,10 +15,17 @@ void OpenGL_ProjectManager::init()
 	this->easyGLFW.createContext(GlobalVariables::CONTEXT_NAME, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
 	this->stateRender = RENDER_OFFLINE;// first we will initiate to render in real time
 
-	if (!program00.init(PATH_SHADER_VERTEX_DEFAULT, PATH_SHADER_FRAG_DEFAULT))
-		error("program00 failed to init.");
 	worldRender.init();
+	if (!program_default.init(PATH_SHADER_VERTEX_DEFAULT, PATH_SHADER_FRAG_DEFAULT))
+		error("program_default failed to init.");
+	if (!program_texture.init(PATH_SHADER_TEXTURE_VERT, PATH_SHADER_TEXTURE_FRAG))
+		error("Program_texture failed to init.");
+	if (!program_shadow.init(PATH_SHADER_SHADOW_VERT, PATH_SHADER_SHADOW_FRAG))
+		error("program_shadow failed to init.");
 	if (!fbo_light.init()) error("fbo_light failed to init.");
+	fbo_light.init();
+	fbo_light.set_colorbuffer(1024, 1024);
+	fbo_light.set_depthbuffer(1024, 1024);
 	//init_fbo();
 	//init_shader();
 	//init_program(program_00, shader_vertex, shader_frag);
@@ -27,13 +34,37 @@ void OpenGL_ProjectManager::init()
 	//glReadBuffer(GL_NONE);
 	// check FBO status
 }
-void OpenGL_ProjectManager::render_texture(GLuint texture, int index)
+void OpenGL_ProjectManager::render_texture(GLuint id_modelview, GLuint id_vert, GLuint id_vert_texture, GLuint id_texture_loc, GLuint id_texture, int index)
 {
-	int 
-		width = 100, height = 100, 
+	int
+		width = 150, height = 150,
 		x = width *index, y = 0;
+	glm::mat4 modelView;
+	glUniformMatrix4fv(id_modelview, 1, false, glm::value_ptr(modelView));
+	glActiveTexture(GL_TEXTURE0 ); // Texture unit 0
+	glBindTexture(GL_TEXTURE_2D, id_texture);
+	glUniform1i(id_texture_loc, 0);
+
+	glBegin(GL_QUADS);
+
+	glVertexAttrib2f(id_vert_texture, 0.0, 1.0);
+	glVertexAttrib3f(id_vert, x + 0.0, y + 0.0, 0);
+
+	glVertexAttrib2f(id_vert_texture, 1.0, 1.0);
+	glVertexAttrib3f(id_vert, x + width, y + 0.0f, 0);
+
+	glVertexAttrib2f(id_vert_texture, 1.0, 0.0);
+	glVertexAttrib3f(id_vert, x + width, y + height, 0);
+
+	glVertexAttrib2f(id_vert_texture, 0.0, 0.0);
+	glVertexAttrib3f(id_vert, x + 0.0, y + height, 0);
+
+	glEnd();
+	glBindTexture(GL_TEXTURE_2D, 0);
+	/*
 	bool is_enabled_texture = glIsEnabled(GL_TEXTURE_2D);
 	glEnable(GL_TEXTURE_2D);
+
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 	//glClearColor(0.0f, 1.0f, 0.0f, 1.0f); // Set background color to black and opaque
@@ -70,6 +101,7 @@ void OpenGL_ProjectManager::render_texture(GLuint texture, int index)
 
 	if (is_enabled_texture) glEnable(GL_TEXTURE_2D);
 	else glDisable(GL_TEXTURE_2D);
+	*/
 }
 void OpenGL_ProjectManager::hpr_basisc_glTexParameteri()
 {
@@ -94,25 +126,103 @@ void OpenGL_ProjectManager::glm_mat_array(float * arr, glm::mat4 * mat)
 		arr[i] = pSource[i];
 	}
 }
-
 void OpenGL_ProjectManager::renderRealTimeBegin()
 {
 	float arr_mat[16];
-	movement += .01f;
-	glUseProgram(program00.id_program);
-	
-	glClearColor(0.0f, .1f, .1f, 1.0f);
+	glm::mat4 mat_ortho = glm::ortho<float>(0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT, 0);
+	//glm::mat4 mat_ortho_light = glm::ortho<float>(0, 1024, 1024, 0);
+	glm::mat4 mat_me_proj			= glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
+	glm::mat4 mat_me_viewModel		= glm::lookAt(glm::vec3(0, 2, 1.5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
+	//glm::mat4 mat_light_ortho = glm::ortho<float>(-1, 1, -1, 1, -1,2);
+	//glm::mat4 mat_light_proj = glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);;
+//	glm::mat4 mat_light_proj = glm::ortho<float>(-1, 1, -1, 1, -1, 3);
+	glm::mat4 mat_light_proj = glm::ortho<float>(-3, 3, -3, 3, -1, 5);
+	glm::mat4 mat_light_modelView	= glm::lookAt(glm::vec3(sin(movement), 2-movement/20, cos(movement)), glm::vec3(0, .5f, 0), glm::vec3(0, 1, 0));
+	glm::mat4 mat_light = mat_light_proj * mat_light_modelView;
+	glm::mat4 biasMatrix(
+		0.5, 0.0, 0.0, 0.0,
+		0.0, 0.5, 0.0, 0.0,
+		0.0, 0.0, 0.5, 0.0,
+		0.5, 0.5, 0.5, 1.0
+		);
+	mat_light = biasMatrix * mat_light;
+	movement += .13f;
+
+
+
+	//mat_proj = glm::ortho<float>(0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT, 0);
+	//mat_proj = glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
+	//mat_proj = glm::ortho(0, 1,1, 0);
+	//mat_view = glm::lookAt(glm::vec3(0.f, 0.f, 1.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.0f, 1.0f, 0.0f));
+	/*
+
+	glUseProgram(program_default.id_program);
+	glClearColor(0.01f, .02f, .03f, 1.0f);
 	glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glUniformMatrix4fv(program_default.id_mat_proj, 1, GL_FALSE, (float*)glm::value_ptr(mat_proj));
+	glUniformMatrix4fv(program_default.id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat_view));
+	glBegin(GL_TRIANGLES);
 
-	glm::mat4 mat_proj = glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
-	glUniformMatrix4fv(program00.id_mat_proj, 1, GL_FALSE, (float*)glm::value_ptr(mat_proj));
-	glm::mat4 mat_view = glm::lookAt(glm::vec3(0, movement, .6f), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-	glUniformMatrix4fv(program00.id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat_view));
-	worldRender.draw(&mat_view, program00.id_mat_viewModel, program00.id_pos, -1);
-	
+	glVertexAttrib3f(program_default.id_pos, 0, 0, 0);
+	glVertexAttrib3f(program_default.id_pos, 100, 0, 0);
+	glVertexAttrib3f(program_default.id_pos, 100, 100, 0);
+
+	glEnd();
 	glUseProgram(0);
 	glfwSwapBuffers(this->easyGLFW.window);
+	return;
+	*/
+	/*
+	*/
+	glUseProgram(program_shadow.id_program);
+	glClearColor(0.01f, .01f, .01f, 1.0f);
+	glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glUniformMatrix4fv(program_shadow.id_mat_proj, 1, GL_FALSE, (float*)glm::value_ptr(mat_me_proj));
+	glUniformMatrix4fv(program_shadow.id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat_me_viewModel));
+	glUniformMatrix4fv(program_shadow.id_mat_light, 1, GL_FALSE, (float*)glm::value_ptr(mat_light));
+	glUniform1i(program_shadow.id_texture_depth, 0);
+	glActiveTexture(GL_TEXTURE0); // Texture unit 0
+	glBindTexture(GL_TEXTURE_2D, fbo_light.id_texture_depth);
+	worldRender.draw(&mat_me_viewModel, program_default.id_mat_viewModel, program_default.id_pos, -1	);
+	glUseProgram(0);
+	glBindTexture(GL_TEXTURE_2D, 0);	
+
+
+	//return statement to test out if I can draw 2d with this shader
+	//render light scene
+	glUseProgram(program_default.id_program);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo_light.id_fbo);
+	 
+	glClearColor(0.1f, .1f, 0.1f, 1.0f)	;
+	glViewport(0, 0, 1024,1024);
+	//glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glUniformMatrix4fv(program_default.id_mat_proj, 1, GL_FALSE, (float*)glm::value_ptr(mat_light_proj));
+	glUniformMatrix4fv(program_default.id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat_light_modelView));
+	worldRender.draw(&mat_light_modelView, program_default.id_mat_viewModel, program_default.id_pos, -1);
+	glUseProgram(0);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glUseProgram(this->program_texture.id_program);
+	glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
+	glUniformMatrix4fv(program_default.id_mat_proj, 1, GL_FALSE, (float*)glm::value_ptr(mat_ortho));
+	render_texture(program_texture.id_mat_viewModel, program_texture.id_pos, program_texture.id_pos_texture, program_texture.id_texture_00, fbo_light.id_texture_color, 0);
+	render_texture(program_texture.id_mat_viewModel, program_texture.id_pos, program_texture.id_pos_texture, program_texture.id_texture_00, fbo_light.id_texture_depth, 1);
+	glUseProgram(0);
+
+
+
+
+
+	glfwSwapBuffers(this->easyGLFW.window);
+
+
+
+
 	//glm_mat_array(arr_mat, &mat_proj);
 	//glm_mat_array(arr_mat, &mat_view);
 	//cout << program00.id_mat_proj << " " << program00.id_mat_viewModel << endl;

@@ -143,6 +143,7 @@
     <ClCompile Include="OpenGL_ProjectManager.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="Program_Default.cpp" />
+    <ClCompile Include="Program_Shadow.cpp" />
     <ClCompile Include="Program_Texture.cpp" />
     <ClCompile Include="Shader_Default.cpp" />
     <ClCompile Include="WorldRenderer.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="OpenGL_ProjectManager.h" />
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="Program_Default.h" />
+    <ClInclude Include="Program_Shadow.h" />
     <ClInclude Include="Program_Texture.h" />
     <ClInclude Include="ShaderPath.h" />
     <ClInclude Include="Shader_Default.h" />
