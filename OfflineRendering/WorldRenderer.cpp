@@ -5,6 +5,29 @@
 #include "glm\gtc\type_ptr.hpp"
 
 float tmp = 0;
+void WorldRenderer::init()
+{
+	const int size = 600000;
+	scene_bunny = std::make_shared<AssimpScene>(AssimpScene("Model/bunny.ply"));
+	scene_bunny.get()->init_glList();
+	std::shared_ptr<float> arr_vert(new float[size]);
+	std::shared_ptr<float> arr_normal(new float[size]);
+	std::shared_ptr<int> arr_indices(new int[size]);
+	int store_arr_vert_length, store_indices_length;
+	scene_bunny.get()->get_data(
+		arr_vert.get(), size, 
+		arr_normal.get(),size, 
+		arr_indices.get(),size, 
+		store_arr_vert_length, store_indices_length);
+
+	vao_bunny.init(arr_vert.get(), arr_normal.get(), store_arr_vert_length / 3, arr_indices.get(), store_indices_length / 3);
+
+
+	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_NORMALIZE);
+	//glEnable(GL_LIGHT0);    /* Uses default lighting parameters */
+	//glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+}
 void WorldRenderer::drwa_environment()
 {
 	tmp += 3.5f;
@@ -53,22 +76,6 @@ void WorldRenderer::drwa_environment()
 
 
 }
-void WorldRenderer::init()
-{
-	scene_bunny = std::make_shared<AssimpScene>(AssimpScene("Model/cube.ply"));
-	scene_bunny.get()->init_glList();
-
-	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_NORMALIZE);
-	//glEnable(GL_LIGHT0);    /* Uses default lighting parameters */
-	//glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-	const int size = 600000;
-	std::shared_ptr<float> arr_vert(new float[size]);
-	std::shared_ptr<float> arr_normal(new float[size]);
-	std::shared_ptr<int> arr_indices(new int[size]);
-	int store_num_00, store_num_01;
-	scene_bunny.get()->get_data(arr_vert.get(), size, arr_normal.get(),size, arr_indices.get(),size, store_num_00, store_num_01);
-}
 
 void WorldRenderer::draw()
 {
@@ -110,6 +117,7 @@ void WorldRenderer::draw_scene_bunnies() {
 void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id_pos, GLuint id_pos_texture)
 {
 	float length = 1.f;
+	
 	glBegin(GL_TRIANGLES);
 	glVertexAttrib3f(id_pos, length/2, 0.0f,  -length/2);
 	glVertexAttrib3f(id_pos, -length/2, 0.0f, -length/2);
@@ -134,16 +142,8 @@ void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id
 
 
 	glVertexAttrib3f(id_pos, length / 2, length, -length / 2);
-
 	glVertexAttrib3f(id_pos, -length / 2, length, -length / 2);
 	glVertexAttrib3f(id_pos, -length / 2, 0, -length / 2);
-
-
-
-	//glVertexAttrib3f(id_pos, -length, length, -length);
-	//glVertexAttrib3f(id_pos, -length, length, length);
-	//glVertexAttrib3f(id_pos, -length, 0, length);
-
 	for (int i = 0; i < 0; i++) {
 		float y = i*.15f;
 		float height = .1f;
@@ -155,22 +155,27 @@ void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id
 		glVertexAttrib3f(id_pos, 0.5f, y + height, 0.0f);
 		glVertexAttrib3f(id_pos, -0.5f, y + height, 0.0f);
 	}
+	glEnd();
 	
-	glEnd();
-	glBegin(GL_TRIANGLES);
-	scene_bunny->RenderCheap(id_pos);
-	glEnd();
+	//glBegin(GL_TRIANGLES);
+	//scene_bunny->RenderCheap(id_pos);
+	//glEnd();
 
 	glm::mat4 mat;
-	//mat = glm::translate((*matView), glm::vec3(scene_bunny->sceneCenter.x, -scene_bunny->sceneCenter.y , scene_bunny->sceneCenter.z));
+	mat =  glm::translate(*matView, glm::vec3(0,.25f,0) );
+	mat =  glm::scale(mat, glm::vec3(5, 5, 5));
+	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
+	//glm::mat4 mat_new = (*matView)*mat ;
 	//mat = glm::translate((*matView), glm::vec3(scene_bunny->sceneCenter.x, -scene_bunny->sceneCenter.y + .027f, scene_bunny->sceneCenter.z));
 	//mat = glm::translate((*matView), glm::vec3(.3, scene_bunny->sceneMin.y, 0));
-	mat =  glm::scale(mat, glm::vec3(.001, .001, .001));
-	//glm::mat4 mat_new = (*matView)*mat ;
-	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
-	glBegin(GL_TRIANGLES);
-	scene_bunny->RenderCheap(id_pos);
-	glEnd();
+	
+	glBindVertexArray(vao_bunny.id_vertex_array);
+	glDrawElements(GL_TRIANGLES, vao_bunny.indice_length*3, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+
+	//glBegin(GL_TRIANGLES);
+	//scene_bunny->RenderCheap(id_pos);
+	//glEnd();
 }
 
 /*

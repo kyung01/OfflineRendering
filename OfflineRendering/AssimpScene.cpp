@@ -357,12 +357,17 @@ void AssimpScene::get_data(
 		arr_vertex, arr_vertex_length, store_num_vertex,
 		arr_normal, arr_normal_length,
 		arr_indices, arr_indices_length, store_num_faces);
+	/*
 	{
-		for (int i = 0; i < store_num_vertex/3; i++) {
-			std::cout <<"POS : "<< arr_vertex[i * 3 + 0] << " " << arr_vertex[i * 3 + 1] << arr_vertex[i * 3 + 2] << std::endl;
-			std::cout << "NOR : "<< arr_normal[i * 3 + 0] << " " << arr_normal[i * 3 + 1] << arr_normal[i * 3 + 2] << std::endl;
+		for (int i = 0; i < store_num_vertex / 3; i++) {
+			std::cout << "POS : " << arr_vertex[i * 3 + 0] << " " << arr_vertex[i * 3 + 1] <<" " << arr_vertex[i * 3 + 2] << std::endl;
+			std::cout << "NOR : " << arr_normal[i * 3 + 0] << " " << arr_normal[i * 3 + 1] << " " <<arr_normal[i * 3 + 2] << std::endl;
+		}
+		for (int i = 0; i < store_num_faces/3; i++) {
+			std::cout << "indices : " << arr_indices[i * 3 + 0] << " " << arr_indices[i * 3 + 1] << " "<< arr_indices[i * 3 + 2] << std::endl;
 		}
 	}
+	*/
 }
 
 int AssimpScene::toArr(float * arr, int arr_size)

@@ -2,10 +2,12 @@
 #include <memory>
 #include "GLFW_GLEW.h"
 #include "AssimpScene.h"
+#include "KVertexArrayObject.h"
 #include "glm\glm.hpp"
 class WorldRenderer {
 	glm::mat4 mat_model;
 	std::shared_ptr<AssimpScene> scene_bunny;
+	KVertexArrayObject vao_bunny;
 	float scene_bunny_angle;
 	//render the world
 	void drwa_environment();
