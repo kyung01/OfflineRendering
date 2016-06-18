@@ -62,10 +62,9 @@ void WorldRenderer::init()
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHT0);    /* Uses default lighting parameters */
 	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-
-	const int size = 100000;
-	float arr[size];
-	scene_bunny.get()->toArr(arr, size);
+	const int size = 600000;
+	std::shared_ptr<float> arr(new float[size]);
+	scene_bunny.get()->toArr(arr.get(), size);
 }
 
 void WorldRenderer::draw()

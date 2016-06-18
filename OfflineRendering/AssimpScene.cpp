@@ -353,23 +353,27 @@ int AssimpScene::toArr(float * arr, int arr_size)
 	int arr_indices[ARR_TEMP_SIZE];
 	uncompress(
 		arr_vertex, ARR_TEMP_SIZE, index_vertex, 
-		arr_indices, ARR_TEMP_SIZE, index_indices);
+		arr_indices, ARR_TEMP_SIZE, index_indices);;
+	for (int i = 0; i< 1000000 ;i++) {
 
-	for (int i = 0; ;i++) {
-		if (6 + i * 6 < arr_size) {
-			std::cout << "Require size of " << index_vertex << " , " << index_indices << std::endl;
-			throw std::invalid_argument("Arr size was too small");
-		}
 		int index = i * 3;
-		arr[i + 0] =	arr_vertex[index + 0];
-		arr[i + 1] =	arr_vertex[index + 1];
-		arr[i + 2] =	arr_vertex[index + 2];
-
-		arr[i + 3] = arr_indices[index + 0];
-		arr[i + 4] = arr_indices[index + 1];
-		arr[i + 5] = arr_indices[index + 2];
+		if (6 + i * 6 >= arr_size) {
+			std::cout << "Require size of " << arr_size -(index_vertex + index_indices) << std::endl;
+			system("pause");
+			exit(0);
+		}
+		//arr[1] =1;
 		
-		if (index >= index_vertex || index >= index_indices) {
+		arr[i * 6 + 0] = arr_vertex[index + 0];
+		arr[i*6 + 1] =	arr_vertex[index + 1];
+		arr[i*6 + 2] =	arr_vertex[index + 2];
+
+		arr[i*6 + 3] = arr_indices[index + 0];
+		arr[i*6 + 4] = arr_indices[index + 1];
+		arr[i*6 + 5] = arr_indices[index + 2];
+		
+		if (i * 3 + 3 >= index_vertex || i * 3 + 3 >= index_indices) {
+			std::cout << "done" << std::endl;
 			return i; // this is how many vertices I have saved 
 		}
 	}

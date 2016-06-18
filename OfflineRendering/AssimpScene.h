@@ -42,6 +42,7 @@ public:
 		float* arr_vertex,	int arr_vertex_size,	int& arr_vertex_size_used,
 		int* arr_index,	int arr_index_size,		int& arr_index_size_used);
 	int uncompress_vertex(aiMesh* mesh, float* arr, int arr_size, int arr_index);
+	int uncompress_normal(aiMesh* mesh, float* arr, int arr_size, int arr_index);
 	int uncompress_indices(aiMesh* mesh, int* arr, int arr_size, int arr_index);
 	
 	/*
