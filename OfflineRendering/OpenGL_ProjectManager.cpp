@@ -132,13 +132,13 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 	glm::mat4 mat_ortho = glm::ortho<float>(0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT, 0);
 	//glm::mat4 mat_ortho_light = glm::ortho<float>(0, 1024, 1024, 0);
 	glm::mat4 mat_me_proj			= glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
-	glm::mat4 mat_me_viewModel		= glm::lookAt(glm::vec3(0, 2, 1.5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glm::mat4 mat_me_viewModel		= glm::lookAt(glm::vec3(.8f, .5f, .8f), glm::vec3(0,0, 0), glm::vec3(0, 1, 0));
 
 	//glm::mat4 mat_light_ortho = glm::ortho<float>(-1, 1, -1, 1, -1,2);
 	//glm::mat4 mat_light_proj = glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);;
 //	glm::mat4 mat_light_proj = glm::ortho<float>(-1, 1, -1, 1, -1, 3);
 	glm::mat4 mat_light_proj = glm::ortho<float>(-3, 3, -3, 3, -1, 5);
-	glm::mat4 mat_light_modelView	= glm::lookAt(glm::vec3(sin(movement), 2-movement/20, cos(movement)), glm::vec3(0, .5f, 0), glm::vec3(0, 1, 0));
+	glm::mat4 mat_light_modelView	= glm::lookAt ( glm::vec3(sin(movement), .5f + sin(movement*10)*.4f, cos(movement)), glm::vec3(0,0,0), glm::vec3(0, 1, 0));
 	glm::mat4 mat_light = mat_light_proj * mat_light_modelView;
 	glm::mat4 biasMatrix(
 		0.5, 0.0, 0.0, 0.0,
@@ -147,7 +147,7 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 		0.5, 0.5, 0.5, 1.0
 		);
 	mat_light = biasMatrix * mat_light;
-	movement += .13f;
+	movement += .015f;
 
 
 
@@ -186,7 +186,7 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 	glUniform1i(program_shadow.id_texture_depth, 0);
 	glActiveTexture(GL_TEXTURE0); // Texture unit 0
 	glBindTexture(GL_TEXTURE_2D, fbo_light.id_texture_depth);
-	worldRender.draw(&mat_me_viewModel, program_default.id_mat_viewModel, program_default.id_pos, -1	);
+	worldRender.draw(&mat_me_viewModel, program_shadow.id_mat_viewModel, program_shadow.id_pos, -1	);
 	glUseProgram(0);
 	glBindTexture(GL_TEXTURE_2D, 0);	
 

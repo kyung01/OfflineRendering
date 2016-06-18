@@ -1,9 +1,11 @@
 #include "AssimpScene.h"
-#include "GL\glew.h"
-#include "GLFW\glfw3.h"
 #include <iostream>
 #include <map>
 #include <iostream>
+
+void AssimpScene::adjust_scene_roperty(float x, float y, float z)
+{
+}
 
 void AssimpScene::recursive_getBoundingBox(
 	const aiScene *scene, const aiNode* nd,
@@ -34,7 +36,60 @@ void AssimpScene::recursive_getBoundingBox(
 	*sceneMatrix = sceneMatrixOriginal;
 }
 
-void AssimpScene::recursive_render(const aiScene * sc, const aiNode * nd)
+void AssimpScene::recursive_render(const aiScene * sc, const aiNode * nd, aiMatrix4x4 *matrix_before)
+{
+	aiMatrix4x4 m = (*matrix_before) * nd->mTransformation;
+	//aiTransposeMatrix4(&m);
+	//glMultMatrixf((float*)&m);
+	//std::cout <<"mNumMeshes " << nd->mNumMeshes <<std::endl;
+	for (int n = 0; n < nd->mNumMeshes; ++n) {
+		const aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
+		for (int t = 0; t < mesh->mNumFaces; ++t) {
+			const struct aiFace* face = &mesh->mFaces[t];
+			for (int i = 0; i < face->mNumIndices; i++) {
+				int index = face->mIndices[i];
+				aiVector3D vert, normal;
+				vert = m*mesh->mVertices[index];
+				if (mesh->mColors[0] != NULL);// glColor4fv((GLfloat*)&mesh->mColors[0][index]);
+				if (mesh->mNormals != NULL) normal = mesh->mNormals[index];
+
+			}
+		}
+
+	}
+
+	for (int n = 0; n < nd->mNumChildren; ++n) {
+		recursive_render(sc, nd->mChildren[n], &m);
+	}
+}
+void AssimpScene::recursive_render_cheap(GLuint id_vertex, const aiScene * sc, const aiNode * nd, aiMatrix4x4 *matrix_before)
+{
+	aiMatrix4x4 m = (*matrix_before) * nd->mTransformation;
+	//aiTransposeMatrix4(&m);
+	//glMultMatrixf((float*)&m);
+	//std::cout <<"mNumMeshes " << nd->mNumMeshes <<std::endl;
+	for (int n = 0; n < nd->mNumMeshes; ++n) {
+		const aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
+		for (int t = 0; t < mesh->mNumFaces; ++t) {
+			const struct aiFace* face = &mesh->mFaces[t];
+			for (int i = 0; i < face->mNumIndices; i++) {
+				int index = face->mIndices[i];
+				aiVector3D vert, normal;
+				vert = m*mesh->mVertices[index];
+				glVertexAttrib3f(id_vertex, vert.x, vert.y, vert.z);
+				if (mesh->mColors[0] != NULL);// glColor4fv((GLfloat*)&mesh->mColors[0][index]);
+				if (mesh->mNormals != NULL) normal = mesh->mNormals[index];
+
+			}
+		}
+
+	}
+
+	for (int n = 0; n < nd->mNumChildren; ++n) {
+		recursive_render(sc, nd->mChildren[n], &m);
+	}
+}
+void AssimpScene::recursive_render_old(const aiScene * sc, const aiNode * nd)
 {
 	aiMatrix4x4 m = nd->mTransformation;
 	aiTransposeMatrix4(&m);
@@ -88,7 +143,8 @@ void AssimpScene::recursive_render(const aiScene * sc, const aiNode * nd)
 	}
 
 	for (int n = 0; n < nd->mNumChildren; ++n) {
-		recursive_render(sc, nd->mChildren[n]);
+		aiMatrix4x4 m;
+		recursive_render(sc, nd->mChildren[n],&m );
 	}
 	glPopMatrix();
 }
@@ -207,6 +263,43 @@ void AssimpScene::hpr_color4_to_float4(aiColor4D * color4, float * float4)
 	float4[3] = color4->a;
 }
 
+int AssimpScene::uncompress_recursive(float * arr, float arr_size, float vertex_size, int arr_index_start, const aiScene * sc, const aiNode * nd, aiMatrix4x4 * matrix_before)
+{
+	aiMatrix4x4 m = (*matrix_before) * nd->mTransformation;
+	int arr_index = arr_index_start;
+	int count_vertex = 0; //combined sum is returned at the end
+
+	for (int n = 0; n < nd->mNumMeshes; ++n) {
+		const aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
+		for (int t = 0; t < mesh->mNumFaces; ++t) {
+			const struct aiFace* face = &mesh->mFaces[t];
+			bool isNormal = mesh->mNormals != NULL;
+
+			for (int i = 0; i < face->mNumIndices; i++) {
+				count_vertex++;
+				int index = face->mIndices[i];
+				aiVector3D 
+					vert(m*mesh->mVertices[index]),
+					normal((isNormal)? aiVector3D (mesh->mNormals[index]): aiVector3D());
+				adjust_scene_roperty(vert.x, vert.y, vert.z);
+				arr[arr_index]		= vert.x;
+				arr[arr_index + 1]	= vert.y;
+				arr[arr_index + 2]	= vert.z;
+				arr[arr_index + 3]	= normal.x;
+				arr[arr_index + 4]	= normal.y;
+				arr[arr_index + 5]	= normal.z;
+				arr_index			+= vertex_size;
+			}
+		}
+
+	}
+
+	for (int n = 0; n < nd->mNumChildren; ++n) {
+		count_vertex += uncompress_recursive(arr, arr_size, vertex_size, arr_index, sc, nd, &m);
+	}
+	return count_vertex;
+}
+
 std::pair<char*, int*> AssimpScene::hpr_to_pair_char_arr_int(char * c, int a, int b)
 {
 	int arr[] = { a,b };
@@ -238,9 +331,107 @@ int AssimpScene::init_glList()
 void AssimpScene::Render()
 {
 	bool is_lighting = glIsEnabled(GL_LIGHTING);
-	recursive_render(this->scene, this->scene->mRootNode);
-	if(is_lighting)
+	aiMatrix4x4 m;
+	recursive_render(this->scene, this->scene->mRootNode, &m);
+	if (is_lighting)
 		glEnable(GL_LIGHTING);
 	else
 		glDisable(GL_LIGHTING);
 }
+void AssimpScene::RenderCheap(GLuint id)
+{
+	aiMatrix4x4 m;
+	recursive_render_cheap(id, this->scene, this->scene->mRootNode, &m);
+	
+}
+
+int AssimpScene::toArr(float * arr, int arr_size)
+{
+	const int ARR_TEMP_SIZE = 3*40000;
+	int index_vertex=0, index_indices=0;
+	float arr_vertex[ARR_TEMP_SIZE];
+	int arr_indices[ARR_TEMP_SIZE];
+	uncompress(
+		arr_vertex, ARR_TEMP_SIZE, index_vertex, 
+		arr_indices, ARR_TEMP_SIZE, index_indices);
+
+	for (int i = 0; ;i++) {
+		if (6 + i * 6 < arr_size) {
+			std::cout << "Require size of " << index_vertex << " , " << index_indices << std::endl;
+			throw std::invalid_argument("Arr size was too small");
+		}
+		int index = i * 3;
+		arr[i + 0] =	arr_vertex[index + 0];
+		arr[i + 1] =	arr_vertex[index + 1];
+		arr[i + 2] =	arr_vertex[index + 2];
+
+		arr[i + 3] = arr_indices[index + 0];
+		arr[i + 4] = arr_indices[index + 1];
+		arr[i + 5] = arr_indices[index + 2];
+		
+		if (index >= index_vertex || index >= index_indices) {
+			return i; // this is how many vertices I have saved 
+		}
+	}
+	return 0;
+}
+
+void AssimpScene::uncompress(
+	float * arr_vertex, int arr_vertex_size, int & arr_vertex_size_used, 
+	int * arr_indices, int arr_indices_size, int & arr_indices_size_used)
+{
+	uncompress_recursive(scene->mRootNode,
+		arr_vertex, arr_vertex_size, arr_vertex_size_used,
+		arr_indices, arr_indices_size, arr_indices_size_used);
+}
+void AssimpScene::uncompress_recursive(
+	aiNode* nd, 
+	float * arr_vertex, int arr_vertex_size, int & arr_vertex_index,
+	int * arr_indeces, int arr_indeces_size, int & arr_indices_index)
+{
+	//aiScene* scene;
+	for (int i = 0; i < scene->mNumMeshes; i++) {
+		aiMesh *mesh = scene->mMeshes[i];
+		arr_vertex_index = uncompress_vertex(mesh, arr_vertex, arr_vertex_size, arr_vertex_index);
+		arr_indices_index = uncompress_indices(mesh, arr_indeces, arr_indeces_size, arr_indices_index);
+	}
+	
+	for (int n = 0; n < nd->mNumChildren; ++n) {
+		uncompress_recursive(nd->mChildren[n],
+			arr_vertex, arr_vertex_size, arr_vertex_index,
+			arr_indeces, arr_indeces_size, arr_indices_index);
+	}
+}
+int AssimpScene::uncompress_vertex(aiMesh *mesh, float* arr, int arr_size, int arr_index) {
+	for (int i = 0; i < mesh->mNumVertices; i++) {
+		aiVector3D vert = mesh->mVertices[i];
+		//std::cout << "ARR SIZE " << arr_size << " , " << "I USED " << arr_index+3 << std::endl;
+		if (arr_index + 3 > arr_size) {
+			std::cout << mesh->mNumVertices << " ARR SIZE " << arr_size << " , " << "I USED " << arr_index + 3 << std::endl;
+			throw std::invalid_argument("AssimpScene::uncompress_vertex:: array size too small");
+		}
+		arr[arr_index] = vert.x;
+		arr[arr_index + 1] = vert.y;
+		arr[arr_index + 2] = vert.z;
+		arr_index += 3;
+	}
+	return arr_index;
+}
+int AssimpScene::uncompress_indices(aiMesh *mesh, int* arr, int arr_size, int arr_index) {
+	for (int i = 0; i < mesh->mNumFaces && arr_index < arr_size; i++) {
+		aiFace face = mesh->mFaces[i];
+		for (int j = 0; j < face.mNumIndices; j++) {
+			arr[arr_index++] = face.mIndices[j];
+		}
+	}
+	return arr_index;
+}
+
+
+/*
+int AssimpScene::uncompress(float * arr, float arr_size, float vertex_size)
+{
+	aiMatrix4x4 mat;
+	return uncompress_recursive(arr, arr_size, vertex_size, 0,this->scene, this->scene->mRootNode, &mat);
+}
+*/
