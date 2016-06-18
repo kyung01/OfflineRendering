@@ -8,7 +8,13 @@
 #include "GLFW_GLEW.h"
 class AssimpScene {
 	const aiScene *scene;
+	void update_min_max(aiVector3D &min, aiVector3D &max, aiVector3D vert_new);
+	void update_center(
+		float * vert, int length, 
+		aiVector3D &min, aiVector3D &max, aiVector3D &center);
+	void rescale_verts(float* vert, int length);
 
+	//delete
 	void adjust_scene_roperty(float x, float y, float z);
 	void recursive_getBoundingBox(
 		const aiScene *scene, const aiNode* nd,
@@ -26,19 +32,12 @@ public:
 	int gl_scene_id;
 	aiVector3D sceneMin, sceneMax, sceneCenter;
 	AssimpScene(const char* path);
-	int init_glList();
-	
-	void Render();
-	void RenderCheap(GLuint id_vertex);
-	//void uncompress(aiVector3D* arr_vec3, int arr_vec3_size, float * arr, int arr_size, int arr_index);
-	/*
-	*/
+
 	void get_data(
 		float *arr_vertex,int arr_vertex_length,
 		float* arr_normal,int arr_normal_length, 
 		int * arr_indices,int arr_indices_length, int& store_num_vertex, int &store_num_faces);
 
-	int toArr(float *arr, int arr_size);
 	void uncompress(
 		float* arr_vertex, int arr_vertex_size, int& arr_vertex_size_used,
 		int* arr_indices, int arr_indices_size, int& arr_indices_size_used);
@@ -50,6 +49,13 @@ public:
 	int uncompress_vertex(aiMesh* mesh, float* arr, int arr_size, int arr_index);
 	int uncompress_normal(aiMesh* mesh, float* arr, int arr_size, int arr_index);
 	int uncompress_indices(aiMesh* mesh, int* arr, int arr_size, int arr_index);
+
+
+	//delete all
+	int toArr(float *arr, int arr_size);
+	int init_glList();
+	void Render();
+	void RenderCheap(GLuint id_vertex);
 	
 	/*
 	*/

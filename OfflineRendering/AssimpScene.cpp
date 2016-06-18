@@ -3,6 +3,59 @@
 #include <map>
 #include <iostream>
 
+void AssimpScene::update_min_max(aiVector3D &min, aiVector3D &max, aiVector3D vert)
+{
+	sceneMin.x = std::min(sceneMin.x, vert.x);
+	sceneMin.y = std::min(sceneMin.y, vert.y);
+	sceneMin.z = std::min(sceneMin.z, vert.z);
+
+	sceneMax.x = std::max(sceneMax.x, vert.x);
+	sceneMax.y = std::max(sceneMax.y, vert.y);
+	sceneMax.z = std::max(sceneMax.z, vert.z);
+
+	
+}
+
+void AssimpScene::update_center(float * vert, int length, aiVector3D & min, aiVector3D & max, aiVector3D & center)
+{
+	center.x = (sceneMax.x + sceneMin.x)/2.f;
+	center.y = (sceneMax.y + sceneMin.y)/2.f;
+	center.z = (sceneMax.z + sceneMin.z)/2.f;
+	min = min - center;
+	max = max - center;
+	for (int i = 0; i < length; i += 3) {
+		vert[i + 0] -= sceneCenter.x;
+		vert[i + 1] -= sceneCenter.y;
+		vert[i + 2] -= sceneCenter.z;
+	}
+	sceneCenter = aiVector3D();
+}
+
+void AssimpScene::rescale_verts(float * vert, int length)
+{
+	float x = .5f / ( 0.00001 + std::max(std::abs(sceneMin.x), std::abs(sceneMax.x)));
+	float y = .5f / ( 0.00001 + std::max(std::abs(sceneMin.y), std::abs(sceneMax.y)));
+	float z = .5f / ( 0.00001 + std::max(std::abs(sceneMin.z), std::abs(sceneMax.z)));
+	std::cout << "X Y Z" << x << "," << y << "," << z << std::endl;
+
+	float scale = std::min( std::min(x, y), z);
+	sceneMin *= scale;
+	sceneMax *= scale;
+	
+
+	for (int i = 0; i < length; i++) {
+		vert[i] *= scale;
+	}
+	return;
+	float yMin = 100;
+	for (int i = 0; i < length; i += 3) {
+		yMin = std::min(vert[i + 1], yMin);
+	}
+	for (int i = 0; i < length; i += 3) {
+		vert[i + 1] -= yMin;
+	}
+}
+
 void AssimpScene::adjust_scene_roperty(float x, float y, float z)
 {
 }
@@ -349,14 +402,18 @@ void AssimpScene::get_data(
 	float * arr_vertex, int arr_vertex_length, 
 	float * arr_normal, int arr_normal_length, 
 	int * arr_indices, int arr_indices_length, 
-	int & store_num_vertex, int & store_num_faces)
+	int & store_num_arr, int & store_num_arr_indices)
 {
-	store_num_vertex = 0;
-	store_num_faces = 0;
+	store_num_arr = 0;
+	store_num_arr_indices = 0;
 	uncompress_recursive(this->scene->mRootNode,
-		arr_vertex, arr_vertex_length, store_num_vertex,
+		arr_vertex, arr_vertex_length, store_num_arr,
 		arr_normal, arr_normal_length,
-		arr_indices, arr_indices_length, store_num_faces);
+		arr_indices, arr_indices_length, store_num_arr_indices);
+	update_center(arr_vertex, store_num_arr, sceneMin, sceneMax,sceneCenter);
+	rescale_verts(arr_vertex, store_num_arr);
+
+
 	/*
 	{
 		for (int i = 0; i < store_num_vertex / 3; i++) {
@@ -444,6 +501,7 @@ int AssimpScene::uncompress_vertex(aiMesh *mesh, float* arr, int arr_size, int a
 			std::cout << mesh->mNumVertices << " ARR SIZE " << arr_size << " , " << "I USED " << arr_index + 3 << std::endl;
 			throw std::invalid_argument("AssimpScene::uncompress_vertex:: array size too small");
 		}
+		update_min_max(sceneMin, sceneMax, vert);
 		arr[arr_index] = vert.x;
 		arr[arr_index + 1] = vert.y;
 		arr[arr_index + 2] = vert.z;

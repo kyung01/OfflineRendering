@@ -26,6 +26,7 @@ void OpenGL_ProjectManager::init()
 	fbo_light.init();
 	fbo_light.set_colorbuffer(1024, 1024);
 	fbo_light.set_depthbuffer(1024, 1024);
+	glEnable(GL_DEPTH_TEST);
 	//init_fbo();
 	//init_shader();
 	//init_program(program_00, shader_vertex, shader_frag);
@@ -128,17 +129,22 @@ void OpenGL_ProjectManager::glm_mat_array(float * arr, glm::mat4 * mat)
 }
 void OpenGL_ProjectManager::renderRealTimeBegin()
 {
+	movement += .02f;
 	float arr_mat[16];
 	glm::mat4 mat_ortho = glm::ortho<float>(0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT, 0);
 	//glm::mat4 mat_ortho_light = glm::ortho<float>(0, 1024, 1024, 0);
 	glm::mat4 mat_me_proj			= glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
-	glm::mat4 mat_me_viewModel		= glm::lookAt(glm::vec3(.8f, .5f, .8f), glm::vec3(0,0, 0), glm::vec3(0, 1, 0));
+	glm::mat4 mat_me_viewModel		= glm::lookAt(glm::vec3(2.f, 1.8f, 2.f), glm::vec3(1.5f,.5f, 0), glm::vec3(0, 1, 0));
+	glm::mat4 mat_me_view_inversed = glm::inverse(mat_me_viewModel);
+	glm::vec3	
+		lightPos = glm::vec3(1.5f , .5f, 1.5),
+		lightCenter = glm::vec3(lightPos.x, 0,0) + glm::vec3(cos(movement), 0, 0)* 1.25f;
 
-	//glm::mat4 mat_light_ortho = glm::ortho<float>(-1, 1, -1, 1, -1,2);
-	//glm::mat4 mat_light_proj = glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);;
-//	glm::mat4 mat_light_proj = glm::ortho<float>(-1, 1, -1, 1, -1, 3);
-	glm::mat4 mat_light_proj = glm::ortho<float>(-3, 3, -3, 3, -1, 5);
-	glm::mat4 mat_light_modelView	= glm::lookAt ( glm::vec3(sin(movement), .5f + sin(movement*10)*.4f, cos(movement)), glm::vec3(0,0,0), glm::vec3(0, 1, 0));
+	glm::mat4 mat_light_proj = glm::ortho<float>(-3, 3, -3, 3, -3, 5);
+	glm::mat4 mat_light_modelView	= glm::lookAt (
+		lightPos,
+		lightCenter,
+		glm::vec3(0, 1, 0));
 	glm::mat4 mat_light = mat_light_proj * mat_light_modelView;
 	glm::mat4 biasMatrix(
 		0.5, 0.0, 0.0, 0.0,
@@ -146,8 +152,7 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 		0.0, 0.0, 0.5, 0.0,
 		0.5, 0.5, 0.5, 1.0
 		);
-	mat_light = biasMatrix * mat_light;
-	movement += .015f;
+	mat_light = biasMatrix * mat_light_proj * mat_light_modelView;
 
 
 
@@ -182,6 +187,7 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUniformMatrix4fv(program_shadow.id_mat_proj, 1, GL_FALSE, (float*)glm::value_ptr(mat_me_proj));
 	glUniformMatrix4fv(program_shadow.id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat_me_viewModel));
+	glUniformMatrix4fv(program_shadow.id_mat_view_inversed, 1, GL_FALSE, (float*)glm::value_ptr(mat_me_view_inversed));
 	glUniformMatrix4fv(program_shadow.id_mat_light, 1, GL_FALSE, (float*)glm::value_ptr(mat_light));
 	glUniform1i(program_shadow.id_texture_depth, 0);
 	glActiveTexture(GL_TEXTURE0); // Texture unit 0

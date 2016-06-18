@@ -2,8 +2,9 @@
 
 void KVertexArrayObject::init(
 	float * vert, float * normal, int num_vertex,
-	int* indices, int num_faces)
+	int* indices, int num_faces, glm::vec3 boundingBox)
 {
+	this->boundingBox = boundingBox;
 	this->indice_length = num_faces;
 	GLuint
 		loc_vertex_position = 0,
