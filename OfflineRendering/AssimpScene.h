@@ -20,7 +20,7 @@ class AssimpScene {
 	int ai_get_mat_color(const aiMaterial* mat, const char* key, int type, int index, float *color);
 	void hpr_set_float4(float *f, float a, float b, float c, float d);
 	void hpr_color4_to_float4(aiColor4D *color4, float *float4);
-	int uncompress_recursive(float* arr, float arr_size, float vertex_size, int arr_index_start, const aiScene *sc, const aiNode* nd, aiMatrix4x4 *matrix_before);
+	int uncompress_recursive_old(float* arr, float arr_size, float vertex_size, int arr_index_start, const aiScene *sc, const aiNode* nd, aiMatrix4x4 *matrix_before);
 	std::pair<char*, int*> hpr_to_pair_char_arr_int(char * c, int a, int b);
 public:
 	int gl_scene_id;
@@ -33,14 +33,20 @@ public:
 	//void uncompress(aiVector3D* arr_vec3, int arr_vec3_size, float * arr, int arr_size, int arr_index);
 	/*
 	*/
+	void get_data(
+		float *arr_vertex,int arr_vertex_length,
+		float* arr_normal,int arr_normal_length, 
+		int * arr_indices,int arr_indices_length, int& store_num_vertex, int &store_num_faces);
+
 	int toArr(float *arr, int arr_size);
 	void uncompress(
 		float* arr_vertex, int arr_vertex_size, int& arr_vertex_size_used,
 		int* arr_indices, int arr_indices_size, int& arr_indices_size_used);
 	void uncompress_recursive(
 		aiNode* nd,
-		float* arr_vertex,	int arr_vertex_size,	int& arr_vertex_size_used,
-		int* arr_index,	int arr_index_size,		int& arr_index_size_used);
+		float * arr_vertex, int arr_vertex_length, int & arr_vertex_index,
+		float * arr_normal, int arr_normal_length,
+		int * arr_indeces, int arr_indeces_size, int & arr_indices_index);
 	int uncompress_vertex(aiMesh* mesh, float* arr, int arr_size, int arr_index);
 	int uncompress_normal(aiMesh* mesh, float* arr, int arr_size, int arr_index);
 	int uncompress_indices(aiMesh* mesh, int* arr, int arr_size, int arr_index);

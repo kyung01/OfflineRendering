@@ -55,16 +55,19 @@ void WorldRenderer::drwa_environment()
 }
 void WorldRenderer::init()
 {
-	scene_bunny = std::make_shared<AssimpScene>(AssimpScene("Model/bunny.ply"));
+	scene_bunny = std::make_shared<AssimpScene>(AssimpScene("Model/cube.ply"));
 	scene_bunny.get()->init_glList();
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_NORMALIZE);
-	glEnable(GL_LIGHT0);    /* Uses default lighting parameters */
-	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+	//glEnable(GL_NORMALIZE);
+	//glEnable(GL_LIGHT0);    /* Uses default lighting parameters */
+	//glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 	const int size = 600000;
-	std::shared_ptr<float> arr(new float[size]);
-	scene_bunny.get()->toArr(arr.get(), size);
+	std::shared_ptr<float> arr_vert(new float[size]);
+	std::shared_ptr<float> arr_normal(new float[size]);
+	std::shared_ptr<int> arr_indices(new int[size]);
+	int store_num_00, store_num_01;
+	scene_bunny.get()->get_data(arr_vert.get(), size, arr_normal.get(),size, arr_indices.get(),size, store_num_00, store_num_01);
 }
 
 void WorldRenderer::draw()
@@ -159,10 +162,10 @@ void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id
 	glEnd();
 
 	glm::mat4 mat;
-	mat = glm::translate((*matView), glm::vec3(scene_bunny->sceneCenter.x, -scene_bunny->sceneCenter.y , scene_bunny->sceneCenter.z));
+	//mat = glm::translate((*matView), glm::vec3(scene_bunny->sceneCenter.x, -scene_bunny->sceneCenter.y , scene_bunny->sceneCenter.z));
 	//mat = glm::translate((*matView), glm::vec3(scene_bunny->sceneCenter.x, -scene_bunny->sceneCenter.y + .027f, scene_bunny->sceneCenter.z));
 	//mat = glm::translate((*matView), glm::vec3(.3, scene_bunny->sceneMin.y, 0));
-	mat =  glm::scale(mat, glm::vec3(4, 4, 4));
+	mat =  glm::scale(mat, glm::vec3(.001, .001, .001));
 	//glm::mat4 mat_new = (*matView)*mat ;
 	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
 	glBegin(GL_TRIANGLES);

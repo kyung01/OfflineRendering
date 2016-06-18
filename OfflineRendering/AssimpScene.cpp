@@ -263,7 +263,7 @@ void AssimpScene::hpr_color4_to_float4(aiColor4D * color4, float * float4)
 	float4[3] = color4->a;
 }
 
-int AssimpScene::uncompress_recursive(float * arr, float arr_size, float vertex_size, int arr_index_start, const aiScene * sc, const aiNode * nd, aiMatrix4x4 * matrix_before)
+int AssimpScene::uncompress_recursive_old(float * arr, float arr_size, float vertex_size, int arr_index_start, const aiScene * sc, const aiNode * nd, aiMatrix4x4 * matrix_before)
 {
 	aiMatrix4x4 m = (*matrix_before) * nd->mTransformation;
 	int arr_index = arr_index_start;
@@ -295,7 +295,7 @@ int AssimpScene::uncompress_recursive(float * arr, float arr_size, float vertex_
 	}
 
 	for (int n = 0; n < nd->mNumChildren; ++n) {
-		count_vertex += uncompress_recursive(arr, arr_size, vertex_size, arr_index, sc, nd, &m);
+		count_vertex += uncompress_recursive_old(arr, arr_size, vertex_size, arr_index, sc, nd, &m);
 	}
 	return count_vertex;
 }
@@ -345,6 +345,26 @@ void AssimpScene::RenderCheap(GLuint id)
 	
 }
 
+void AssimpScene::get_data(
+	float * arr_vertex, int arr_vertex_length, 
+	float * arr_normal, int arr_normal_length, 
+	int * arr_indices, int arr_indices_length, 
+	int & store_num_vertex, int & store_num_faces)
+{
+	store_num_vertex = 0;
+	store_num_faces = 0;
+	uncompress_recursive(this->scene->mRootNode,
+		arr_vertex, arr_vertex_length, store_num_vertex,
+		arr_normal, arr_normal_length,
+		arr_indices, arr_indices_length, store_num_faces);
+	{
+		for (int i = 0; i < store_num_vertex/3; i++) {
+			std::cout <<"POS : "<< arr_vertex[i * 3 + 0] << " " << arr_vertex[i * 3 + 1] << arr_vertex[i * 3 + 2] << std::endl;
+			std::cout << "NOR : "<< arr_normal[i * 3 + 0] << " " << arr_normal[i * 3 + 1] << arr_normal[i * 3 + 2] << std::endl;
+		}
+	}
+}
+
 int AssimpScene::toArr(float * arr, int arr_size)
 {
 	const int ARR_TEMP_SIZE = 3*40000;
@@ -384,26 +404,31 @@ void AssimpScene::uncompress(
 	float * arr_vertex, int arr_vertex_size, int & arr_vertex_size_used, 
 	int * arr_indices, int arr_indices_size, int & arr_indices_size_used)
 {
-	uncompress_recursive(scene->mRootNode,
-		arr_vertex, arr_vertex_size, arr_vertex_size_used,
-		arr_indices, arr_indices_size, arr_indices_size_used);
+	//uncompress_recursive(scene->mRootNode,
+	//	arr_vertex, arr_vertex_size, arr_vertex_size_used,
+	//	arr_indices, arr_indices_size, arr_indices_size_used);
 }
 void AssimpScene::uncompress_recursive(
-	aiNode* nd, 
-	float * arr_vertex, int arr_vertex_size, int & arr_vertex_index,
-	int * arr_indeces, int arr_indeces_size, int & arr_indices_index)
-{
+	aiNode* nd,
+	float * arr_vertex, int arr_vertex_length, int & arr_vertex_index,
+	float * arr_normal, int arr_normal_length,
+	int * arr_indices, int arr_indices_size, int & arr_indices_index)
+{	
+	int arr_normal_index = 0;
 	//aiScene* scene;
 	for (int i = 0; i < scene->mNumMeshes; i++) {
 		aiMesh *mesh = scene->mMeshes[i];
-		arr_vertex_index = uncompress_vertex(mesh, arr_vertex, arr_vertex_size, arr_vertex_index);
-		arr_indices_index = uncompress_indices(mesh, arr_indeces, arr_indeces_size, arr_indices_index);
+		arr_vertex_index = uncompress_vertex(mesh, arr_vertex, arr_vertex_length, arr_vertex_index);
+		uncompress_normal(mesh, arr_normal, arr_normal_length, arr_normal_index);
+		arr_indices_index = uncompress_indices(mesh, arr_indices, arr_indices_size, arr_indices_index);
 	}
+	return;
 	
 	for (int n = 0; n < nd->mNumChildren; ++n) {
 		uncompress_recursive(nd->mChildren[n],
-			arr_vertex, arr_vertex_size, arr_vertex_index,
-			arr_indeces, arr_indeces_size, arr_indices_index);
+			arr_vertex, arr_vertex_length, arr_vertex_index,
+			arr_normal, arr_normal_length,
+			arr_indices, arr_indices_size, arr_indices_index);
 	}
 }
 int AssimpScene::uncompress_vertex(aiMesh *mesh, float* arr, int arr_size, int arr_index) {
@@ -417,6 +442,22 @@ int AssimpScene::uncompress_vertex(aiMesh *mesh, float* arr, int arr_size, int a
 		arr[arr_index] = vert.x;
 		arr[arr_index + 1] = vert.y;
 		arr[arr_index + 2] = vert.z;
+		arr_index += 3;
+	}
+	return arr_index;
+}
+int AssimpScene::uncompress_normal(aiMesh * mesh, float * arr, int arr_size, int arr_index)
+{
+	if (!mesh->HasNormals()) return 0;
+	for (int i = 0; i < mesh->mNumVertices; i++) {
+		aiVector3D normal = mesh->mNormals[i];
+		if (arr_index + 3 > arr_size) {
+			std::cout << mesh->mNumVertices << " ARR SIZE " << arr_size << " , " << "I USED " << arr_index + 3 << std::endl;
+			throw std::invalid_argument("AssimpScene::uncompress_vertex:: array size too small");
+		}
+		arr[i*3] = normal.x;
+		arr[i*3 + 1] = normal.y;
+		arr[i*3 + 2] = normal.z;
 		arr_index += 3;
 	}
 	return arr_index;
