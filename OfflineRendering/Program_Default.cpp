@@ -71,7 +71,7 @@ bool Program_Default::init(const char * path_vert, const char * path_frag)
 	glLinkProgram(id_program);
 	GLint linked;
 	glGetProgramiv(id_program, GL_LINK_STATUS, &linked);
-	std::cout << "CHECKING id_program" << std::endl;
+	std::cout << "CHECKING linked status... " << linked << std::endl;
 	if (!linked) return false;
 
 	id_mat_proj =		glGetUniformLocation(id_program, NAME_MATRIX_PROJ);
@@ -80,4 +80,16 @@ bool Program_Default::init(const char * path_vert, const char * path_frag)
 	
 
 	return true;
+}
+
+void Program_Default::use(float * mat_proj, float * mat_viewModel)
+{
+	glUseProgram(id_program);
+	glUniformMatrix4fv(id_mat_proj, 1, GL_FALSE, mat_proj);
+	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, mat_viewModel);
+}
+
+void Program_Default::unUse()
+{
+	glUseProgram(0);
 }

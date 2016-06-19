@@ -18,15 +18,15 @@ void KVertexArrayObject::init(
 
 	glGenBuffers(1, &id_vertex_position_buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, id_vertex_position_buffer);
+	glVertexAttribPointer(loc_vertex_position, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*num_vertex, vert, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(loc_vertex_position);
-	glVertexAttribPointer(loc_vertex_position, 3, GL_FLOAT, GL_FALSE, GL_FALSE, 0);
 
 	glGenBuffers(1, &id_vertex_normal_buffer);
+	glVertexAttribPointer(loc_vertex_normal, 3, GL_FLOAT, GL_TRUE, 0, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, id_vertex_normal_buffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3* num_vertex, normal, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(loc_vertex_normal);
-	glVertexAttribPointer(loc_vertex_normal, 3, GL_FLOAT, GL_TRUE	, GL_FALSE, 0);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

@@ -71,16 +71,17 @@ void WorldRenderer::init(KVertexArrayObject& vao,const char* file, float * arr_v
 	AssimpScene scene (file);
 	scene.init_glList();
 	scene.get_data(
-		arr_vert, arr_vert_length,
+		arr_vert, arr_vert_length,	
 		arr_normal, arr_normal_length,
 		arr_indices, arr_indices_length,
 		store_arr_vert_length, store_indices_length);
 
 	vao.init(arr_vert, arr_normal, store_arr_vert_length / 3, arr_indices, store_indices_length / 3,glm::vec3(scene.sceneMax.x, scene.sceneMax.y, scene.sceneMax.z) );
 }
+float move = 0;
 void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id_pos, GLuint id_pos_texture)
 {
-	//std::cout << mqmeeqwmew << std::endl;
+	move += 1.f;
 	render_environment(matView, id_mat_viewModel, id_pos);
 	glm::mat4 mat;
 	//mat =  glm::scale(mat, glm::vec3(5, 5, 5));
@@ -88,12 +89,12 @@ void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id
 	//mat = glm::translate(*matView, glm::vec3(0, .5f, 0));
 	//glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
 
-	mat = glm::translate(*matView, glm::vec3(.5f, vao_teapot.boundingBox.y, .5f ));
-	mat = glm::rotate<float>(mat, -45 * (3.14 / 90), glm::vec3(1, 0, 0));
+	mat = glm::translate(*matView, glm::vec3(.5f, vao_bunny.boundingBox.y, .5f ));
+	//mat = glm::rotate<float>(mat, -45 * (3.14 / 90), glm::vec3(1, 0, 0));
 	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
 	
-	glBindVertexArray(vao_teapot.id_vertex_array);
-	glDrawElements(GL_TRIANGLES, vao_teapot.indice_length*3, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(vao_bunny.id_vertex_array);
+	glDrawElements(GL_TRIANGLES, vao_bunny.indice_length*3, GL_UNSIGNED_INT, 0);	
 	glBindVertexArray(0);
 
 
@@ -111,7 +112,7 @@ void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id
 
 
 	mat = glm::translate(*matView, glm::vec3(.5f +2, vao_teapot.boundingBox.y, .5f));
-	mat = glm::rotate<float>(mat, -45 * (3.14 / 90),glm::vec3(1, 0, 0));
+	mat = glm::rotate<float>(mat, (-45+move) * (3.14 / 90),glm::vec3(1, 0, 0));
 	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
 
 	glBindVertexArray(vao_teapot.id_vertex_array);

@@ -8,7 +8,7 @@ class WorldRenderer {
 	const char
 		*PATH_PLY_BUNNY		= "Model/bunny.ply",
 		*PATH_PLY_TEAPOT	= "Model/teapot.ply",
-		*PATH_PLY_APPLE		= "Model/apple.ply";
+		*PATH_PLY_APPLE		= "Model/cube.ply";
 	glm::mat4 mat_model;
 	std::shared_ptr<AssimpScene> scene_bunny;
 	KVertexArrayObject vao_bunny, vao_teapot, vao_apple;

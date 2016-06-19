@@ -36,6 +36,7 @@ bool KFrameBufferObject::init()
 
 void KFrameBufferObject::set_colorbuffer(int width, int height)
 {
+	isColorOn = true;
 	this->color_width = width;
 	this->color_height = height;
 
@@ -71,4 +72,14 @@ void KFrameBufferObject::set_depthbuffer(int width, int height)
 	glBindFramebuffer(GL_FRAMEBUFFER, id_fbo);
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, id_texture_depth, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+int KFrameBufferObject::viewport_width()
+{
+	return (isColorOn)? color_width: depth_width;
+}
+
+int KFrameBufferObject::viewport_height()
+{
+	return (isColorOn) ? color_height : depth_height;
 }

@@ -22,7 +22,9 @@ public:
 		id_pos;
 
 	Program_Default();
-	virtual bool init(const char* path_vert, const char* path_frag);// initialize 
+	virtual bool init(const char* path_vert, const char* path_frag);// initialize
+	void use(float* mat_proj, float* mat_viewModel);
+	void unUse();
 	std::string toString();
 
 

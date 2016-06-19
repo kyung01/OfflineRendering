@@ -15,6 +15,9 @@ void OpenGL_ProjectManager::init()
 	this->easyGLFW.createContext(GlobalVariables::CONTEXT_NAME, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
 	this->stateRender = RENDER_OFFLINE;// first we will initiate to render in real time
 
+	glEnable(GL_DEPTH_TEST);
+	glClearColor(0, 0, 0, 1);
+
 	worldRender.init();
 	if (!program_default.init(PATH_SHADER_VERTEX_DEFAULT, PATH_SHADER_FRAG_DEFAULT))
 		error("program_default failed to init.");
@@ -22,29 +25,52 @@ void OpenGL_ProjectManager::init()
 		error("Program_texture failed to init.");
 	if (!program_shadow.init(PATH_SHADER_SHADOW_VERT, PATH_SHADER_SHADOW_FRAG))
 		error("program_shadow failed to init.");
+	if (!program_normal.init(PATH_SHADER_NORMAL_VERT, PATH_SHADER_NORMAL_FRAG))
+		error("program_normal failed to init.");
+	if (!program_worldsapce.init(PATH_SHADER_WORLDSPACE_VERT, PATH_SHADER_WORLDSPACE_FRAG))
+		error("program_worldsapce failed to init.");
 	if (!fbo_light.init()) error("fbo_light failed to init.");
 	fbo_light.init();
-	fbo_light.set_colorbuffer(1024, 1024);
+	fbo_normal.init();
+	fbo_worldSpace.init();
+	//fbo_light.set_colorbuffer(1024, 1024);
 	fbo_light.set_depthbuffer(1024, 1024);
-	glEnable(GL_DEPTH_TEST);
-	//init_fbo();
-	//init_shader();
-	//init_program(program_00, shader_vertex, shader_frag);
-	//glDrawBuffer(GL_NONE);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texture_depth, 0);
-	//glReadBuffer(GL_NONE);
-	// check FBO status
+	fbo_normal.set_colorbuffer(1024, 1024);
+	fbo_normal.set_depthbuffer(1024, 1024);
+	fbo_worldSpace.set_colorbuffer(1024, 1024);
+	fbo_worldSpace.set_depthbuffer(1024, 1024);
+
+	biasMatrix = glm::mat4(
+		0.5, 0.0, 0.0, 0.0,
+		0.0, 0.5, 0.0, 0.0,
+		0.0, 0.0, 0.5, 0.0,
+		0.5, 0.5, 0.5, 1.0
+		);
+	mat_proj_firstPerson = glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
+	mat_proj_ortho = glm::ortho<float>(-3, 3, -3, 3, -3, 5);
+	mat_proj_ortho_screen = glm::ortho<float>(0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT, 0);
+	//mat_ = glm::ortho<float>(0, 1024, 1024, 0);
+	mat_me_modelView = glm::lookAt(glm::vec3(2.f, 1.8f, 2.f), glm::vec3(1.5f, .5f, 0), glm::vec3(0, 1, 0));
+	mat_me_view_inversed = glm::inverse(mat_me_modelView);
+	glm::vec3
+		lightPos = glm::vec3(1.5f, .5f, 1.5),
+		lightCenter = glm::vec3(lightPos.x, 0, 0) + glm::vec3(cos(movement), 0, 0)* 1.25f;
+
+	//mat_light_proj = glm::ortho<float>(-3, 3, -3, 3, -3, 5);
+	mat_light_modelView = glm::lookAt(
+		lightPos,
+		lightCenter,
+		glm::vec3(0, 1, 0));
+	
+	mat_light_MVP = biasMatrix * mat_proj_ortho * mat_light_modelView;
+
 }
-void OpenGL_ProjectManager::render_texture(GLuint id_modelview, GLuint id_vert, GLuint id_vert_texture, GLuint id_texture_loc, GLuint id_texture, int index)
+void OpenGL_ProjectManager::render_texture(GLuint id_vert, GLuint id_vert_texture, GLuint id_texture, int index)
 {
 	int
-		width = 150, height = 150,
+		width = 350, height = 350,
 		x = width *index, y = 0;
-	glm::mat4 modelView;
-	glUniformMatrix4fv(id_modelview, 1, false, glm::value_ptr(modelView));
-	glActiveTexture(GL_TEXTURE0 ); // Texture unit 0
 	glBindTexture(GL_TEXTURE_2D, id_texture);
-	glUniform1i(id_texture_loc, 0);
 
 	glBegin(GL_QUADS);
 
@@ -61,55 +87,6 @@ void OpenGL_ProjectManager::render_texture(GLuint id_modelview, GLuint id_vert, 
 	glVertexAttrib3f(id_vert, x + 0.0, y + height, 0);
 
 	glEnd();
-	glBindTexture(GL_TEXTURE_2D, 0);
-	/*
-	bool is_enabled_texture = glIsEnabled(GL_TEXTURE_2D);
-	glEnable(GL_TEXTURE_2D);
-
-
-	glBindTexture(GL_TEXTURE_2D, texture);
-	//glClearColor(0.0f, 1.0f, 0.0f, 1.0f); // Set background color to black and opaque
-	//glClear(GL_COLOR_BUFFER_BIT);
-	glClear(GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	//glFrustum(-1, 1, -1, 1, 1.0f, 100);
-	//gluOrtho2D(0, 640, 0, 480);
-	gluOrtho2D(0, GlobalVariables::CONTEXT_WIDTH,GlobalVariables::CONTEXT_HEIGHT, 0);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-
-
-	glBegin(GL_QUADS); //begin drawing our quads
-	glColor3f(1, 1, 1);
-	glTexCoord2d(0.0, 1.0);
-	glVertex2f(x+0.0,y+ 0.0); //with our vertices we have to assign a texcoord
-
-	glTexCoord2d(1.0, 1.0);
-	glVertex2f(x + width, y + 0.0f); //so that our texture has some points to draw to
-
-	glTexCoord2d(1.0, 0.0);
-	glVertex2f(x + width, y + height);
-
-	glTexCoord2d(0.0, 0.0);
-	glVertex2f(x + 0.0, y + height);
-	glEnd();	
-	
-
-	glPopMatrix();
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	if (is_enabled_texture) glEnable(GL_TEXTURE_2D);
-	else glDisable(GL_TEXTURE_2D);
-	*/
-}
-void OpenGL_ProjectManager::hpr_basisc_glTexParameteri()
-{
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 
@@ -120,123 +97,81 @@ void OpenGL_ProjectManager::error(const char * error_message)
 	exit(-1);
 }
 
-void OpenGL_ProjectManager::glm_mat_array(float * arr, glm::mat4 * mat)
+void OpenGL_ProjectManager::set_FBO(KFrameBufferObject * buffer)
 {
-	const float *pSource = (const float*)glm::value_ptr(*mat);
-	for (int i = 0; i < 16; i++) {
-		arr[i] = pSource[i];
+	if (buffer == NULL) {
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
+		return;
 	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, buffer->id_fbo);
+	glViewport(0, 0, buffer->viewport_width() , buffer->viewport_height() );
 }
+
 void OpenGL_ProjectManager::renderRealTimeBegin()
 {
 	movement += .02f;
-	float arr_mat[16];
-	glm::mat4 mat_ortho = glm::ortho<float>(0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT, 0);
-	//glm::mat4 mat_ortho_light = glm::ortho<float>(0, 1024, 1024, 0);
-	glm::mat4 mat_me_proj			= glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
-	glm::mat4 mat_me_viewModel		= glm::lookAt(glm::vec3(2.f, 1.8f, 2.f), glm::vec3(1.5f,.5f, 0), glm::vec3(0, 1, 0));
-	glm::mat4 mat_me_view_inversed = glm::inverse(mat_me_viewModel);
-	glm::vec3	
-		lightPos = glm::vec3(1.5f , .5f, 1.5),
-		lightCenter = glm::vec3(lightPos.x, 0,0) + glm::vec3(cos(movement), 0, 0)* 1.25f;
+	glm::vec3
+		lightPos = glm::vec3(1.5f, .5f, 1.5),
+		lightCenter = glm::vec3(lightPos.x, 0, 0) + glm::vec3(cos(movement), 0, 0)* 1.25f;
 
-	glm::mat4 mat_light_proj = glm::ortho<float>(-3, 3, -3, 3, -3, 5);
-	glm::mat4 mat_light_modelView	= glm::lookAt (
+	//mat_light_proj = glm::ortho<float>(-3, 3, -3, 3, -3, 5);
+	mat_light_modelView = glm::lookAt(
 		lightPos,
 		lightCenter,
 		glm::vec3(0, 1, 0));
-	glm::mat4 mat_light = mat_light_proj * mat_light_modelView;
-	glm::mat4 biasMatrix(
-		0.5, 0.0, 0.0, 0.0,
-		0.0, 0.5, 0.0, 0.0,
-		0.0, 0.0, 0.5, 0.0,
-		0.5, 0.5, 0.5, 1.0
-		);
-	mat_light = biasMatrix * mat_light_proj * mat_light_modelView;
+	mat_light_view_inverted = glm::inverse(mat_light_modelView);
+	mat_light_MVP = biasMatrix * mat_proj_ortho * mat_light_modelView;
 
 
-
-	//mat_proj = glm::ortho<float>(0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT, 0);
-	//mat_proj = glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
-	//mat_proj = glm::ortho(0, 1,1, 0);
-	//mat_view = glm::lookAt(glm::vec3(0.f, 0.f, 1.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.0f, 1.0f, 0.0f));
-	/*
-
-	glUseProgram(program_default.id_program);
-	glClearColor(0.01f, .02f, .03f, 1.0f);
-	glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
+	set_FBO(&fbo_light);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glUniformMatrix4fv(program_default.id_mat_proj, 1, GL_FALSE, (float*)glm::value_ptr(mat_proj));
-	glUniformMatrix4fv(program_default.id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat_view));
-	glBegin(GL_TRIANGLES);
+	program_default.use(glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView));
+	worldRender.draw(&mat_light_modelView, program_default.id_mat_viewModel, program_default.id_pos, 0);
+	program_default.unUse();
 
-	glVertexAttrib3f(program_default.id_pos, 0, 0, 0);
-	glVertexAttrib3f(program_default.id_pos, 100, 0, 0);
-	glVertexAttrib3f(program_default.id_pos, 100, 100, 0);
-
-	glEnd();
-	glUseProgram(0);
-	glfwSwapBuffers(this->easyGLFW.window);
-	return;
-	*/
-	/*
-	*/
-	glUseProgram(program_shadow.id_program);
-	glClearColor(0.01f, .01f, .01f, 1.0f);
-	glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
+	set_FBO(&fbo_worldSpace);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glUniformMatrix4fv(program_shadow.id_mat_proj, 1, GL_FALSE, (float*)glm::value_ptr(mat_me_proj));
-	glUniformMatrix4fv(program_shadow.id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat_me_viewModel));
-	glUniformMatrix4fv(program_shadow.id_mat_view_inversed, 1, GL_FALSE, (float*)glm::value_ptr(mat_me_view_inversed));
-	glUniformMatrix4fv(program_shadow.id_mat_light, 1, GL_FALSE, (float*)glm::value_ptr(mat_light));
-	glUniform1i(program_shadow.id_texture_depth, 0);
-	glActiveTexture(GL_TEXTURE0); // Texture unit 0
-	glBindTexture(GL_TEXTURE_2D, fbo_light.id_texture_depth);
-	worldRender.draw(&mat_me_viewModel, program_shadow.id_mat_viewModel, program_shadow.id_pos, -1	);
-	glUseProgram(0);
-	glBindTexture(GL_TEXTURE_2D, 0);	
+	program_worldsapce.use(glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted));
+	worldRender.draw(&mat_light_modelView, program_worldsapce.id_mat_viewModel, program_worldsapce.id_pos, 0);
+	program_worldsapce.unUse();
 
-
-	//return statement to test out if I can draw 2d with this shader
-	//render light scene
-	glUseProgram(program_default.id_program);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo_light.id_fbo);
-	 
-	glClearColor(0.1f, .1f, 0.1f, 1.0f)	;
-	glViewport(0, 0, 1024,1024);
-	//glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
+	set_FBO(&fbo_normal);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	program_normal.use(glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted));
+	worldRender.draw(&mat_light_modelView, program_normal.id_mat_viewModel, program_normal.id_pos, 0);
+	program_normal.unUse();
 
-	glUniformMatrix4fv(program_default.id_mat_proj, 1, GL_FALSE, (float*)glm::value_ptr(mat_light_proj));
-	glUniformMatrix4fv(program_default.id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat_light_modelView));
-	worldRender.draw(&mat_light_modelView, program_default.id_mat_viewModel, program_default.id_pos, -1);
-	glUseProgram(0);
+	
+	set_FBO(NULL);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	program_shadow.use(
+		glm::value_ptr(mat_proj_firstPerson),
+		glm::value_ptr(mat_me_modelView),
+		glm::value_ptr(mat_me_view_inversed),
+		glm::value_ptr(mat_light_MVP),
+		fbo_light.id_texture_depth);
+	worldRender.draw(&mat_me_modelView, program_shadow.id_mat_viewModel, program_shadow.id_pos, -1);
+	program_shadow.unUse();
+	
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glUseProgram(this->program_texture.id_program);
-	glViewport(0, 0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT);
-	glUniformMatrix4fv(program_default.id_mat_proj, 1, GL_FALSE, (float*)glm::value_ptr(mat_ortho));
-	render_texture(program_texture.id_mat_viewModel, program_texture.id_pos, program_texture.id_pos_texture, program_texture.id_texture_00, fbo_light.id_texture_color, 0);
-	render_texture(program_texture.id_mat_viewModel, program_texture.id_pos, program_texture.id_pos_texture, program_texture.id_texture_00, fbo_light.id_texture_depth, 1);
-	glUseProgram(0);
+	set_FBO(NULL);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	program_normal.use(glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted));
+	worldRender.draw(&mat_light_modelView, program_normal.id_mat_viewModel, program_normal.id_pos, 0);
+	program_normal.unUse();
+	
 
-
-
-
+	glm::mat4 m;
+	set_FBO(NULL);
+	program_texture.use(glm::value_ptr(mat_proj_ortho_screen), glm::value_ptr(m), fbo_light.id_texture_color);
+	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_worldSpace.id_texture_color, 0);
+	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_light.id_texture_depth, 1);
+	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_normal.id_texture_color, 2);
+	program_texture.unUse();
 
 	glfwSwapBuffers(this->easyGLFW.window);
-
-
-
-
-	//glm_mat_array(arr_mat, &mat_proj);
-	//glm_mat_array(arr_mat, &mat_view);
-	//cout << program00.id_mat_proj << " " << program00.id_mat_viewModel << endl;
-	//0, .4f, .7f + movement, 0, 0, 0, 0, 1, 0
-	//set the projection matrix
-	//pass the projection matrix
-	//get the view matrix
-	//pass the view matrix
 }
 
 

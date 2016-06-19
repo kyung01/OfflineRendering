@@ -87,6 +87,9 @@
     <ClCompile Include="KVertexArrayObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Program_Inversed_View.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -160,6 +163,12 @@
     </ClInclude>
     <ClInclude Include="KVertexArrayObject.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Program_Normal.h">
+      <Filter>Header Files\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="Program_Inversed_View.h">
+      <Filter>Header Files\Program</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
