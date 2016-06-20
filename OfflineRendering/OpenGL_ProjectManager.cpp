@@ -19,6 +19,7 @@ void OpenGL_ProjectManager::init()
 	glClearColor(0, 0, 0, 1);
 
 	worldRender.init();
+	world_space = glm::vec3(3, 3, 3);
 	if (!program_default.init(PATH_SHADER_VERTEX_DEFAULT, PATH_SHADER_FRAG_DEFAULT))
 		error("program_default failed to init.");
 	if (!program_texture.init(PATH_SHADER_TEXTURE_VERT, PATH_SHADER_TEXTURE_FRAG))
@@ -29,16 +30,21 @@ void OpenGL_ProjectManager::init()
 		error("program_normal failed to init.");
 	if (!program_worldsapce.init(PATH_SHADER_WORLDSPACE_VERT, PATH_SHADER_WORLDSPACE_FRAG))
 		error("program_worldsapce failed to init.");
+	if (!program_flux.init(PATH_SHADER_FLUX_VERT, PATH_SHADER_FLUX_FRAG))
+		error("program_flux failed to init.");
 	if (!fbo_light.init()) error("fbo_light failed to init.");
 	fbo_light.init();
 	fbo_normal.init();
 	fbo_worldSpace.init();
+	fbo_flux.init();
 	//fbo_light.set_colorbuffer(1024, 1024);
 	fbo_light.set_depthbuffer(1024, 1024);
 	fbo_normal.set_colorbuffer(1024, 1024);
 	fbo_normal.set_depthbuffer(1024, 1024);
 	fbo_worldSpace.set_colorbuffer(1024, 1024);
 	fbo_worldSpace.set_depthbuffer(1024, 1024);
+	fbo_flux.set_colorbuffer(1024, 1024);
+	fbo_flux.set_depthbuffer(1024, 1024);
 
 	biasMatrix = glm::mat4(
 		0.5, 0.0, 0.0, 0.0,
@@ -68,8 +74,9 @@ void OpenGL_ProjectManager::init()
 void OpenGL_ProjectManager::render_texture(GLuint id_vert, GLuint id_vert_texture, GLuint id_texture, int index)
 {
 	int
-		width = 350, height = 350,
-		x = width *index, y = 0;
+		width = 300, height = 300,
+		xMax = GlobalVariables::CONTEXT_WIDTH / width,
+		x = width *(index % xMax), y = height*(index/xMax);
 	glBindTexture(GL_TEXTURE_2D, id_texture);
 
 	glBegin(GL_QUADS);
@@ -113,8 +120,10 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 {
 	movement += .02f;
 	glm::vec3
-		lightPos = glm::vec3(1.5f, .5f, 1.5),
-		lightCenter = glm::vec3(lightPos.x, 0, 0) + glm::vec3(cos(movement), 0, 0)* 1.25f;
+		lightPos = glm::vec3(1.5f, 1.5f, 1.5),
+		lightCenter = glm::vec3(lightPos.x, 0	, 0) + glm::vec3(cos(movement), 0, 0)* lightPos.x,
+		lightDir =glm::normalize( lightCenter - lightPos );	
+	//cout << lightDir.x << " " << lightDir.y << " " << lightDir.z << endl;
 
 	//mat_light_proj = glm::ortho<float>(-3, 3, -3, 3, -3, 5);
 	mat_light_modelView = glm::lookAt(
@@ -133,8 +142,8 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 
 	set_FBO(&fbo_worldSpace);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	program_worldsapce.use(glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted));
-	worldRender.draw(&mat_light_modelView, program_worldsapce.id_mat_viewModel, program_worldsapce.id_pos, 0);
+	program_worldsapce.use(glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted), glm::value_ptr(world_space) );
+	worldRender.draw(&mat_light_modelView, program_worldsapce.id_mat_viewModel, program_worldsapce.id_pos, 0 );
 	program_worldsapce.unUse();
 
 	set_FBO(&fbo_normal);
@@ -142,6 +151,14 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 	program_normal.use(glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted));
 	worldRender.draw(&mat_light_modelView, program_normal.id_mat_viewModel, program_normal.id_pos, 0);
 	program_normal.unUse();
+
+	set_FBO(&fbo_flux);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	program_flux.use(
+		glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted),
+		glm::value_ptr(lightPos), glm::value_ptr(lightDir), glm::value_ptr(color_default) );
+	worldRender.draw(&mat_light_modelView, program_flux.id_mat_viewModel, program_flux.id_pos, 0,program_flux.id_light_color);
+	program_flux.unUse();
 
 	
 	set_FBO(NULL);
@@ -154,21 +171,25 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 		fbo_light.id_texture_depth);
 	worldRender.draw(&mat_me_modelView, program_shadow.id_mat_viewModel, program_shadow.id_pos, -1);
 	program_shadow.unUse();
-	
 
+	
+	/*
 	set_FBO(NULL);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	program_normal.use(glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted));
 	worldRender.draw(&mat_light_modelView, program_normal.id_mat_viewModel, program_normal.id_pos, 0);
 	program_normal.unUse();
-	
+	*/
+	 
 
 	glm::mat4 m;
 	set_FBO(NULL);
+	glClear(GL_DEPTH_BUFFER_BIT);
 	program_texture.use(glm::value_ptr(mat_proj_ortho_screen), glm::value_ptr(m), fbo_light.id_texture_color);
 	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_worldSpace.id_texture_color, 0);
 	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_light.id_texture_depth, 1);
 	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_normal.id_texture_color, 2);
+	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_flux.id_texture_color, 3);
 	program_texture.unUse();
 
 	glfwSwapBuffers(this->easyGLFW.window);

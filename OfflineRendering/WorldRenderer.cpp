@@ -79,7 +79,7 @@ void WorldRenderer::init(KVertexArrayObject& vao,const char* file, float * arr_v
 	vao.init(arr_vert, arr_normal, store_arr_vert_length / 3, arr_indices, store_indices_length / 3,glm::vec3(scene.sceneMax.x, scene.sceneMax.y, scene.sceneMax.z) );
 }
 float move = 0;
-void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id_pos, GLuint id_pos_texture)
+void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id_pos, GLuint id_pos_texture, GLuint id_color )
 {
 	move += 1.f;
 	render_environment(matView, id_mat_viewModel, id_pos);
@@ -88,11 +88,11 @@ void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id
 
 	//mat = glm::translate(*matView, glm::vec3(0, .5f, 0));
 	//glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
-
+		
 	mat = glm::translate(*matView, glm::vec3(.5f, vao_bunny.boundingBox.y, .5f ));
 	//mat = glm::rotate<float>(mat, -45 * (3.14 / 90), glm::vec3(1, 0, 0));
 	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
-	
+	glUniform4f(id_color, 1, 0, 0, .2f);
 	glBindVertexArray(vao_bunny.id_vertex_array);
 	glDrawElements(GL_TRIANGLES, vao_bunny.indice_length*3, GL_UNSIGNED_INT, 0);	
 	glBindVertexArray(0);
@@ -102,8 +102,9 @@ void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id
 
 
 	mat = glm::translate(*matView, glm::vec3(.5f + 1, vao_apple.boundingBox.y, .5f));
+	mat = glm::rotate<float>(mat, (-45 + move*.5f) * (3.14 / 90), glm::vec3(0, 1, 0));
 	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
-
+	glUniform4f(id_color, 0, 1, 0, .6f);
 	glBindVertexArray(vao_apple.id_vertex_array);
 	glDrawElements(GL_TRIANGLES, vao_apple.indice_length * 3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
@@ -115,6 +116,7 @@ void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id
 	mat = glm::rotate<float>(mat, (-45+move) * (3.14 / 90),glm::vec3(1, 0, 0));
 	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
 
+	glUniform4f(id_color, 0, 0, 1, 1.0f);
 	glBindVertexArray(vao_teapot.id_vertex_array);
 	glDrawElements(GL_TRIANGLES, vao_teapot.indice_length * 3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);

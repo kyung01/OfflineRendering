@@ -15,6 +15,8 @@ class Program_Default {
 	int open_file(char* arr, int arr_size, const char* path); 
 	bool is_shader_compiled(GLuint shader_id);
 	bool init_shader(GLuint * shader_id, GLenum shaderType, char * data, int data_size);
+protected :
+	virtual void init_uniformLocs();
 public:
 	GLuint
 		id_program, id_shader_vert, id_shader_frag,

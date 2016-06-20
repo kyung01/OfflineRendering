@@ -1,5 +1,5 @@
 #pragma once
-#include "Program_Inversed_view.h"
-class Program_Normal :public Program_Inversed_View{
+#include "Program_View_Inversed.h"
+class Program_Normal :public Program_View_Inversed {
 
 };

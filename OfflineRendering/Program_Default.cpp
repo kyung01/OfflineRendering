@@ -50,6 +50,12 @@ bool Program_Default::init_shader(GLuint * shader_id, GLenum shaderType, char * 
 	glCompileShader(*shader_id);
 	return Easy_OpenGL::check_shader_compilation(*shader_id);
 }
+void Program_Default::init_uniformLocs()
+{
+	id_mat_proj = glGetUniformLocation(id_program, NAME_MATRIX_PROJ);
+	id_mat_viewModel = glGetUniformLocation(id_program, NAME_MATRIX_VIEWMODEL);
+	id_pos = glGetAttribLocation(id_program, NAME_POSITION);
+}
 bool Program_Default::init(const char * path_vert, const char * path_frag)
 {
 	const int ARR_SIZE = 1000;
@@ -74,11 +80,9 @@ bool Program_Default::init(const char * path_vert, const char * path_frag)
 	std::cout << "CHECKING linked status... " << linked << std::endl;
 	if (!linked) return false;
 
-	id_mat_proj =		glGetUniformLocation(id_program, NAME_MATRIX_PROJ);
-	id_mat_viewModel =	glGetUniformLocation(id_program, NAME_MATRIX_VIEWMODEL);
-	id_pos =			glGetAttribLocation(id_program, NAME_POSITION);
-	
 
+	
+	init_uniformLocs();
 	return true;
 }
 

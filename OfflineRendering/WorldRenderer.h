@@ -21,7 +21,7 @@ class WorldRenderer {
 		int * arr_indices, int arr_indices_length);
 public:
 	void init();
-	void draw(glm::mat4 *matView, GLuint id_mat_viewModel, GLuint id_pos, GLuint id_pos_texture);
+	void draw(glm::mat4 *matView, GLuint id_mat_viewModel, GLuint id_pos, GLuint id_pos_texture, GLuint id_color= -1);
 
 
 };

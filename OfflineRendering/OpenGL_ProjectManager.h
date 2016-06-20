@@ -5,6 +5,8 @@
 #include "Program_Texture.h"
 #include "Program_Shadow.h"
 #include "Program_Normal.h"
+#include "Program_WorldSpace.h"
+#include "Program_Flux.h"
 #include "KFrameBufferObject.h"
 class OpenGL_ProjectManager {
 	const char* PATH_SHADER_VERTEX_DEFAULT =	"Shader/shader_default_vert.txt";
@@ -20,16 +22,21 @@ class OpenGL_ProjectManager {
 	const char* PATH_SHADER_WORLDSPACE_VERT = "Shader/shader_worldspace_vert.txt";
 	const char* PATH_SHADER_WORLDSPACE_FRAG = "Shader/shader_worldspace_frag.txt";
 
+
+	const char* PATH_SHADER_FLUX_VERT = "Shader/shader_flux_spotlight_vert.txt";
+	const char* PATH_SHADER_FLUX_FRAG = "Shader/shader_flux_spotlight_frag.txt";
+
 	EasyGLFW easyGLFW;
 	WorldRenderer worldRender;
 	Program_Default program_default; // will be used to... do stuff
-	Program_Inversed_View program_worldsapce;
-	Program_Inversed_View program_normal;
+	Program_WorldSpace program_worldsapce;
+	Program_View_Inversed program_normal;
 	Program_texture program_texture;
 	Program_Shadow	program_shadow;
+	Program_Flux program_flux;
 
-	KFrameBufferObject fbo_light, fbo_normal, fbo_worldSpace;
-
+	KFrameBufferObject fbo_light, fbo_normal, fbo_worldSpace, fbo_flux;
+	glm::vec3 world_space;
 	glm::mat4 mat_proj_firstPerson;
 	glm::mat4 mat_proj_ortho;
 	glm::mat4 mat_proj_ortho_screen;
@@ -40,6 +47,7 @@ class OpenGL_ProjectManager {
 	glm::mat4 mat_light_view_inverted;
 	glm::mat4 mat_light_MVP;
 	glm::mat4 biasMatrix;
+	glm::vec4 color_default;
 	
 
 	//void init_fbo();

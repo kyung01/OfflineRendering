@@ -1,6 +1,6 @@
 #pragma once
-#include "Program_Inversed_view.h"
-class Program_Shadow : public Program_Inversed_View{
+#include "Program_View_Inversed.h"
+class Program_Shadow : public Program_View_Inversed {
 	const char
 		*NAME_TEXTURE_DEPTH = "depthMap",
 		*NAME_MAT_LIGHT = "mat_light";

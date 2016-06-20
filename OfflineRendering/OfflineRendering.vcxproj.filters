@@ -90,6 +90,12 @@
     <ClCompile Include="Program_Inversed_View.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Program_WorldSpace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program_Flux.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -167,7 +173,13 @@
     <ClInclude Include="Program_Normal.h">
       <Filter>Header Files\Program</Filter>
     </ClInclude>
-    <ClInclude Include="Program_Inversed_View.h">
+    <ClInclude Include="Program_WorldSpace.h">
+      <Filter>Header Files\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="Program_View_Inversed.h">
+      <Filter>Header Files\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="Program_Flux.h">
       <Filter>Header Files\Program</Filter>
     </ClInclude>
   </ItemGroup>
