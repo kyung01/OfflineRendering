@@ -17,6 +17,7 @@ void OpenGL_ProjectManager::init()
 
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0, 0, 0, 1);
+	color_default = glm::vec4(1, 1, 1, 1);
 
 	worldRender.init();
 	world_space = glm::vec3(3, 3, 3);
@@ -60,7 +61,7 @@ void OpenGL_ProjectManager::init()
 		0.5, 0.5, 0.5, 1.0
 		);
 	mat_proj_firstPerson = glm::perspective<float>(2.0f, (float)GlobalVariables::CONTEXT_WIDTH / GlobalVariables::CONTEXT_HEIGHT, 0.1f, 2000.f);
-	mat_proj_ortho = glm::ortho<float>(-3, 3, -3, 3, -3, 5);
+	mat_proj_ortho = glm::ortho<float>(-3, 3, -3, 3, 0, 5);
 	mat_proj_ortho_screen = glm::ortho<float>(0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT, 0);
 	//mat_ = glm::ortho<float>(0, 1024, 1024, 0);
 	mat_me_modelView = glm::lookAt(glm::vec3(2.f, 1.8f, 2.f), glm::vec3(1.5f, .5f, 0), glm::vec3(0, 1, 0));
@@ -135,6 +136,7 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 {
 	movement += .02f;
 	glm::vec3
+		world_size = glm::vec3(3, 3, 3),
 		lightPos = glm::vec3(1.5f, 1.5f, 1.5),
 		lightCenter = glm::vec3(lightPos.x, 0	, 0) + glm::vec3(cos(movement), 0, 0)* lightPos.x,
 		lightDir =glm::normalize( lightCenter - lightPos );	
@@ -165,12 +167,14 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	program_rsm.use(
 		glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted),
-		glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_proj_ortho));
+		glm::value_ptr(world_size),
+		glm::value_ptr(lightPos), glm::value_ptr(lightDir), glm::value_ptr(color_default),
+		glm::value_ptr(color_default));
 	
 	//program_worldsapce.use(glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted), glm::value_ptr(world_space));
 
 	//worldRender.draw(&mat_light_modelView, program_worldsapce.id_mat_viewModel, program_worldsapce.id_pos, 0);
-	worldRender.draw(&mat_light_modelView, program_rsm.id_mat_viewModel, program_rsm.id_pos, 0);
+	worldRender.draw(&mat_light_modelView, program_rsm.id_mat_viewModel, program_rsm.id_pos, 0, program_rsm.id_material_color);
 	program_rsm.unUse();
 
 	set_FBO(&fbo_flux);
@@ -210,7 +214,7 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_rsm.get_color(0), 0);
 	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_rsm.get_color(1), 1);
 	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_rsm.get_color(2), 2);
-	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_flux.get_color(), 3);
+	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_rsm.get_depth(), 3);
 	program_texture.unUse();
 
 	glfwSwapBuffers(this->easyGLFW.window);

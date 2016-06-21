@@ -28,7 +28,7 @@ Program_Default::Program_Default()
 }
 bool Program_Default::init_shader(GLuint * shader_id, GLenum shaderType, char * data, int data_size)
 {
-	GLchar gl_arr[1000];
+	GLchar gl_arr[5000];
 	GLchar *pointer_gl_arr = gl_arr;
 	GLint gl_data_size = data_size;
 	for (int i = 0; i < data_size; i++) {
@@ -58,7 +58,7 @@ void Program_Default::init_uniformLocs()
 }
 bool Program_Default::init(const char * path_vert, const char * path_frag)
 {
-	const int ARR_SIZE = 1000;
+	const int ARR_SIZE = 5000;
 	int source_length;
 	char arr[ARR_SIZE];
 	char *arr_pointer = &arr[0];

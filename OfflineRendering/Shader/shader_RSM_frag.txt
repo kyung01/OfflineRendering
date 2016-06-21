@@ -1,10 +1,37 @@
 #version 150
+uniform vec3 world_size;
+uniform vec3 light_pos, light_dir;
+uniform vec4 light_color, material_color;
+
 in vec3 f_pos_world;
 in vec3 f_normal;
 
+vec3 kNormalize(vec3 normal){
+	float length = .0001 + length(normal);
+	normal /= length;
+	return normal;
+}
+float get_flux(vec3 light_pos, vec3 light_dir, vec3 pos, vec3 normal){
+
+
+
+	vec3 dir_light_to_world = normalize(pos-light_pos); 
+
+	float light_added = max(0, dot(light_dir, dir_light_to_world) );
+	float light_power_reflected = max( 0,dot(normal, -light_dir));
+	float light = light_added * light_power_reflected;
+
+	return light;
+}
+
 void main()
 {
-	gl_FragData[0] = vec4(1,0,0,1);
-	gl_FragData[1] = vec4(0,1,0,1);
-	gl_FragData[2] = vec4(0,1,1,1);
+	vec3 normal = kNormalize(f_normal);
+	float flux = get_flux(light_pos, light_dir, f_pos_world, normal);
+	gl_FragData[0] = vec4(f_pos_world/world_size,1);	//position inside the world
+	gl_FragData[1] = vec4((normal +1)/2,1); //normal of the model 
+	vec3 color = 
+		material_color.xyz * material_color.w * 
+		light_color.xyz * light_color.w;
+	gl_FragData[2] = vec4(color* flux,1);
 }

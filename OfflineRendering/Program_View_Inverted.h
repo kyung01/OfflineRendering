@@ -4,7 +4,7 @@
 class Program_View_Inverted :public Program_Default {
 
 	char
-		*NAME_MAT_VIEW_INVERSED = "mat_view_inversed";
+		*NAME_MAT_VIEW_INVERSED = "mat_view_inverted";
 public:
 	GLuint id_mat_view_inversed;
 	void init_uniformLocs() override;

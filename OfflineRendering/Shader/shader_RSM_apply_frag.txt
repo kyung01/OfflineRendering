@@ -1,0 +1,19 @@
+#version 120
+uniform sampler2D 
+	texture_RSM_position,texture_RSM_depth,
+	texture_RSM_normal, texture_RSM_flux;
+	
+in vec2 texture_pos;
+
+void main()
+{
+	gl_FragColor = vec4(1,0,0,1);
+	gl_FragColor = texture2D(texture_00, texture_pos);
+	//return;
+	//vec4 color = texture2D(texture1, gl_TexCoord[0].st);
+	//float v = sqrt(color.x);
+	//float v = color.x;
+	//v = v*v*v*v*v;
+	//gl_FragColor = vec4(v,v,v,1);
+	//gl_FragColor = texture2D(texture1, gl_TexCoord[0].st);
+}

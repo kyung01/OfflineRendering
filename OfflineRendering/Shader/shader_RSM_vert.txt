@@ -1,5 +1,6 @@
 #version 150
-uniform mat4 mat_proj , mat_viewModel, mat_view_inversed;
+uniform mat4 mat_proj , mat_viewModel, mat_view_inverted;
+uniform vec3 world_size;
 uniform vec3 light_pos, light_dir;
 uniform vec4 light_color, material_color;
 
@@ -9,12 +10,19 @@ in vec3 normal;
 out vec3 f_pos_world;
 out vec3 f_normal;
 
-vec3 get_normal(vec3 normal_before, mat4 mat_model){
+vec3 get_normal( mat4 mat_model, vec3 normal){
 	vec3 normal_translated = 
-	(mat_model* vec4(normal_before,1) - mat_model* vec4(0,0,0,1)).xyz;
+	(mat_model* vec4(normal,1) - mat_model* vec4(0,0,0,1)).xyz;
 	return normal_translated;
+}
+vec3 getWorldPosition(mat4 mat_model, vec3 world_size, vec4 vert ){
+	return (mat_model * vert ).xyz ;
 }
 
 void main(){
+	mat4 mat_model = mat_view_inverted * mat_viewModel;
+
 	gl_Position = mat_proj * mat_viewModel * vec4(pos,1);
+	f_pos_world = (mat_model * vec4(pos,1)) .xyz;
+	f_normal = get_normal(mat_model, normal);
 }
