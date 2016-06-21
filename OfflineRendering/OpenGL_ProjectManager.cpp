@@ -32,11 +32,14 @@ void OpenGL_ProjectManager::init()
 		error("program_worldsapce failed to init.");
 	if (!program_flux.init(PATH_SHADER_FLUX_VERT, PATH_SHADER_FLUX_FRAG))
 		error("program_flux failed to init.");
+	if (!program_rsm.init(PATH_SHADER_RSM_VERT, PATH_SHADER_RSM_FRAG))
+		error("program_rsm failed to init.");
 	if (!fbo_light.init()) error("fbo_light failed to init.");
 	fbo_light.init();
 	fbo_normal.init();
 	fbo_worldSpace.init();
 	fbo_flux.init();
+	fbo_rsm.init();
 	//fbo_light.set_colorbuffer(1024, 1024);
 	fbo_light.set_depthbuffer(1024, 1024);
 	fbo_normal.set_colorbuffer(1024, 1024);
@@ -45,6 +48,10 @@ void OpenGL_ProjectManager::init()
 	fbo_worldSpace.set_depthbuffer(1024, 1024);
 	fbo_flux.set_colorbuffer(1024, 1024);
 	fbo_flux.set_depthbuffer(1024, 1024);
+	fbo_rsm.set_depthbuffer(1024, 1024);
+	fbo_rsm.set_colorbuffer(1024, 1024);
+	fbo_rsm.set_colorbuffer(1024, 1024);
+	fbo_rsm.set_colorbuffer(1024, 1024);
 
 	biasMatrix = glm::mat4(
 		0.5, 0.0, 0.0, 0.0,
@@ -113,7 +120,15 @@ void OpenGL_ProjectManager::set_FBO(KFrameBufferObject * buffer)
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, buffer->id_fbo);
-	glViewport(0, 0, buffer->viewport_width() , buffer->viewport_height() );
+	/*
+	*/
+	GLuint attachment[10];
+	for (int i = 0; i < buffer->ids_texutre_color.size(); i++) {
+		attachment[i] = GL_COLOR_ATTACHMENT0 + i;
+	}
+	glDrawBuffers(buffer->ids_texutre_color.size(), attachment);
+
+	glViewport(0, 0, buffer->get_color_width() , buffer->get_color_height() );
 }
 
 void OpenGL_ProjectManager::renderRealTimeBegin()
@@ -146,11 +161,17 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 	worldRender.draw(&mat_light_modelView, program_worldsapce.id_mat_viewModel, program_worldsapce.id_pos, 0 );
 	program_worldsapce.unUse();
 
-	set_FBO(&fbo_normal);
+	set_FBO(&fbo_rsm);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	program_normal.use(glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted));
-	worldRender.draw(&mat_light_modelView, program_normal.id_mat_viewModel, program_normal.id_pos, 0);
-	program_normal.unUse();
+	program_rsm.use(
+		glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted),
+		glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_proj_ortho));
+	
+	//program_worldsapce.use(glm::value_ptr(mat_proj_ortho), glm::value_ptr(mat_light_modelView), glm::value_ptr(mat_light_view_inverted), glm::value_ptr(world_space));
+
+	//worldRender.draw(&mat_light_modelView, program_worldsapce.id_mat_viewModel, program_worldsapce.id_pos, 0);
+	worldRender.draw(&mat_light_modelView, program_rsm.id_mat_viewModel, program_rsm.id_pos, 0);
+	program_rsm.unUse();
 
 	set_FBO(&fbo_flux);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -168,7 +189,7 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 		glm::value_ptr(mat_me_modelView),
 		glm::value_ptr(mat_me_view_inversed),
 		glm::value_ptr(mat_light_MVP),
-		fbo_light.id_texture_depth);
+		fbo_light.get_depth());
 	worldRender.draw(&mat_me_modelView, program_shadow.id_mat_viewModel, program_shadow.id_pos, -1);
 	program_shadow.unUse();
 
@@ -185,11 +206,11 @@ void OpenGL_ProjectManager::renderRealTimeBegin()
 	glm::mat4 m;
 	set_FBO(NULL);
 	glClear(GL_DEPTH_BUFFER_BIT);
-	program_texture.use(glm::value_ptr(mat_proj_ortho_screen), glm::value_ptr(m), fbo_light.id_texture_color);
-	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_worldSpace.id_texture_color, 0);
-	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_light.id_texture_depth, 1);
-	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_normal.id_texture_color, 2);
-	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_flux.id_texture_color, 3);
+	program_texture.use(glm::value_ptr(mat_proj_ortho_screen), glm::value_ptr(m), fbo_light.get_color());
+	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_rsm.get_color(0), 0);
+	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_rsm.get_color(1), 1);
+	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_rsm.get_color(2), 2);
+	render_texture(program_texture.id_pos, program_texture.id_pos_texture, fbo_flux.get_color(), 3);
 	program_texture.unUse();
 
 	glfwSwapBuffers(this->easyGLFW.window);

@@ -34,25 +34,42 @@ bool KFrameBufferObject::init()
 	return returnValue;
 }
 
+bool KFrameBufferObject::init(int width, int height)
+{
+	if (init()) {
+		this->set_colorbuffer(width, height);
+		this->set_depthbuffer(width, height);
+		return true;
+	}
+	return false;
+}
+
 void KFrameBufferObject::set_colorbuffer(int width, int height)
 {
+	std::tuple<GLuint, int, int> texture_color;
 	isColorOn = true;
-	this->color_width = width;
-	this->color_height = height;
 
-	glGenTextures(1, &id_texture_color);
-	glBindTexture(GL_TEXTURE_2D, id_texture_color);
+	std::get<1>(texture_color) = width;
+	std::get<2>(texture_color) = height;
+
+
+	glGenTextures(1,  &std::get<0>(texture_color)  );
+	glBindTexture(GL_TEXTURE_2D, std::get<0>(texture_color));
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_FLOAT, 0);
+	//glBindTexture(GL_TEXTURE_2D,0);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, id_fbo);
-	glDrawBuffer(GL_COLOR_ATTACHMENT0);
-	glReadBuffer(GL_COLOR_ATTACHMENT0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, id_texture_color, 0);
+	glDrawBuffer(GL_COLOR_ATTACHMENT0 + ids_texutre_color.size());
+	glReadBuffer(GL_COLOR_ATTACHMENT0 + ids_texutre_color.size());
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + ids_texutre_color.size(), GL_TEXTURE_2D, std::get<0>(texture_color), 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	ids_texutre_color.push_back(texture_color);
+	//std::cout << "NEW TEXTURE COLOR " << std::get<0>(texture_color) << std::endl;
 
 }
 
@@ -74,12 +91,37 @@ void KFrameBufferObject::set_depthbuffer(int width, int height)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-int KFrameBufferObject::viewport_width()
+
+GLuint KFrameBufferObject::get_color(int id)
 {
-	return (isColorOn)? color_width: depth_width;
+	auto it = ids_texutre_color.begin();
+	std::advance(it, id);
+	//std::cout << "GET COLOR " << std::get<0>(*it) << std::endl;
+	return std::get<0>( *it);
 }
 
-int KFrameBufferObject::viewport_height()
+GLuint KFrameBufferObject::get_depth()
 {
-	return (isColorOn) ? color_height : depth_height;
+	return id_texture_depth;
+}
+
+int KFrameBufferObject::get_color_width(int id)
+{
+
+	if (ids_texutre_color.size() == 0) {
+		return depth_width;
+	}
+	auto it = ids_texutre_color.begin();
+	std::advance(it, id);
+	return std::get<1>(*it);
+}
+
+int KFrameBufferObject::get_color_height(int id)
+{
+	if (ids_texutre_color.size() == 0) {
+		return depth_height;
+	}
+	auto it = ids_texutre_color.begin();
+	std::advance(it, id);
+	return std::get<2>(*it);
 }

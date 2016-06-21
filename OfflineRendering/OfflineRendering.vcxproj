@@ -139,6 +139,7 @@
     <ClCompile Include="HPR.cpp" />
     <ClCompile Include="KFrameBufferObject.cpp" />
     <ClCompile Include="KVertexArrayObject.cpp" />
+    <ClCompile Include="Light_Renderer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="OpenCV_VideoRecorder.cpp" />
     <ClCompile Include="OpenGL_ProjectManager.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="Program_Default.cpp" />
     <ClCompile Include="Program_Flux.cpp" />
     <ClCompile Include="Program_Inversed_View.cpp" />
+    <ClCompile Include="Program_ReflectiveShadowMap.cpp" />
     <ClCompile Include="Program_Shadow.cpp" />
     <ClCompile Include="Program_Texture.cpp" />
     <ClCompile Include="Program_WorldSpace.cpp" />
@@ -163,6 +165,8 @@
     <ClInclude Include="GLFW_InputRaiser.h" />
     <ClInclude Include="KVertexArrayObject.h" />
     <ClInclude Include="KFrameBufferObject.h" />
+    <ClInclude Include="Light_Renderer.h" />
+    <ClInclude Include="I_Light_Renderer_Call.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="GLM_Matrix_Stack.h" />
     <ClInclude Include="OpenCV_VideoRecorder.h" />
@@ -170,7 +174,8 @@
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="Program_Default.h" />
     <ClInclude Include="Program_Flux.h" />
-    <ClInclude Include="Program_View_Inversed.h" />
+    <ClInclude Include="Program_ReflectiveShadowMap.h" />
+    <ClInclude Include="Program_View_Inverted.h" />
     <ClInclude Include="Program_Normal.h" />
     <ClInclude Include="Program_Shadow.h" />
     <ClInclude Include="Program_Texture.h" />

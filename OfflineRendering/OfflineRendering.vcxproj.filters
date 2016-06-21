@@ -31,6 +31,9 @@
     <Filter Include="Header Files\Program">
       <UniqueIdentifier>{b86828d7-dde5-429b-b679-95ab68b73fa7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Light">
+      <UniqueIdentifier>{7d227b19-4977-4057-bf45-10794fbbc465}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -94,6 +97,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Program_Flux.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Light_Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program_ReflectiveShadowMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -176,10 +185,19 @@
     <ClInclude Include="Program_WorldSpace.h">
       <Filter>Header Files\Program</Filter>
     </ClInclude>
-    <ClInclude Include="Program_View_Inversed.h">
+    <ClInclude Include="Program_Flux.h">
       <Filter>Header Files\Program</Filter>
     </ClInclude>
-    <ClInclude Include="Program_Flux.h">
+    <ClInclude Include="Light_Renderer.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="I_Light_Renderer_Call.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Program_ReflectiveShadowMap.h">
+      <Filter>Header Files\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="Program_View_Inverted.h">
       <Filter>Header Files\Program</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,0 +1,20 @@
+#version 120
+uniform sampler2D depthMap; //light depthmap
+
+uniform sampler2D 
+	shadow00_depth,
+	shadow00_color;
+
+in vec4 pos_shadow; //position transformed from the camera perspective
+in vec3 f_vert_normal;
+
+float get_irradiance(
+	float flux_power, 
+	vec3 pos_00, vec3 pos_00_normal,
+	vec3 pos_01, vec3 pos_01_normal){
+	return 0;
+}
+void main()
+{	
+	
+}

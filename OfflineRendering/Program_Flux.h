@@ -1,6 +1,6 @@
 #pragma once
-#include "Program_View_Inversed.h"
-class Program_Flux :public Program_View_Inversed {
+#include "Program_View_Inverted.h"
+class Program_Flux :public Program_View_Inverted {
 public:
 	char*NAME_LIGHT_POS = "light_pos",
 		*NAME_LIGHT_DIR = "light_dir",

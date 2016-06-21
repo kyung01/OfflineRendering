@@ -2,13 +2,15 @@
 uniform vec3 
 	light_pos, light_dir;
 uniform vec4 light_color;
+
 in vec3 f_pos_world;
 in vec3 f_normal;
 
+//light is always 1,1,1
 void main()
 {
 	vec3 normal;
-	vec3 color = light_color.xyz * light_color.w;
+	vec3 color = vec3(1,1,1) * light_color.xyz * light_color.w; // maximum color reflected to eye
 	float length = .0001 + length(f_normal);
 	normal = f_normal /length; //normalize
 
