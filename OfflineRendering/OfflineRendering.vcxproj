@@ -148,6 +148,7 @@
     <ClCompile Include="Program_Flux.cpp" />
     <ClCompile Include="Program_Inversed_View.cpp" />
     <ClCompile Include="Program_ReflectiveShadowMap.cpp" />
+    <ClCompile Include="Program_ReflectiveShadowMap_Apply.cpp" />
     <ClCompile Include="Program_Shadow.cpp" />
     <ClCompile Include="Program_Texture.cpp" />
     <ClCompile Include="Program_WorldSpace.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Program_Default.h" />
     <ClInclude Include="Program_Flux.h" />
     <ClInclude Include="Program_ReflectiveShadowMap.h" />
+    <ClInclude Include="Program_ReflectiveShadowMap_Apply.h" />
     <ClInclude Include="Program_View_Inverted.h" />
     <ClInclude Include="Program_Normal.h" />
     <ClInclude Include="Program_Shadow.h" />

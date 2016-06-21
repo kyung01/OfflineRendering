@@ -1,6 +1,5 @@
 #version 150
-uniform mat4 mat_proj , mat_viewModel;
-uniform mat4 mat_view_inversed;
+uniform mat4 mat_proj , mat_viewModel, mat_view_inversed;
 uniform mat4 mat_light;
 in vec3 pos;
 out vec4 pos_light; //position from the light's perspective

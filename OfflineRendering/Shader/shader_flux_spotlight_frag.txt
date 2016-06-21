@@ -7,6 +7,7 @@ in vec3 f_pos_world;
 in vec3 f_normal;
 
 //light is always 1,1,1
+
 void main()
 {
 	vec3 normal;
@@ -18,10 +19,10 @@ void main()
 
 	float light_added =max(0, dot(light_dir, -dir_from_world_to_light) );
 	float light_power_reflected = max( 0,dot(normal, -light_dir));
-	float light = light_added * light_power_reflected;
+	float light = light_added;// * light_power_reflected;
 
 	gl_FragColor = vec4(color*light,1);
-	//gl_FragColor = vec4(light,0,0,1);
+	gl_FragColor = vec4(light_added,0,0,1);
 
 
 	//gl_FragColor = vec4(abs(light_dir.x),abs(light_dir.y),abs(light_dir.z),1);

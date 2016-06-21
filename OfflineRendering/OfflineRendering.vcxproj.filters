@@ -105,6 +105,9 @@
     <ClCompile Include="Program_ReflectiveShadowMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Program_ReflectiveShadowMap_Apply.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -198,6 +201,9 @@
       <Filter>Header Files\Program</Filter>
     </ClInclude>
     <ClInclude Include="Program_View_Inverted.h">
+      <Filter>Header Files\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="Program_ReflectiveShadowMap_Apply.h">
       <Filter>Header Files\Program</Filter>
     </ClInclude>
   </ItemGroup>

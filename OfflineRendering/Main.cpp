@@ -6,7 +6,7 @@ int main(){
 	OpenGL_ProjectManager glProject;
 	videoRecorder.init();
 	glProject.init();
-	int cycle = 0, cycleMax= 20*20;
+	int cycle = 0, cycleMax= 20*10;
 	while (true) {
 		cycle++;
 		bool isContinue = true;

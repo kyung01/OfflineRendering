@@ -8,6 +8,7 @@
 #include "Program_WorldSpace.h"
 #include "Program_Flux.h"
 #include "Program_ReflectiveShadowMap.h"
+#include "Program_ReflectiveShadowMap_Apply.h"
 #include "KFrameBufferObject.h"
 class OpenGL_ProjectManager {
 	const char* PATH_SHADER_VERTEX_DEFAULT =	"Shader/shader_default_vert.txt";
@@ -27,7 +28,9 @@ class OpenGL_ProjectManager {
 	const char* PATH_SHADER_FLUX_VERT = "Shader/shader_flux_spotlight_vert.txt";
 	const char* PATH_SHADER_FLUX_FRAG = "Shader/shader_flux_spotlight_frag.txt";
 	const char* PATH_SHADER_RSM_VERT = "Shader/shader_RSM_vert.txt";
-	const char* PATH_SHADER_RSM_FRAG = "Shader/shader_RSM_frag.txt";	
+	const char* PATH_SHADER_RSM_FRAG = "Shader/shader_RSM_frag.txt";
+	const char* PATH_SHADER_RSM_APPLY_VERT = "Shader/shader_RSM_apply_vert.txt";
+	const char* PATH_SHADER_RSM_APPLY_FRAG = "Shader/shader_RSM_apply_frag.txt";
 
 	EasyGLFW easyGLFW;
 	WorldRenderer worldRender;
@@ -37,7 +40,8 @@ class OpenGL_ProjectManager {
 	Program_View_Inverted program_normal;
 	Program_Flux program_flux;
 	Program_Shadow	program_shadow;// last
-	Program_ReflectiveShadowMap program_rsm;
+	Program_ReflectiveShadowMap			program_rsm;
+	Program_ReflectiveShadowMap_Apply	program_rsm_apply;
 
 	KFrameBufferObject fbo_light, fbo_normal, fbo_worldSpace, fbo_flux, fbo_rsm;
 	glm::vec3 world_space;
