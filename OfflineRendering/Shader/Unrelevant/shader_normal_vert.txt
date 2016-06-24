@@ -1,0 +1,14 @@
+#version 150
+uniform mat4 mat_proj , mat_viewModel, mat_view_inversed;
+in vec3 pos;
+in vec3 normal;
+out vec3 f_normal;
+
+void main(){
+	vec4 center = mat_viewModel * vec4(0,0,0,1);
+	gl_Position = mat_proj * mat_viewModel * vec4(pos,1);
+	mat4 mat_model = mat_view_inversed * mat_viewModel;
+	f_normal = (mat_model * vec4(normal,1) - mat_model* vec4(0,0,0,1) ).xyz;
+	//f_normal = vec3(0,0,0	);
+
+}

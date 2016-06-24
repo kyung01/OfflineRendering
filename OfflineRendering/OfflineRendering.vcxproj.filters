@@ -206,5 +206,14 @@
     <ClInclude Include="Program_ReflectiveShadowMap_Apply.h">
       <Filter>Header Files\Program</Filter>
     </ClInclude>
+    <ClInclude Include="KLight.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="KEntity.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Program_Deferred.h">
+      <Filter>Header Files\Program</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

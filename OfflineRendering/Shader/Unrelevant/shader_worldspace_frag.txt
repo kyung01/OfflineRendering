@@ -1,0 +1,7 @@
+#version 150
+in vec3 pos_world;
+void main()
+{
+	gl_FragColor = vec4(pos_world , 1);
+	//gl_FragColor = vec4(1,0,0 , 1);
+}

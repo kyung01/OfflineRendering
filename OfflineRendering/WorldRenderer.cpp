@@ -83,8 +83,9 @@ void WorldRenderer::init(KVertexArrayObject& vao,const char* file, float * arr_v
 float move = 0;
 void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id_pos, GLuint id_pos_texture, GLuint id_color )
 {
-	float wall_lighting = 1.0f;
-	move += 0.1f;	
+	float wall_lighting = .3f;
+	move += 0.1f;
+	std::cout << "awssw";
 	// render_environment(matView, id_mat_viewModel, id_pos);
 	glm::mat4 mat;
 	//mat =  glm::scale(mat, glm::vec3(5, 5, 5));
@@ -93,7 +94,7 @@ void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id
 	mat = glm::translate(*matView, glm::vec3(.5, vao_cube.boundingBox.y,-.05f));
 	mat = glm::scale<float>(mat, glm::vec3(1,1,.1f));
 	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
-	glUniform4f(id_color, 1, 0, 0, wall_lighting);
+	glUniform4f(id_color, .0, .0, .9, wall_lighting);
 	glBindVertexArray(vao_cube.id_vertex_array);
 	glDrawElements(GL_TRIANGLES, vao_cube.indice_length * 3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
@@ -101,7 +102,7 @@ void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id
 	mat = glm::translate(*matView, glm::vec3(.5f, -.05, .5f));
 	mat = glm::scale<float>(mat, glm::vec3(1, .1f, 1.f));
 	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
-	glUniform4f(id_color, 0, 1, 0, wall_lighting);
+	glUniform4f(id_color, 0.1, 0.1, 0.1, wall_lighting);
 	glBindVertexArray(vao_cube.id_vertex_array);
 	glDrawElements(GL_TRIANGLES, vao_cube.indice_length * 3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
@@ -110,17 +111,16 @@ void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id
 	mat = glm::translate(*matView, glm::vec3(-.05f, .5f, .5f));
 	mat = glm::scale<float>(mat, glm::vec3(.1f,1.0f, 1.f));
 	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
-	glUniform4f(id_color, 0, 0, 1, wall_lighting);
+	glUniform4f(id_color, .0, .9, .0, wall_lighting);
 	glBindVertexArray(vao_cube.id_vertex_array);
 	glDrawElements(GL_TRIANGLES, vao_cube.indice_length * 3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
 
-		
 	mat = glm::translate(*matView, glm::vec3(.5f, vao_bunny.boundingBox.y/2 , .5f ));
-	mat = glm::rotate<float>(mat, 70 * (3.14 / 90), glm::vec3(0, 1, 0));
+	mat = glm::rotate<float>(mat, (70 +move*14 ) * (3.14 / 90), glm::vec3(0, 1, 0));
 	glUniformMatrix4fv(id_mat_viewModel, 1, GL_FALSE, (float*)glm::value_ptr(mat));
-	glUniform4f(id_color, 1.0f, 1.0f, 1.0f, 1.0f);
+	glUniform4f(id_color, 1.0f, 0.0f, 0.0f, 1.00f);
 	glBindVertexArray(vao_bunny.id_vertex_array);
 	glDrawElements(GL_TRIANGLES, vao_bunny.indice_length*3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);

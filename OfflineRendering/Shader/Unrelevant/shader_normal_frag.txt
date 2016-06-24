@@ -1,0 +1,14 @@
+#version 150
+in vec3 f_normal;
+void main()
+{
+	vec3 normal;
+	float length = .0001 + length(f_normal);
+	normal = f_normal /length; //normalize
+	normal = (normal +1)/2;
+	gl_FragColor = vec4(normal,1);
+	//vec3 normal = (f_normal +1)/2.0;
+	//gl_FragColor.x = length(normal);
+	//gl_FragColor.y=0;
+	//gl_FragColor.z=1;
+}

@@ -35,15 +35,13 @@ class OpenGL_ProjectManager {
 	EasyGLFW easyGLFW;
 	WorldRenderer worldRender;
 	Program_texture program_texture;
-	Program_Default program_default; // will be used to... do stuff
-	Program_WorldSpace program_worldsapce;
-	Program_View_Inverted program_normal;
-	Program_Flux program_flux;
-	Program_Shadow	program_shadow;// last
+
 	Program_ReflectiveShadowMap			program_rsm;
 	Program_ReflectiveShadowMap_Apply	program_rsm_apply;
 
-	KFrameBufferObject fbo_light, fbo_normal, fbo_worldSpace, fbo_flux, fbo_rsm;
+	KFrameBufferObject 
+		//fbo_light, fbo_normal, fbo_worldSpace, fbo_flux, 
+		fbo_rsm;
 	glm::vec3 world_space;
 	glm::mat4 mat_proj_firstPerson;
 	glm::mat4 mat_proj_ortho;
@@ -70,6 +68,8 @@ class OpenGL_ProjectManager {
 	void glm_mat_array(float* arr, glm::mat4 *mat);
 
 	void set_FBO(KFrameBufferObject * buffer);
+	void update(float timeElapsed);
+	void render();
 public:
 	enum RenderState {RENDER_UNDEFINED, RENDER_REALTIME,RENDER_OFFLINE,RENDER_END};
 	RenderState stateRender;

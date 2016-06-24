@@ -164,8 +164,10 @@
     <ClInclude Include="Easy_OpenGL.h" />
     <ClInclude Include="HPR.h" />
     <ClInclude Include="GLFW_InputRaiser.h" />
+    <ClInclude Include="KEntity.h" />
     <ClInclude Include="KVertexArrayObject.h" />
     <ClInclude Include="KFrameBufferObject.h" />
+    <ClInclude Include="KLight.h" />
     <ClInclude Include="Light_Renderer.h" />
     <ClInclude Include="I_Light_Renderer_Call.h" />
     <ClInclude Include="Main.h" />
@@ -174,6 +176,7 @@
     <ClInclude Include="OpenGL_ProjectManager.h" />
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="Program_Default.h" />
+    <ClInclude Include="Program_Deferred.h" />
     <ClInclude Include="Program_Flux.h" />
     <ClInclude Include="Program_ReflectiveShadowMap.h" />
     <ClInclude Include="Program_ReflectiveShadowMap_Apply.h" />

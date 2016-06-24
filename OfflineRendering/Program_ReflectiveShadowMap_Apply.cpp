@@ -10,6 +10,8 @@ void Program_ReflectiveShadowMap_Apply::init_uniformLocs()
 	id_texture_normal = glGetUniformLocation(id_program, NAME_TEXTURE_NORMAL);
 	id_texture_flux = glGetUniformLocation(id_program, NAME_TEXTURE_FLUX);
 	id_rand_seed = glGetUniformLocation(id_program, NAME_RAND_SEED);
+	id_material_color = glGetUniformLocation(id_program, NAME_MATERIAL_COLOR);
+	std::cout << "MATERIAL COLOR " << id_material_color;
 }
 
 void Program_ReflectiveShadowMap_Apply::use(

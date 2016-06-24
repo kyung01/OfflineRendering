@@ -1,0 +1,12 @@
+#version 150
+uniform mat4 mat_proj , mat_viewModel, mat_view_inversed;
+uniform mat4 mat_light;
+in vec3 pos;
+out vec4 pos_light; //position from the light's perspective
+
+void main(){
+	gl_Position = mat_proj * mat_viewModel * vec4(pos,1);
+	pos_light = mat_light * mat_view_inversed * mat_viewModel* vec4(pos,1);
+	//gl_Position = gl_ModelViewProjectionMatrix *mat_model*  gl_Vertex;
+	//gl_TexCoord[0] = gl_MultiTexCoord0;
+}

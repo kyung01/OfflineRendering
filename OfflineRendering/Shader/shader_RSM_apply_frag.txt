@@ -5,25 +5,30 @@ uniform sampler2D
 uniform vec3 world_size;
 uniform float RAND_SEED;
 
+uniform vec4 material_color;
+
 in vec3 f_pos_world;
 in vec3 f_normal;
 in vec4 f_pos_from_light; // position looked from light
 
 
-vec3 calculate(
-	vec3 me,	vec3 me_normal,
-	vec3 other,	vec3 other_normal, vec3 other_flux){
-	vec3 me_other = normalize( other-me);
-	vec3 other_me = normalize(me-other);
-	float a = max(0, dot(me_normal, me_other));
-	float b = max(0, dot(other_normal, other_me));
-	return other_flux * (a * b );
-	//float c = length(me-other);
-	//return other_flux * (a * b / pow(c,4));
-}
 vec3 kNormalize(vec3 normal){
 	float length = .000001 + length(normal);
 	return normal / length;
+}
+vec3 calculate(
+	vec3 me,	vec3 me_normal,
+	vec3 other,	vec3 other_normal, vec3 other_flux){
+	vec3 me_other = other-me;
+	vec3 other_me = me-other;
+	float a = max(0, dot(me_normal, me_other));
+	float b = max(0, dot(other_normal, other_me));
+	//return other_flux * (a * b );
+	float c = length(me-other);
+	//return other_flux * (a * b / pow(c,4)  )  ;// * max(0,(1-pow(c,2) ) ) ;
+	return other_flux * (a*b / (c*c)  ) * max(0,(1- c*c) );// vec3(a*b,0,0);
+	return other_flux  * max(0,dot(me_normal, kNormalize(me_other) ));
+	
 }
 vec3 calculate(
 			vec3 vert_world, vec3 vert_fromLight, vec3 vert_normal, 
@@ -38,7 +43,7 @@ vec3 calculate(
 	other_normal -= vec3(.5,.5,.5);
 	other_normal *= 2.0f;
 
-	vec3 color = calculate(vert_world, vert_normal, other_position,other_normal,other_flux );
+	vec3 color = calculate(vert_world, vert_normal, other_position,other_normal,other_flux )  ;
 	return color;
 	
 
@@ -53,24 +58,37 @@ float rand(float a, float b){
 void main()
 {
 	vec3 color;
-	float distance = .07;
-	for(float i =0; i < 100; i++){
-		vec2 rand_position = vec2(-.5f + rand(0,i), -.5f +rand(1,i) ) *2.0f;
-		float rand_length = rand(vec2(2,i)) *distance;
-		//vec2 dir = vec2(cos(angle), sin(angle));
-		color += 
-			calculate(f_pos_world, f_pos_from_light.xyz/f_pos_from_light.w ,f_normal, rand_position * rand_length)
-			* sqrt(rand_position.x * rand_position.x + rand_position.y * rand_position.y);
-		//color += calculate(f_pos_world, f_pos_from_light.xyz,f_normal, dir * (i/500.0f) * distance );
-	}
-
-
+	color = material_color.xyz ;
 	float z_light = texture2D(texture_depth,f_pos_from_light.xy).z; //closest dist from light
 	float z = f_pos_from_light.z -0.04;
-	if(z_light > z){
-		color += vec3(.1f,.1f,.1f);
+	if(z > z_light){
+		color *= .1f;
+		//color += vec3(.1f,.1f,.1f);
 	}
-	else;//gl_FragColor = vec4(visibility,visibility,visibility,1);
+
+
+	float power = 1.0f;
+	float distance = .1;
+	for(float i =0; i < 360*2; i++){
+		float rand_angle =	rand(0,i); rand_angle = i;
+		float rand_dist =	rand(1,i);
+		vec2 rand_position = vec2(cos(3.14/180 *rand_angle),sin(3.14/180 *rand_angle) ) * (rand_dist * distance + .0001f);
+		color +=  calculate(f_pos_world, f_pos_from_light.xyz ,f_normal, rand_position) ;
+
+
+
+
+		//color +=  calculate(f_pos_world, f_pos_from_light.xyz/f_pos_from_light.w ,f_normal, rand_position) ;
+		//	* (1.41/sqrt(rand_position.x * rand_position.x+rand_position.y*rand_position.y ) * rand_length );
+		//color += calculate(f_pos_world, f_pos_from_light.xyz,f_normal, dir * (i/500.0f) * distance );
+	}
+	color /= 2;
+	//color *= power;
+
+
+	//color = material_color;
+	
+	//else;//gl_FragColor = vec4(visibility,visibility,visibility,1);
 
 	gl_FragColor = vec4(color ,1);
 }
