@@ -21,8 +21,8 @@ void OpenGL_ProjectManager::init()
 
 	worldRender.init();
 	world_space = glm::vec3(3, 3, 3);
-	//if (!program_texture.init(PATH_SHADER_TEXTURE_VERT, PATH_SHADER_TEXTURE_FRAG))
-	//	error("Program_texture failed to init.");
+	if (!program_texture.init_old(PATH_SHADER_TEXTURE_VERT, PATH_SHADER_TEXTURE_FRAG))
+		error("Program_texture failed to init.");
 	if (!program_rsm.init_old(PATH_SHADER_RSM_VERT, PATH_SHADER_RSM_FRAG))
 		error("program_rsm failed to init.");
 	if (!program_rsm_apply.init_old(PATH_SHADER_RSM_APPLY_VERT, PATH_SHADER_RSM_APPLY_FRAG))

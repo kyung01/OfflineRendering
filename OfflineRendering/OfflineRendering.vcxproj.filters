@@ -141,6 +141,9 @@
     <ClCompile Include="Program_Default.cpp">
       <Filter>Source Files\Program</Filter>
     </ClCompile>
+    <ClCompile Include="Shader_Element.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">

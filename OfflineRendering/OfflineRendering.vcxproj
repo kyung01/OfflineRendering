@@ -156,6 +156,7 @@
     <ClCompile Include="Program_Texture.cpp" />
     <ClCompile Include="Program_WorldSpace.cpp" />
     <ClCompile Include="Shader_Default.cpp" />
+    <ClCompile Include="Shader_Element.cpp" />
     <ClCompile Include="VAO_Dictionary.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="WorldRenderer.cpp" />

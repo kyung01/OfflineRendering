@@ -4,6 +4,7 @@
 #include <map>
 #include "GL\glew.h"
 #include "Easy_OpenGL.h"
+#include "Shader_Element.h"
 
 class Program_Default {
 	enum SHADER_UNIFORM_TYPE {MATRIX, VEC3, VEC4 };
@@ -14,11 +15,16 @@ class Program_Default {
 		*NAME_MATRIX_VIEWMODEL = "mat_viewModel",
 		*NAME_POSITION = "pos";
 
+	Shader_Element 
+		mat_proj, 
+		mat_viewModel, 
+		vert_pos;
+
 
 
 	//int open_file(char* arr, int arr_size, const char* path); 
 	bool is_shader_compiled(GLuint shader_id);
-	
+	bool init_shader(char* path_vert, char* path_frag);
 	bool init_shader(GLuint * shader_id, GLenum shaderType, char * data, int data_size);
 protected :
 	virtual void init_uniformLocs();
