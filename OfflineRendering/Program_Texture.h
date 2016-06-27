@@ -11,6 +11,6 @@ public:
 		id_texture_00;
 	Program_texture();
 
-	bool init(const char* path_vert, const char* path_frag) override;// initialize 
+	bool init_old(const char* path_vert, const char* path_frag) override;// initialize 
 	void use(float* mat_proj, float* mat_viewModel, GLuint texture);
 };

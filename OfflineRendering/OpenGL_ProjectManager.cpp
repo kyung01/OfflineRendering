@@ -8,7 +8,7 @@
 #include "glm\gtc\type_ptr.hpp"
 
 
-float movement = 3.14/2;
+float movement = 0;// 3.14 / 2;
 
 void OpenGL_ProjectManager::init()
 {
@@ -21,11 +21,11 @@ void OpenGL_ProjectManager::init()
 
 	worldRender.init();
 	world_space = glm::vec3(3, 3, 3);
-	if (!program_texture.init(PATH_SHADER_TEXTURE_VERT, PATH_SHADER_TEXTURE_FRAG))
-		error("Program_texture failed to init.");
-	if (!program_rsm.init(PATH_SHADER_RSM_VERT, PATH_SHADER_RSM_FRAG))
+	//if (!program_texture.init(PATH_SHADER_TEXTURE_VERT, PATH_SHADER_TEXTURE_FRAG))
+	//	error("Program_texture failed to init.");
+	if (!program_rsm.init_old(PATH_SHADER_RSM_VERT, PATH_SHADER_RSM_FRAG))
 		error("program_rsm failed to init.");
-	if (!program_rsm_apply.init(PATH_SHADER_RSM_APPLY_VERT, PATH_SHADER_RSM_APPLY_FRAG))
+	if (!program_rsm_apply.init_old(PATH_SHADER_RSM_APPLY_VERT, PATH_SHADER_RSM_APPLY_FRAG))
 		error("program_rsm failed to init.");
 	program_rsm_apply.set_rand_seed(rand());
 
@@ -46,7 +46,7 @@ void OpenGL_ProjectManager::init()
 	mat_proj_ortho_screen = glm::ortho<float>(0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT, 0);
 	
 	mat_me_modelView = glm::lookAt(
-		glm::vec3(1.2f, .9f, 1.2f), 
+		glm::vec3(1.2f, .9f , 1.2f), 
 		glm::vec3(0.5f, 0.3f, .5f), 
 		glm::vec3(0, 1, 0));
 	mat_me_view_inversed = glm::inverse(mat_me_modelView);
@@ -118,16 +118,20 @@ void OpenGL_ProjectManager::set_FBO(KFrameBufferObject * buffer)
 void OpenGL_ProjectManager::update(float timeElapsed)
 {
 	cout << "Wsw" << endl;
-	movement = 90;
+	movement += .002f;
+	mat_me_modelView = glm::lookAt(
+		glm::vec3(1.2f, .9f -movement, 1.2f),
+		glm::vec3(0.5f, 0.3f, .5f),
+		glm::vec3(0, 1, 0));
 }
 
 void OpenGL_ProjectManager::render()
 {
-
+	//cout << "WEEWWE";
 	glm::vec3
 		world_size = glm::vec3(1, 1, 1),
-		lightPos = glm::vec3(0.5, 1.0, 0.5) + glm::vec3(abs(cos(movement)), 0, abs(sin(movement))) *1.5f,
-		lightCenter = glm::vec3(.5f, 0, .5f),
+		lightPos = glm::vec3(0.4, .5, 0.0) + glm::vec3(abs(cos(0 + 45)), 0, abs(sin(0 + 45))) *1.5f,
+		lightCenter = glm::vec3(.0f, 0, .0f),
 		lightDir = glm::normalize(lightCenter - lightPos);
 
 	mat_light_modelView = glm::lookAt(

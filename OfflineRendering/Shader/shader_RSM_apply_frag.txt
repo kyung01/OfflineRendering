@@ -26,7 +26,7 @@ vec3 calculate(
 	//return other_flux * (a * b );
 	float c = length(me-other);
 	//return other_flux * (a * b / pow(c,4)  )  ;// * max(0,(1-pow(c,2) ) ) ;
-	return other_flux * (a*b / (c*c)  ) * max(0,(1- c*c) );// vec3(a*b,0,0);
+	return other_flux * (a*b / (c*c)  ) * max(0,(1- pow(c,2) ) );// vec3(a*b,0,0);
 	return other_flux  * max(0,dot(me_normal, kNormalize(me_other) ));
 	
 }
@@ -58,7 +58,8 @@ float rand(float a, float b){
 void main()
 {
 	vec3 color;
-	color = material_color.xyz ;
+	//color = material_color.xyz *.5f;
+	color = vec3(.1,.1,.1);
 	float z_light = texture2D(texture_depth,f_pos_from_light.xy).z; //closest dist from light
 	float z = f_pos_from_light.z -0.04;
 	if(z > z_light){
@@ -68,21 +69,20 @@ void main()
 
 
 	float power = 1.0f;
-	float distance = .1;
-	for(float i =0; i < 360*2; i++){
-		float rand_angle =	rand(0,i); rand_angle = i;
-		float rand_dist =	rand(1,i);
-		vec2 rand_position = vec2(cos(3.14/180 *rand_angle),sin(3.14/180 *rand_angle) ) * (rand_dist * distance + .0001f);
-		color +=  calculate(f_pos_world, f_pos_from_light.xyz ,f_normal, rand_position) ;
-
-
-
-
-		//color +=  calculate(f_pos_world, f_pos_from_light.xyz/f_pos_from_light.w ,f_normal, rand_position) ;
-		//	* (1.41/sqrt(rand_position.x * rand_position.x+rand_position.y*rand_position.y ) * rand_length );
-		//color += calculate(f_pos_world, f_pos_from_light.xyz,f_normal, dir * (i/500.0f) * distance );
+	float distance = .07;
+	float distance_half = distance / 2;
+	float dimension_per_distance = 160;
+	float dimension = distance * dimension_per_distance;
+	float i_max = dimension, j_max = dimension;
+	for(float i = 0; i < i_max; i++){
+		for(float j = 0 ; j < j_max;j++){
+			float width = distance / i_max;
+			float height = distance / j_max;
+			vec2 position =  vec2(-distance_half + distance * (i/i_max), -distance_half + distance *(j/j_max));
+			color +=  calculate(f_pos_world, f_pos_from_light.xyz ,f_normal, position) * (dimension*dimension*.002f);
+		}
 	}
-	color /= 2;
+	//color /= i_max;
 	//color *= power;
 
 

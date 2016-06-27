@@ -28,7 +28,7 @@ void AssimpScene::update_center(float * vert, int length, aiVector3D & min, aiVe
 		vert[i + 1] -= sceneCenter.y;
 		vert[i + 2] -= sceneCenter.z;
 	}
-	sceneCenter = aiVector3D();
+	center = aiVector3D();
 }
 
 void AssimpScene::rescale_verts(float * vert, int length)

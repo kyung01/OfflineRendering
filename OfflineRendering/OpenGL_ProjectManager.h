@@ -1,5 +1,6 @@
 #pragma once
 #include "EasyGLFW.h"
+#include "World.h"
 #include "WorldRenderer.h"
 #include "Program_Default.h"
 #include "Program_Texture.h"
@@ -33,6 +34,7 @@ class OpenGL_ProjectManager {
 	const char* PATH_SHADER_RSM_APPLY_FRAG = "Shader/shader_RSM_apply_frag.txt";
 
 	EasyGLFW easyGLFW;
+	KGame::World world;
 	WorldRenderer worldRender;
 	Program_texture program_texture;
 

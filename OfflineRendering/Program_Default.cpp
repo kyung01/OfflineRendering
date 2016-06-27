@@ -1,5 +1,6 @@
 #include "Program_Default.h"
-#include <fstream>
+#include "EASY_STD.h"
+/*
 int Program_Default::open_file(char * arr, int arr_size, const char * path)
 {
 	int n = 0;
@@ -14,6 +15,7 @@ int Program_Default::open_file(char * arr, int arr_size, const char * path)
 
 	return n;
 }
+*/
 
 bool Program_Default::is_shader_compiled(GLuint shader_id)
 {
@@ -56,16 +58,16 @@ void Program_Default::init_uniformLocs()
 	id_mat_viewModel = glGetUniformLocation(id_program, NAME_MATRIX_VIEWMODEL);
 	id_pos = glGetAttribLocation(id_program, NAME_POSITION);
 }
-bool Program_Default::init(const char * path_vert, const char * path_frag)
+bool Program_Default::init_old(const char * path_vert, const char * path_frag)
 {
 	const int ARR_SIZE = 5000;
 	int source_length;
 	char arr[ARR_SIZE];
 	char *arr_pointer = &arr[0];
 	bool is_shader_compiled00, is_shader_compiled01;
-	source_length= open_file(arr, ARR_SIZE, path_vert);
+	source_length= Easy_STD::READ_FILE(arr, ARR_SIZE, (char*)path_vert);
 	if (!init_shader(&id_shader_vert, GL_VERTEX_SHADER, arr_pointer, source_length)) return false;
-	source_length = open_file(arr, ARR_SIZE, path_frag);
+	source_length = Easy_STD::READ_FILE(arr, ARR_SIZE, (char*)path_frag);
 	if (!init_shader(&id_shader_frag, GL_FRAGMENT_SHADER, arr_pointer, source_length)) return false;
 
 
@@ -84,6 +86,11 @@ bool Program_Default::init(const char * path_vert, const char * path_frag)
 	
 	init_uniformLocs();
 	return true;
+}
+
+bool Program_Default::init(const char * path_vert, const char * path_frag)
+{
+	return false;
 }
 
 void Program_Default::use(float * mat_proj, float * mat_viewModel)

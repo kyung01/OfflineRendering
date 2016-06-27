@@ -22,9 +22,6 @@
     <Filter Include="Source Files\Player">
       <UniqueIdentifier>{a1ada4b9-12a6-4375-a4f4-8d1e83bf806f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Player">
-      <UniqueIdentifier>{7b6f4e25-cdee-443c-8087-ad060fd8bda4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\World">
       <UniqueIdentifier>{ad69da2b-d5d2-4ed0-89b3-b4c9ad3dad57}</UniqueIdentifier>
     </Filter>
@@ -33,6 +30,27 @@
     </Filter>
     <Filter Include="Header Files\Light">
       <UniqueIdentifier>{7d227b19-4977-4057-bf45-10794fbbc465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World\Entities">
+      <UniqueIdentifier>{f41882f0-18d3-4172-a6e0-5469001f3905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\World">
+      <UniqueIdentifier>{1540eaa0-0172-48d8-99ef-ade8feb863db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World\Render">
+      <UniqueIdentifier>{d9476cbd-c9bf-4a6d-bacb-61bd9c7939bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\World\Render">
+      <UniqueIdentifier>{21bd26c1-3471-47a2-bcd6-bc9184a652e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GLSL">
+      <UniqueIdentifier>{8a6335f6-2ad2-44f8-b2b7-68d71239969d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{7b6f4e25-cdee-443c-8087-ad060fd8bda4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Program">
+      <UniqueIdentifier>{93d251fa-cc9e-46a0-ba19-631ba53ac5cf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -60,9 +78,6 @@
     <ClCompile Include="OpenGL_ProjectManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WorldRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AssimpScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,41 +87,59 @@
     <ClCompile Include="GLM_Matrix_Stack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Program_Default.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Easy_OpenGL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="KFrameBufferObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Program_Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Program_Shadow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="KVertexArrayObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Program_Inversed_View.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Program_WorldSpace.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Program_Flux.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Light_Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Program_ReflectiveShadowMap.cpp">
+    <ClCompile Include="WorldRenderer.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="VAO_Dictionary.cpp">
+      <Filter>Source Files\World\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Easy_STD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Program_Flux.cpp">
+      <Filter>Source Files\Program</Filter>
+    </ClCompile>
+    <ClCompile Include="Program_Inversed_View.cpp">
+      <Filter>Source Files\Program</Filter>
+    </ClCompile>
+    <ClCompile Include="Program_ReflectiveShadowMap.cpp">
+      <Filter>Source Files\Program</Filter>
+    </ClCompile>
     <ClCompile Include="Program_ReflectiveShadowMap_Apply.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Program</Filter>
+    </ClCompile>
+    <ClCompile Include="Program_Shadow.cpp">
+      <Filter>Source Files\Program</Filter>
+    </ClCompile>
+    <ClCompile Include="Program_Texture.cpp">
+      <Filter>Source Files\Program</Filter>
+    </ClCompile>
+    <ClCompile Include="Program_WorldSpace.cpp">
+      <Filter>Source Files\Program</Filter>
+    </ClCompile>
+    <ClCompile Include="Program_Default.cpp">
+      <Filter>Source Files\Program</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,9 +174,6 @@
       <Filter>Header Files\World</Filter>
     </ClInclude>
     <ClInclude Include="World.h">
-      <Filter>Header Files\World</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldRenderer.h">
       <Filter>Header Files\World</Filter>
     </ClInclude>
     <ClInclude Include="GLFW_InputRaiser.h">
@@ -206,14 +236,32 @@
     <ClInclude Include="Program_ReflectiveShadowMap_Apply.h">
       <Filter>Header Files\Program</Filter>
     </ClInclude>
-    <ClInclude Include="KLight.h">
-      <Filter>Header Files\World</Filter>
-    </ClInclude>
-    <ClInclude Include="KEntity.h">
-      <Filter>Header Files\World</Filter>
-    </ClInclude>
     <ClInclude Include="Program_Deferred.h">
       <Filter>Header Files\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="KMaterial.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldRenderer.h">
+      <Filter>Header Files\World\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="VAO_Dictionary.h">
+      <Filter>Header Files\World\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader_Element.h">
+      <Filter>Header Files\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="Easy_STD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Easy_GLSL.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

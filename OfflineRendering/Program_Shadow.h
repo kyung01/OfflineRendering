@@ -8,7 +8,7 @@ public:
 	GLuint 
 		id_texture_depth,
 		id_mat_light;
-	bool init(const char* path_vert, const char*path_frag) override;
+	bool init_old(const char* path_vert, const char*path_frag) override;
 	void use(float* proj, float* modelView, float* view_inverted , float* mat_light_MVP, GLuint texture_depth);
 	void unUse();
 };

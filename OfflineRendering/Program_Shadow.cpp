@@ -1,8 +1,8 @@
 #include "Program_Shadow.h"
 
-bool Program_Shadow::init(const char * path_vert, const char * path_frag)
+bool Program_Shadow::init_old(const char * path_vert, const char * path_frag)
 {
-	bool result = Program_View_Inverted::init(path_vert, path_frag);
+	bool result = Program_View_Inverted::init_old(path_vert, path_frag);
 	id_texture_depth =	glGetUniformLocation(id_program, NAME_TEXTURE_DEPTH);
 	id_mat_light =		glGetUniformLocation(id_program, NAME_MAT_LIGHT);
 	return result;
