@@ -1,8 +1,8 @@
 #include "Program_Texture.h"
 
-void Program_texture::init_uniformLocs()
+void Program_texture::init_shader_locations()
 {
-	Program_Default::init_uniformLocs();
+	Program_Default::init_shader_locations();
 	id_pos_texture = glGetAttribLocation(id_program, NAME_POSITION_TEXTURE);
 	id_texture_00 = glGetUniformLocation(id_program, NAME_TEXTURE_00);
 }

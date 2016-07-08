@@ -96,9 +96,6 @@
     <ClCompile Include="KVertexArrayObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Light_Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WorldRenderer.cpp">
       <Filter>Source Files\World</Filter>
     </ClCompile>
@@ -117,9 +114,6 @@
     <ClCompile Include="Easy_STD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Program_Flux.cpp">
-      <Filter>Source Files\Program</Filter>
-    </ClCompile>
     <ClCompile Include="Program_Inversed_View.cpp">
       <Filter>Source Files\Program</Filter>
     </ClCompile>
@@ -129,13 +123,7 @@
     <ClCompile Include="Program_ReflectiveShadowMap_Apply.cpp">
       <Filter>Source Files\Program</Filter>
     </ClCompile>
-    <ClCompile Include="Program_Shadow.cpp">
-      <Filter>Source Files\Program</Filter>
-    </ClCompile>
     <ClCompile Include="Program_Texture.cpp">
-      <Filter>Source Files\Program</Filter>
-    </ClCompile>
-    <ClCompile Include="Program_WorldSpace.cpp">
       <Filter>Source Files\Program</Filter>
     </ClCompile>
     <ClCompile Include="Program_Default.cpp">
@@ -209,26 +197,8 @@
     <ClInclude Include="Program_Default.h">
       <Filter>Header Files\Program</Filter>
     </ClInclude>
-    <ClInclude Include="Program_Shadow.h">
-      <Filter>Header Files\Program</Filter>
-    </ClInclude>
     <ClInclude Include="KVertexArrayObject.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Program_Normal.h">
-      <Filter>Header Files\Program</Filter>
-    </ClInclude>
-    <ClInclude Include="Program_WorldSpace.h">
-      <Filter>Header Files\Program</Filter>
-    </ClInclude>
-    <ClInclude Include="Program_Flux.h">
-      <Filter>Header Files\Program</Filter>
-    </ClInclude>
-    <ClInclude Include="Light_Renderer.h">
-      <Filter>Header Files\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="I_Light_Renderer_Call.h">
-      <Filter>Header Files\Light</Filter>
     </ClInclude>
     <ClInclude Include="Program_ReflectiveShadowMap.h">
       <Filter>Header Files\Program</Filter>
@@ -237,9 +207,6 @@
       <Filter>Header Files\Program</Filter>
     </ClInclude>
     <ClInclude Include="Program_ReflectiveShadowMap_Apply.h">
-      <Filter>Header Files\Program</Filter>
-    </ClInclude>
-    <ClInclude Include="Program_Deferred.h">
       <Filter>Header Files\Program</Filter>
     </ClInclude>
     <ClInclude Include="KMaterial.h">
@@ -257,14 +224,17 @@
     <ClInclude Include="VAO_Dictionary.h">
       <Filter>Header Files\World\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Shader_Element.h">
-      <Filter>Header Files\Program</Filter>
-    </ClInclude>
     <ClInclude Include="Easy_STD.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Easy_GLSL.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader_Element.h">
+      <Filter>Header Files\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="Program_Deferred.h">
+      <Filter>Source Files\Program</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,13 +11,15 @@ class Program_ReflectiveShadowMap : public Program_View_Inverted {
 		*NAME_TEXTURE_NORMAL = "texture_normal",
 		*NAME_TEXTURE_FLUX = "texture_flux";
 	*/
+
+protected:
+	void init_shader_locations() override;
 public:
 	GLuint
 		id_world_size,
 		id_light_pos, id_light_dir, id_light_color,
 		id_tex_worldPosition, id_tex_normal, id_tex_flux,
 		id_material_color;
-	void init_uniformLocs() override;
 	void use(
 		float* mat_proj, float* mat_viewModel, float* mat_view_inverted,
 		float* world_size,

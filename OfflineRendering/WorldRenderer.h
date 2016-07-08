@@ -4,7 +4,6 @@
 #include "AssimpScene.h"
 #include "KVertexArrayObject.h"
 #include "glm\glm.hpp"
-#include "Program_Deferred.h"
 class WorldRenderer {
 	const char
 		*PATH_PLY_BUNNY		= "Model/bunny.ply",

@@ -1,8 +1,8 @@
 #include "Program_ReflectiveShadowMap.h"
 
-void Program_ReflectiveShadowMap::init_uniformLocs()
+void Program_ReflectiveShadowMap::init_shader_locations()
 {
-	Program_View_Inverted::init_uniformLocs();
+	Program_View_Inverted::init_shader_locations();
 	id_light_pos = glGetUniformLocation(id_program, NAME_LIGHT_POS);
 	id_light_dir = glGetUniformLocation(id_program, NAME_LIGHT_DIR);
 	id_light_color = glGetUniformLocation(id_program, NAME_LIGHT_COLOR);

@@ -15,10 +15,7 @@ class Program_Default {
 		*NAME_MATRIX_VIEWMODEL = "mat_viewModel",
 		*NAME_POSITION = "pos";
 
-	Shader_Element 
-		mat_proj, 
-		mat_viewModel, 
-		vert_pos;
+
 
 
 
@@ -27,15 +24,19 @@ class Program_Default {
 	bool init_shader(char* path_vert, char* path_frag);
 	bool init_shader(GLuint * shader_id, GLenum shaderType, char * data, int data_size);
 protected :
-	virtual void init_uniformLocs();
+	virtual void init_shader_locations();
 public:
+	Shader_Element
+		mat_proj,
+		mat_viewModel,
+		vert_pos;
+
 	GLuint
 		id_program, id_shader_vert, id_shader_frag,
 		id_mat_proj, id_mat_viewModel,
 		id_pos;
 
 	Program_Default();
-	virtual bool init_old(const char* path_vert, const char* path_frag);// initialize
 	bool init(const char* path_vert, const char* path_frag);
 	void use(float* mat_proj, float* mat_viewModel);
 	void unUse();

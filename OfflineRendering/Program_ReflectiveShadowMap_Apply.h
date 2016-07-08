@@ -10,12 +10,13 @@ class Program_ReflectiveShadowMap_Apply : public Program_View_Inverted {
 		*NAME_WORLD_SIZE = "world_size",
 		*NAME_RAND_SEED = "RAND_SEED",
 		*NAME_MATERIAL_COLOR = "material_color";
+protected:
+	void init_shader_locations() override;
 public:
 	GLuint
 		id_mat_light, id_world_size,
 		id_texture_position, id_texture_depth, id_texture_normal, id_texture_flux, id_rand_seed,
 		id_material_color;
-	void init_uniformLocs() override;
 	void use(
 		float* mat_proj, float* mat_viewModel, float* mat_view_inverted, float* mat_light,
 		float* world_size,
