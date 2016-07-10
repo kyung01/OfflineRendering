@@ -10,4 +10,5 @@ public:
 	Shader_Element link(GLuint program_Id);
 	void assign(float *);
 	void assign(int*);
+	GLuint get_id();
 };

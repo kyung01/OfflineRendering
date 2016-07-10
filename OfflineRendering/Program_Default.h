@@ -29,7 +29,7 @@ public:
 	Shader_Element
 		mat_proj,
 		mat_viewModel,
-		vert_pos;
+		vert_pos, vert_texture_pos;
 
 	GLuint
 		id_program, id_shader_vert, id_shader_frag,

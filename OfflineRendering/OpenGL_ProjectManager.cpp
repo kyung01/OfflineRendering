@@ -27,6 +27,8 @@ void OpenGL_ProjectManager::init()
 		error("program_rsm failed to init.");
 	if (!program_rsm_apply.init(PATH_SHADER_RSM_APPLY_VERT, PATH_SHADER_RSM_APPLY_FRAG))
 		error("program_rsm failed to init.");
+	if (!program_deferred.init("Shader/shader_deferred_vert.txt", "Shader/shader_deferred_frag.txt"))
+		error("program_deferred failed to init");
 	program_rsm_apply.set_rand_seed(rand());
 
 	fbo_rsm.init();
@@ -45,11 +47,11 @@ void OpenGL_ProjectManager::init()
 	mat_proj_ortho = glm::ortho<float>(-2, 2, -2, 2, 0, 5);
 	mat_proj_ortho_screen = glm::ortho<float>(0, GlobalVariables::CONTEXT_WIDTH, GlobalVariables::CONTEXT_HEIGHT, 0);
 	
-	mat_me_modelView = glm::lookAt(
+	mat_me_viewModel = glm::lookAt(
 		glm::vec3(1.2f, .9f , 1.2f), 
 		glm::vec3(0.5f, 0.3f, .5f), 
 		glm::vec3(0, 1, 0));
-	mat_me_view_inversed = glm::inverse(mat_me_modelView);
+	mat_me_view_inversed = glm::inverse(mat_me_viewModel);
 	glm::vec3
 		lightPos = glm::vec3(1.5f, .5f, 2.5),
 		lightCenter = glm::vec3(lightPos.x, 0, 0) + glm::vec3(cos(movement), 0, 0)* 1.25f;
@@ -60,6 +62,8 @@ void OpenGL_ProjectManager::init()
 		glm::vec3(0, 1, 0));
 	
 	mat_light_MVP = biasMatrix * mat_proj_ortho * mat_light_modelView;
+
+	world.load_scene00();
 
 }
 void OpenGL_ProjectManager::render_texture(GLuint id_vert, GLuint id_vert_texture, GLuint id_texture, int index)
@@ -117,9 +121,8 @@ void OpenGL_ProjectManager::set_FBO(KFrameBufferObject * buffer)
 
 void OpenGL_ProjectManager::update(float timeElapsed)
 {
-	cout << "Wsw" << endl;
 	movement += .002f;
-	mat_me_modelView = glm::lookAt(
+	mat_me_viewModel = glm::lookAt(
 		glm::vec3(1.2f, .9f -movement, 1.2f),
 		glm::vec3(0.5f, 0.3f, .5f),
 		glm::vec3(0, 1, 0));
@@ -127,7 +130,18 @@ void OpenGL_ProjectManager::update(float timeElapsed)
 
 void OpenGL_ProjectManager::render()
 {
-	//cout << "WEEWWE";
+	glm::mat4 mat;
+	set_FBO(NULL);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glUseProgram(program_deferred.id_program);
+	program_deferred.mat_proj.assign(glm::value_ptr(mat_proj_firstPerson));
+	program_deferred.mat_viewModel.assign(glm::value_ptr(mat_me_viewModel));
+	worldRender.render(world, mat_me_viewModel, program_deferred.mat_viewModel.get_id(), program_deferred.vert_pos.get_id(), program_deferred.vert_texture_pos.get_id(),program_deferred.material_color.get_id());
+	//worldRender.draw(&mat_me_viewModel, program_deferred.id_mat_viewModel, program_deferred.id_pos, 0, program_rsm_apply.id_material_color);
+	glUseProgram(0);
+
+
+	return;
 	glm::vec3
 		world_size = glm::vec3(1, 1, 1),
 		lightPos = glm::vec3(0.4, .5, 0.0) + glm::vec3(abs(cos(0 + 45)), 0, abs(sin(0 + 45))) *1.5f,
@@ -150,19 +164,19 @@ void OpenGL_ProjectManager::render()
 		glm::value_ptr(world_size),
 		glm::value_ptr(lightPos), glm::value_ptr(lightDir), glm::value_ptr(color_default),
 		glm::value_ptr(color_default));
-	worldRender.draw(&mat_light_modelView, program_rsm.id_mat_viewModel, program_rsm.id_pos, 0, program_rsm.id_material_color);
+	worldRender.draw(&mat_light_modelView, program_rsm.id_mat_viewModel, program_rsm.id_pos, 0, program_rsm.material_color.get_id());
 	program_rsm.unUse();
 
 	set_FBO(NULL);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	program_rsm_apply.use(
-		glm::value_ptr(mat_proj_firstPerson), glm::value_ptr(mat_me_modelView), glm::value_ptr(mat_me_view_inversed),
+		glm::value_ptr(mat_proj_firstPerson), glm::value_ptr(mat_me_viewModel), glm::value_ptr(mat_me_view_inversed),
 		glm::value_ptr(mat_light_MVP),
 		glm::value_ptr(world_size),
 		fbo_rsm.get_color(0), fbo_rsm.get_depth(), fbo_rsm.get_color(1), fbo_rsm.get_color(2));
 
-	worldRender.draw(&mat_me_modelView, program_rsm_apply.id_mat_viewModel, program_rsm_apply.id_pos, 0, program_rsm_apply.id_material_color);
+	worldRender.draw(&mat_me_viewModel, program_rsm_apply.id_mat_viewModel, program_rsm_apply.id_pos, 0, program_rsm_apply.id_material_color);
 	program_rsm_apply.unUse();
 
 	glm::mat4 m;

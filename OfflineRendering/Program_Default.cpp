@@ -45,6 +45,7 @@ void Program_Default::init_shader_locations()
 	mat_proj		.init(id_program,"mat_proj",true, Easy_GLSL::GLSL_VARIABLE_TYPE::MAT4);
 	mat_viewModel	.init(id_program,"mat_viewModel", true, Easy_GLSL::GLSL_VARIABLE_TYPE::MAT4);
 	vert_pos		.init(id_program,"vert_pos", false, Easy_GLSL::GLSL_VARIABLE_TYPE::VEC3);
+	vert_texture_pos.init(id_program, "vert_texture_pos", false, Easy_GLSL::GLSL_VARIABLE_TYPE::VEC2);
 }
 bool Program_Default::init(const char * path_vert, const char * path_frag)
 {

@@ -147,6 +147,7 @@
     <ClCompile Include="OpenGL_ProjectManager.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="Program_Default.cpp" />
+    <ClCompile Include="Program_Deferred.cpp" />
     <ClCompile Include="Program_Inversed_View.cpp" />
     <ClCompile Include="Program_ReflectiveShadowMap.cpp" />
     <ClCompile Include="Program_ReflectiveShadowMap_Apply.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpScene.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="EasyGLFW.h" />
     <ClInclude Include="EasyGLFW_Modified.h" />
     <ClInclude Include="Easy_GLSL.h" />

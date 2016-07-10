@@ -21,6 +21,35 @@ void WorldRenderer::init()
 	
 }
 
+float xx = 90 * (3.14/180);
+void WorldRenderer::render(KGame::World & world, glm::mat4 matView, GLuint id_mat_view_model, GLuint id_pos, GLuint id_pos_texture, GLuint id_color)
+{
+	xx += .01f;
+	glm::mat4 mat;
+	for (auto it = world.entities.begin(); it != world.entities.end(); it++) {
+		mat = glm::translate(matView, it->get_pos());
+		mat = glm::rotate(mat, it->get_rotation().x, glm::vec3(1, 0, 0));
+		mat = glm::rotate(mat, it->get_rotation().y, glm::vec3(0, 1, 0));
+		mat = glm::rotate(mat, it->get_rotation().z, glm::vec3(0, 0, 1));
+		mat = glm::scale(mat, it->get_scale());
+		glUniformMatrix4fv(id_mat_view_model, 1, GL_FALSE, value_ptr(mat));
+		switch (it->get_modelType()) {
+		case KGame::E_TYPE_MODEL::CUBE:
+			renderVAO(vao_cube);
+			break;
+		case KGame::E_TYPE_MODEL::BUNNY:
+			renderVAO(vao_bunny);
+			break;
+		}
+	}
+	//it->cout();
+	//vec3 n(cos(xx),0,sin(xx));
+	//std::cout << n.x << " " << n.y << " " << n.z << std::endl;
+	//it->lookAt(cos(xx), 0, sin(xx));
+	//it->set_rotation(00, xx, 0);
+		
+}
+
 void WorldRenderer::render_environment(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id_pos)
 {
 	//std::cout << "WEE";
@@ -79,6 +108,12 @@ void WorldRenderer::init(KVertexArrayObject& vao,const char* file, float * arr_v
 		store_arr_vert_length, store_indices_length);
 
 	vao.init(arr_vert, arr_normal, store_arr_vert_length / 3, arr_indices, store_indices_length / 3,glm::vec3(scene.sceneMax.x, scene.sceneMax.y, scene.sceneMax.z) );
+}
+void WorldRenderer::renderVAO(KVertexArrayObject vao)
+{
+	glBindVertexArray(vao.id_vertex_array);
+	glDrawElements(GL_TRIANGLES, vao.indice_length * 3, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
 }
 float move = 0;
 void WorldRenderer::draw(glm::mat4 * matView, GLuint id_mat_viewModel, GLuint id_pos, GLuint id_pos_texture, GLuint id_color )

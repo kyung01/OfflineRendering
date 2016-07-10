@@ -5,13 +5,13 @@ void Program_ReflectiveShadowMap_Apply::init_shader_locations()
 	Program_View_Inverted::init_shader_locations();
 	id_mat_light = glGetUniformLocation(id_program, NAME_MAT_LIGHT);
 	id_world_size = glGetUniformLocation(id_program, NAME_WORLD_SIZE);
-	id_texture_position = glGetUniformLocation(id_program, NAME_MAT_LIGHT);
+	id_texture_position = glGetUniformLocation(id_program, "texture_position");
 	id_texture_depth = glGetUniformLocation(id_program, NAME_TEXTURE_DEPTH);
 	id_texture_normal = glGetUniformLocation(id_program, NAME_TEXTURE_NORMAL);
 	id_texture_flux = glGetUniformLocation(id_program, NAME_TEXTURE_FLUX);
 	id_rand_seed = glGetUniformLocation(id_program, NAME_RAND_SEED);
 	id_material_color = glGetUniformLocation(id_program, NAME_MATERIAL_COLOR);
-	std::cout << "MATERIAL COLOR " << id_material_color;
+	std::cout << "Program_ReflectiveShadowMap_Apply::init_shader_locations MATERIAL COLOR " << id_material_color;
 }
 
 void Program_ReflectiveShadowMap_Apply::use(

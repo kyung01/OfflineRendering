@@ -36,8 +36,7 @@ void AssimpScene::rescale_verts(float * vert, int length)
 	float x = .5f / ( 0.00001 + std::max(std::abs(sceneMin.x), std::abs(sceneMax.x)));
 	float y = .5f / ( 0.00001 + std::max(std::abs(sceneMin.y), std::abs(sceneMax.y)));
 	float z = .5f / ( 0.00001 + std::max(std::abs(sceneMin.z), std::abs(sceneMax.z)));
-	std::cout << "X Y Z" << x << "," << y << "," << z << std::endl;
-
+	
 	float scale = std::min( std::min(x, y), z);
 	sceneMin *= scale;
 	sceneMax *= scale;

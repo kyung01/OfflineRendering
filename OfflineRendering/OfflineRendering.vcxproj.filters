@@ -22,23 +22,14 @@
     <Filter Include="Source Files\Player">
       <UniqueIdentifier>{a1ada4b9-12a6-4375-a4f4-8d1e83bf806f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\World">
-      <UniqueIdentifier>{ad69da2b-d5d2-4ed0-89b3-b4c9ad3dad57}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Program">
       <UniqueIdentifier>{b86828d7-dde5-429b-b679-95ab68b73fa7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Light">
       <UniqueIdentifier>{7d227b19-4977-4057-bf45-10794fbbc465}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\World\Entities">
-      <UniqueIdentifier>{f41882f0-18d3-4172-a6e0-5469001f3905}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\World">
       <UniqueIdentifier>{1540eaa0-0172-48d8-99ef-ade8feb863db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\World\Render">
-      <UniqueIdentifier>{d9476cbd-c9bf-4a6d-bacb-61bd9c7939bc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\World\Render">
       <UniqueIdentifier>{21bd26c1-3471-47a2-bcd6-bc9184a652e8}</UniqueIdentifier>
@@ -51,6 +42,18 @@
     </Filter>
     <Filter Include="Source Files\Program">
       <UniqueIdentifier>{93d251fa-cc9e-46a0-ba19-631ba53ac5cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\KGame">
+      <UniqueIdentifier>{03968f49-e8d9-4880-ac5e-f85f72b786db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\KGame\World">
+      <UniqueIdentifier>{ad69da2b-d5d2-4ed0-89b3-b4c9ad3dad57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\KGame\World\Entities">
+      <UniqueIdentifier>{f41882f0-18d3-4172-a6e0-5469001f3905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\KGame\World\Render">
+      <UniqueIdentifier>{d9476cbd-c9bf-4a6d-bacb-61bd9c7939bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +135,9 @@
     <ClCompile Include="Shader_Element.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Program_Deferred.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -162,10 +168,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WorldObject.h">
-      <Filter>Header Files\World</Filter>
+      <Filter>Header Files\KGame\World</Filter>
     </ClInclude>
     <ClInclude Include="World.h">
-      <Filter>Header Files\World</Filter>
+      <Filter>Header Files\KGame\World</Filter>
     </ClInclude>
     <ClInclude Include="GLFW_InputRaiser.h">
       <Filter>Header Files</Filter>
@@ -210,19 +216,19 @@
       <Filter>Header Files\Program</Filter>
     </ClInclude>
     <ClInclude Include="KMaterial.h">
-      <Filter>Header Files\World</Filter>
+      <Filter>Header Files\KGame\World</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>Header Files\World</Filter>
+      <Filter>Header Files\KGame\World</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
-      <Filter>Header Files\World</Filter>
+      <Filter>Header Files\KGame\World</Filter>
     </ClInclude>
     <ClInclude Include="WorldRenderer.h">
-      <Filter>Header Files\World\Render</Filter>
+      <Filter>Header Files\KGame\World\Render</Filter>
     </ClInclude>
     <ClInclude Include="VAO_Dictionary.h">
-      <Filter>Header Files\World\Render</Filter>
+      <Filter>Header Files\KGame\World\Render</Filter>
     </ClInclude>
     <ClInclude Include="Easy_STD.h">
       <Filter>Header Files</Filter>
@@ -234,7 +240,10 @@
       <Filter>Header Files\Program</Filter>
     </ClInclude>
     <ClInclude Include="Program_Deferred.h">
-      <Filter>Source Files\Program</Filter>
+      <Filter>Header Files\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\KGame</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

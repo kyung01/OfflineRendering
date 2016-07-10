@@ -34,3 +34,8 @@ void Shader_Element::assign(float * value)
 		break;
 	}
 }
+
+GLuint Shader_Element::get_id()
+{
+	return id;
+}

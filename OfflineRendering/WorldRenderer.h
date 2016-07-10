@@ -4,6 +4,7 @@
 #include "AssimpScene.h"
 #include "KVertexArrayObject.h"
 #include "glm\glm.hpp"
+#include "World.h"
 class WorldRenderer {
 	const char
 		*PATH_PLY_BUNNY		= "Model/bunny.ply",
@@ -19,8 +20,13 @@ class WorldRenderer {
 
 
 	glm::mat4 mat_model;
-	std::shared_ptr<AssimpScene> scene_bunny;
-	KVertexArrayObject vao_bunny, vao_teapot, vao_apple,vao_cube,vao_tetrahedron;
+	KVertexArrayObject
+		vao_bunny, 
+		vao_teapot, 
+		vao_apple,
+		vao_cube,
+		vao_tetrahedron;
+
 	float scene_bunny_angle;
 	//render the world
 	void render_environment(glm::mat4 *matView, GLuint id_mat_viewModel, GLuint id_pos);
@@ -28,9 +34,11 @@ class WorldRenderer {
 		float * arr_vert, int arr_vert_length,
 		float * arr_normal, int arr_normal_length,
 		int * arr_indices, int arr_indices_length);
+	void renderVAO(KVertexArrayObject vao);
 public:
 	void init();
+	void render(KGame::World &world, glm::mat4 matView, GLuint id_mat_view_model, GLuint id_pos, GLuint id_pos_texture, GLuint id_color);
 	void draw(glm::mat4 *matView, GLuint id_mat_viewModel, GLuint id_pos, GLuint id_pos_texture, GLuint id_color= -1);
-
+	void render_deferred(glm::mat4 *matView, GLuint id_mat_viewModel, GLuint id_pos, GLuint id_pos_texture, GLuint id_color = -1);
 
 };

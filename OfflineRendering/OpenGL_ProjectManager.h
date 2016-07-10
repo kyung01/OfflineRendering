@@ -2,7 +2,7 @@
 #include "EasyGLFW.h"
 #include "World.h"
 #include "WorldRenderer.h"
-#include "Program_Default.h"
+#include "Program_Deferred.h"
 #include "Program_Texture.h"
 #include "Program_ReflectiveShadowMap.h"
 #include "Program_ReflectiveShadowMap_Apply.h"
@@ -32,6 +32,7 @@ class OpenGL_ProjectManager {
 	EasyGLFW easyGLFW;
 	KGame::World world;
 	WorldRenderer worldRender;
+	Program_Deferred program_deferred;
 	Program_texture program_texture;
 
 	Program_ReflectiveShadowMap			program_rsm;
@@ -45,7 +46,7 @@ class OpenGL_ProjectManager {
 	glm::mat4 mat_proj_ortho;
 	glm::mat4 mat_proj_ortho_screen;
 
-	glm::mat4 mat_me_modelView;
+	glm::mat4 mat_me_viewModel;
 	glm::mat4 mat_me_view_inversed;
 	glm::mat4 mat_light_modelView;
 	glm::mat4 mat_light_view_inverted;
